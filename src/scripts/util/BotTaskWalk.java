@@ -32,6 +32,7 @@ public abstract class BotTaskWalk extends BotTask {
 				@Override
 				public boolean active() {
 					AntiBan.timedActions();
+					AntiBan.afk();
 					return walkTo.contains(Player.getRSPlayer()) || forceComplete;
 				}
 			};

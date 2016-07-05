@@ -50,14 +50,22 @@ public final class AntiBan {
      * @return
      */
 	public static int generateAFKTime() {
-		return (int) (Math.pow( Math.random() * Math.random(), 8 ) * 60000);
+		return generateAFKTime( 60000 );
+	}
+
+    /**
+     * Returns a number in milliseconds that represents how long the user is away from the window. Max is 1 minute.
+     * @return
+     */
+	public static int generateAFKTime( float maxTime ) {
+		return (int) (Math.pow( Math.random() * Math.random(), 9 ) * maxTime);
 	}
 
 	/**
-	 * Simulates going AFK
+	 * Simulates going AFK for up to 30 seconds.
 	 */
 	public static void afk() {
-		int afkTime = generateAFKTime();
+		int afkTime = generateAFKTime( 30000 );
 		long timeToWait = System.currentTimeMillis() + afkTime;
 
 		while ( System.currentTimeMillis() + 2000 < timeToWait ) {
