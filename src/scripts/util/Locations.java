@@ -18,11 +18,12 @@ public enum Locations {
 	LUMBRIDGE_SPINNING( new Point(3208, 3217), new Point(3212, 3212), 1 ),
 	LUMBRIDGE_BANK(     new Point(3207, 3220), new Point(3210, 3217), 2 ),
 
-	ALKHARID(        new Point(3294, 3214), new Point(3306, 3193), 0 ),
-	ALKHARID_MINE(   new Point(3296, 3289), new Point(3301, 3284), 0 ),
-	ALKHARID_SMELT(  new Point(3275, 3187), new Point(3278, 3185), 0 ),
-	ALKHARID_BANK(   new Point(3269, 3169), new Point(3271, 3164), 0 ),
-	ALKHARID_PALACE( new Point(3287, 3171), new Point(3298, 3167), 0 ),
+	ALKHARID(           new Point(3294, 3214), new Point(3306, 3193), 0 ),
+	ALKHARID_MINE(      new Point(3296, 3289), new Point(3301, 3284), 0 ),
+	ALKHARID_MINE_DEEP( new Point(3298, 3313), new Point(3302, 3305), 0 ),
+	ALKHARID_SMELT(     new Point(3275, 3187), new Point(3278, 3185), 0 ),
+	ALKHARID_BANK(      new Point(3269, 3169), new Point(3271, 3164), 0 ),
+	ALKHARID_PALACE(    new Point(3287, 3171), new Point(3298, 3167), 0 ),
 
 	VARROK(                 new Point(3182, 3450), new Point(3257, 3400), 0 ),
 	VARROK_BANK_EAST(       new Point(3250, 3423), new Point(3257, 3420), 0 ),

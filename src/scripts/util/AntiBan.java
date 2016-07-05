@@ -1,15 +1,11 @@
 package scripts.util;
 
 import org.tribot.api.General;
-import org.tribot.api.Timing;
-import org.tribot.api.interfaces.Positionable;
-import org.tribot.api.util.ABCUtil;
-import org.tribot.api2007.*;
+import org.tribot.api.util.abc.ABCUtil;
 
 public final class AntiBan {
 
     private static final ABCUtil abc;
-    private static boolean print_debug;
 
     /**
      * Static initialization block.
@@ -17,7 +13,6 @@ public final class AntiBan {
      */
     static {
         abc = new ABCUtil();
-        print_debug = false;
         General.useAntiBanCompliance(true);
     }
 
@@ -25,29 +20,53 @@ public final class AntiBan {
      * Checks all of the actions that are performed with the time tracker; if any are ready, they will be performed.
      */
     public static void timedActions() {
-        if (System.currentTimeMillis() >= abc.TIME_TRACKER.EXAMINE_OBJECT.next()) {
-            abc.TIME_TRACKER.EXAMINE_OBJECT.reset();
-            abc.performExamineObject();
-          }
+    	if (abc.shouldCheckTabs())
+    		abc.checkTabs();
 
-          if (System.currentTimeMillis() >= abc.TIME_TRACKER.LEAVE_GAME.next()) {
-            abc.TIME_TRACKER.LEAVE_GAME.reset();
-            abc.performLeaveGame();
-          }
+    	if (abc.shouldCheckXP())
+    		abc.checkXP();
 
-          if (System.currentTimeMillis() >= abc.TIME_TRACKER.PICKUP_MOUSE.next()) {
-            abc.TIME_TRACKER.PICKUP_MOUSE.reset();
-            abc.performPickupMouse();
-          }
+    	if (abc.shouldExamineEntity())
+    		abc.examineEntity();
 
-          if (System.currentTimeMillis() >= abc.TIME_TRACKER.RANDOM_MOUSE_MOVEMENT.next()) {
-            abc.TIME_TRACKER.RANDOM_MOUSE_MOVEMENT.reset();
-            abc.performRandomMouseMovement();
-          }
+    	if (abc.shouldMoveMouse())
+    		abc.moveMouse();
 
-          if (System.currentTimeMillis() >= abc.TIME_TRACKER.RANDOM_RIGHT_CLICK.next()) {
-            abc.TIME_TRACKER.RANDOM_RIGHT_CLICK.reset();
-            abc.performRandomRightClick();
-          }
+    	if (abc.shouldPickupMouse())
+    		abc.pickupMouse();
+
+    	if (abc.shouldRightClick())
+    		abc.rightClick();
+
+    	if (abc.shouldRotateCamera())
+    		abc.rotateCamera();
+
+    	if (abc.shouldLeaveGame())
+    		abc.leaveGame();
     }
+
+    /**
+     * Returns a number in milliseconds that represents how long the user is away from the window. Max is 1 minute.
+     * @return
+     */
+	public static int generateAFKTime() {
+		return (int) (Math.pow( Math.random() * Math.random(), 8 ) * 60000);
+	}
+
+	/**
+	 * Simulates going AFK
+	 */
+	public static void afk() {
+		int afkTime = generateAFKTime();
+		long timeToWait = System.currentTimeMillis() + afkTime;
+
+		while ( System.currentTimeMillis() + 2000 < timeToWait ) {
+			try {
+				Thread.sleep(100L);
+			} catch (InterruptedException e) {
+				//
+			}
+			timedActions();
+		}
+	}
 }
