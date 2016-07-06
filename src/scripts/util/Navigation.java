@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.Player;
@@ -25,6 +26,10 @@ public class Navigation {
 		boolean playerUnderGround = Locations.isUnderGround(t);
 		int playerFloor = t.getPlane();
 
+		// If we're here ignore
+		if ( location.contains( t ) )
+			return;
+
 		boolean locUnderGround = Locations.isUnderGround( location );
 		int locFloor = location.getFloor();
 
@@ -41,54 +46,64 @@ public class Navigation {
 		//EzWalk.plugin.println(canSimpleWalk);
 		if ( !canSimpleWalk ) {
 			// Get to ground level
-			//EzWalk.plugin.println("Getting to ground level");
+			General.println("Getting to ground level");
 			while ( Player.getPosition().getPlane() != 0 || Locations.isUnderGround(Player.getPosition()) ) {
 				CLIMB_STAIRS( Locations.isUnderGround(Player.getPosition()) );
 			}
 
 			// If dest is on ground level, walk to it!
 			if ( locFloor == 0 && !locUnderGround ) {
-				//EzWalk.plugin.println("Walking to dest: " + location.toString());
+				General.println("Walking to dest: " + location.toString());
 				WebWalking.walkTo( location.getRandomizedCenter( 5 ), condition, 100L);
 			} else {
 				// We need to get to the closest location on ground level
 				Locations closestLoc = GET_GROUND_LOC( location, 0 );
+				General.println("Finding closest location...");
 				if ( closestLoc != null ) {
-					//EzWalk.plugin.println("Closest location: " + closestLoc.toString());
+					General.println("Closest location: " + closestLoc.toString());
 					while ( !closestLoc.contains(Player.getPosition()) ) {
 						WebWalking.walkTo( closestLoc.getRandomizedCenter( 5 ) );
 					}
+				} else {
+					General.println("No closest location");
 				}
 
 				// Take stairs
-				//EzWalk.plugin.println( "Climbing stairs: " + Player.getPosition().getPlane() + " / " + location.getFloor());
+				General.println( "Climbing stairs: " + Player.getPosition().getPlane() + " / " + location.getFloor());
 				while ( Player.getPosition().getPlane() != location.getFloor() || locUnderGround != Locations.isUnderGround(Player.getPosition()) ) {
 					boolean up = (location.getFloor() > Player.getPosition().getPlane()) || (Locations.isUnderGround(Player.getPosition()) && !locUnderGround );
 					CLIMB_STAIRS( up );
 				}
 
 				// Walk to dest
-				//EzWalk.plugin.println("Walking to dest: " + location.toString());
-				WebWalking.walkTo( location.getRandomizedCenter( 5 ), condition, 100L);
+				General.println("Walking to dest: " + location.toString());
+				if ( !location.contains( Player.getPosition() ) ) {
+					WebWalking.walkTo( location.getRandomizedCenter( 5 ), condition, 100L);
+				}
 			}
 		}
 	}
 
 	private static Locations GET_GROUND_LOC(Locations location, int desiredFloor) {
+
+		if ( Locations.isUnderGround( location ) ) {
+			return Locations.getGroundFloorLocation( location );
+		}
+
 		Locations[] locs = Locations.values();
 		RSTile c = location.getCenter();
 
 		Locations closest = null;
 		int dist = 9999;
 		for (int i = 0; i < locs.length; i++) {
-			Locations l = locs[i];
+			Locations locationChecking = locs[i];
 			//if ( l.getFloor() == desiredFloor && (l.contains( c ) || l.getBounds().intersects(location.getBounds()) || l.getBounds().contains(location.getBounds()) )) {
-			if ( l.getFloor() == desiredFloor) {
-				int d = l.getCenter().distanceTo( c );
+			if ( locationChecking.getFloor() == desiredFloor ) {
+				int d = locationChecking.getCenter().distanceTo( c );
 				//EzWalk.plugin.println("Dist: " + d + "  /  " + l.toString() );
 				if ( d < dist ) {
 					dist = d;
-					closest = l;
+					closest = locationChecking;
 				}
 			}
 			//}
@@ -143,7 +158,7 @@ public class Navigation {
 
 				}, 100L);
 			}
-			myStair.click(option);
+			myStair.click(option, "Open");
 		}
 
 		SLEEP( 1000 + (int)(Math.random() * 1000) );

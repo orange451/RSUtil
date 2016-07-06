@@ -11,6 +11,7 @@ import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
 
 public enum Locations {
+
 	LUMBRIDGE(          new Point(3201, 3233), new Point(3226, 3205), 0 ),
 	LUMBRIDGE_CHURCH(   new Point(3240, 3215), new Point(3247, 3204), 0 ),
 	LUMBRIDGE_SHOP_AXE( new Point(3228, 3205), new Point(3233, 3201), 0 ),
@@ -45,6 +46,8 @@ public enum Locations {
 	VARROK_CASTLE_LIBRARY(  new Point(3207, 3497), new Point(3214, 3490), 0 ),
 	VARROK_SQUARE(          new Point(3206, 3437), new Point(3221, 3422), 0 ),
 	VARROK_WILDERNESS(      new Point(3238, 3520), new Point(3254, 3514), 0 ),
+	VARROK_SEWER_TOP(       new Point(3236, 3460), new Point(3238, 3456), 0 ),
+	VARROK_SEWER(           new Point(3236, 9859), new Point(3237, 9857), 0 ),
 
 	DRAYNOR(             new Point(3083, 3279), new Point(3105, 3249), 0 ),
 	DRAYNOR_BANK(        new Point(3092, 3246), new Point(3095, 3241), 0 ),
@@ -91,6 +94,7 @@ public enum Locations {
 
 	GRAND_EXCHANGE(  new Point(3140, 3469), new Point(3192, 3512), 0 );
 
+	public static int BASEMENT_OFFSET = 6400;
 	private static ArrayList<Locations> locs = new ArrayList<Locations>();
 	static {
 		for (Locations loc : values()) {
@@ -184,6 +188,44 @@ public enum Locations {
 
 	public Rectangle getBounds() {
 		return this.location;
+	}
+
+	/**
+	 * Returns the basement location for this location.
+	 * @param loc
+	 * @return
+	 */
+	public static Locations getBasementLocation( Locations loc ) {
+		RSTile c = loc.getCenter();
+		RSTile newLoc = new RSTile( c.getX(), c.getY() + BASEMENT_OFFSET, 0 );
+
+		// Find the non-basement location
+		for (int i = 0; i < locs.size(); i++) {
+			if ( locs.get(i).contains(newLoc) ) {
+				return locs.get(i);
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the ground floor location for this location.
+	 * @param loc
+	 * @return
+	 */
+	public static Locations getGroundFloorLocation( Locations loc ) {
+		RSTile c = loc.getCenter();
+		RSTile newLoc = new RSTile( c.getX(), c.getY() - BASEMENT_OFFSET, 0 );
+
+		// Find the non-basement location
+		for (int i = 0; i < locs.size(); i++) {
+			if ( locs.get(i).contains(newLoc) ) {
+				return locs.get(i);
+			}
+		}
+
+		return null;
 	}
 
 	public static Locations closestLocation(String match, Locations from) {

@@ -6,8 +6,9 @@ public abstract class BotTask {
 		this.init();
 	}
 
+
+	public abstract void init();
 	public abstract String getTaskName();
 	public abstract BotTask getNextTask();
 	public abstract boolean isTaskComplete();
-	public abstract void init();
 }
