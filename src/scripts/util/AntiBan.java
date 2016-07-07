@@ -6,8 +6,6 @@ import org.tribot.api2007.Camera;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSTile;
 
-import scripts.f2ptrainer.F2PTrainerVars;
-
 public final class AntiBan {
 
     private static final ABCUtil abc;
@@ -20,6 +18,7 @@ public final class AntiBan {
     static {
         abc = new ABCUtil();
         General.useAntiBanCompliance(true);
+        abc.generateTrackers();
     }
 
     /**
@@ -64,7 +63,7 @@ public final class AntiBan {
      * @return
      */
 	public static int generateAFKTime( float maxTime ) {
-		return (int) (Math.pow( Math.random() * Math.random(), 12 ) * maxTime);
+		return (int) (Math.pow( Math.random() * Math.random(), 14 ) * maxTime);
 	}
 
 	/**

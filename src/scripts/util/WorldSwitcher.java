@@ -13,6 +13,18 @@ import org.tribot.api2007.NPCChat;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSInterfaceComponent;
 
+/**
+ * This script was not created by me.
+ * However I do not know the original author.
+ *
+ * If the author of this java file finds this,
+ * and does not want it shared on my hithub,
+ * please notify me!
+ * I will remove it!
+ *
+ * @author NOT WRITTEN BY ME.
+ *
+ */
 public class WorldSwitcher extends Condition {
 	private int world;
 	public WorldSwitcher(int world) {

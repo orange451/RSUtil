@@ -4,6 +4,9 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.WebWalking;
 
+import scripts.util.names.Locations;
+import scripts.util.player.Navigation;
+
 public abstract class BotTaskWalk extends BotTask {
 	protected Locations walkTo;
 	protected boolean forceComplete;
