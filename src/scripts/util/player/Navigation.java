@@ -6,6 +6,7 @@ import java.util.Comparator;
 
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
+import org.tribot.api2007.Game;
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.WebWalking;
@@ -206,13 +207,23 @@ public class Navigation {
 
 			@Override
 			public boolean active() {
-				if ( AntiBan.randomChance(5) )
-					AntiBan.rotateCameraRandom();
-				AntiBan.timedActions();
-				AntiBan.afk( 5000 );
+				Navigation.doWalkingTasks();
 				return location.contains(Player.getRSPlayer()) && stopWhenInside;
 			}
 
 		});
+	}
+
+	/**
+	 * Handles Antiban tasks while web-walking. This should be called inside a WebWalking condition.
+	 * <br>
+	 * <br>
+	 * It will randomly rotate your camera, perform Antiban timed actions, and AFK the player.
+	 */
+	public static void doWalkingTasks() {
+		if ( AntiBan.randomChance(8) )
+			AntiBan.rotateCameraRandom();
+		AntiBan.timedActions();
+		AntiBan.afk( Game.isRunOn()?4000:12000 );
 	}
 }

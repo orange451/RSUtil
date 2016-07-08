@@ -26,7 +26,7 @@ public enum Locations {
 
 
 
-	ALKHARID(           new Point(3294, 3214), new Point(3306, 3193), 0 ),
+	ALKHARID(           new Point(3278, 3246), new Point(3322, 3177), 0 ),
 	ALKHARID_MINE(      new Point(3296, 3289), new Point(3301, 3284), 0 ),
 	ALKHARID_MINE_DEEP( new Point(3298, 3313), new Point(3302, 3305), 0 ),
 	ALKHARID_SMELT(     new Point(3275, 3187), new Point(3278, 3185), 0 ),
@@ -303,6 +303,30 @@ public enum Locations {
 					dist = d;
 					ret = loc;
 				}
+			}
+		}
+
+		return ret;
+	}
+
+	/**
+	 * Returns the closest location.
+	 * @param match
+	 * @param from
+	 * @return
+	 */
+	public static Locations closestLocation( RSTile tile ) {
+		Locations ret = null;
+		int dist = 99999;
+		for (int i = 0; i < locs.size(); i++) {
+			Locations loc = locs.get(i);
+			if ( loc.getFloor() != tile.getPlane() )
+				continue;
+
+			int d = loc.getCenter().distanceTo(tile);
+			if ( d < dist ) {
+				dist = d;
+				ret = loc;
 			}
 		}
 

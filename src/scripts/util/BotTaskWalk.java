@@ -9,16 +9,11 @@ import scripts.util.player.Navigation;
 
 public abstract class BotTaskWalk extends BotTask {
 	protected Locations walkTo;
-	protected boolean forceComplete;
 	protected boolean important;
 
 	public BotTaskWalk( Locations location, boolean runTo ) {
 		this.walkTo = location;
 		WebWalking.setUseRun( runTo );
-	}
-
-	public void setForceCompleted( boolean complete ) {
-		this.forceComplete = complete;
 	}
 
 	@Override
@@ -38,13 +33,13 @@ public abstract class BotTaskWalk extends BotTask {
 
 				@Override
 				public boolean active() {
-					if ( !important ) {
-						if ( AntiBan.randomChance(4) )
-							AntiBan.rotateCameraRandom();
-						AntiBan.timedActions();
-						AntiBan.afk( 5000 );
-					}
-					return walkTo.contains(Player.getRSPlayer()) || forceComplete;
+					if ( forceComplete )
+						return true;
+
+					if ( !important )
+						Navigation.doWalkingTasks();
+
+					return walkTo.contains(Player.getRSPlayer());
 				}
 			};
 			Navigation.walkTo( this.walkTo, c );
