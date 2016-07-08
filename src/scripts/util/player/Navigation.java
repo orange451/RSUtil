@@ -65,7 +65,7 @@ public class Navigation {
 				if ( closestLoc != null ) {
 					General.println("  Closest location: " + closestLoc.toString());
 					while ( !closestLoc.contains(Player.getPosition()) ) {
-						WebWalking.walkTo( closestLoc.getRandomizedCenter( 5 ) );
+						WebWalking.walkTo( closestLoc.getRandomizedCenter( 5 ), condition, 100L );
 					}
 				} else {
 					General.println("  No closest location");
