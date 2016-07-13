@@ -4,6 +4,8 @@ import org.tribot.api.General;
 import org.tribot.api.util.abc.ABCUtil;
 import org.tribot.api2007.Camera;
 import org.tribot.api2007.Player;
+import org.tribot.api2007.Skills;
+import org.tribot.api2007.Skills.SKILLS;
 import org.tribot.api2007.types.RSTile;
 
 public final class AntiBan {
@@ -54,16 +56,8 @@ public final class AntiBan {
      * Returns a number in milliseconds that represents how long the user is away from the window. Max is 1 minute.
      * @return
      */
-	public static int generateAFKTime() {
-		return generateAFKTime( 60000 );
-	}
-
-    /**
-     * Returns a number in milliseconds that represents how long the user is away from the window. Max is 1 minute.
-     * @return
-     */
 	public static int generateAFKTime( float maxTime ) {
-		return (int) (Math.pow( Math.random() * Math.random(), 14 ) * maxTime);
+		return (int) (Math.pow( Math.random() * Math.random(), 16 ) * maxTime);
 	}
 
 	/**
@@ -74,11 +68,31 @@ public final class AntiBan {
 		long timeToWait = System.currentTimeMillis() + afkTime;
 
 		afk = true;
-		while ( System.currentTimeMillis() + 2000 < timeToWait ) {
+		while ( System.currentTimeMillis() + 4000 < timeToWait ) {
 			sleep( 100L );
 			timedActions();
+
+			// Cancel AFK if we die
+			if ( Skills.getCurrentLevel( SKILLS.HITPOINTS ) <= 0 ) {
+				break;
+			}
 		}
 		afk = false;
+	}
+
+	/**
+	 * Waits the script for (maxTime) milliseconds. During this time both timedActions() and rotateCameraRandom() will be performed.
+	 * @param maxTime
+	 */
+	public static void idle( long maxTime ) {
+		long timeToWait = System.currentTimeMillis() + maxTime;
+		while ( System.currentTimeMillis() < timeToWait ) {
+			sleep( 50L );
+			timedActions();
+
+			if ( randomChance( 10 ) )
+				rotateCameraRandom();
+		}
 	}
 
 	/**

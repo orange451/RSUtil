@@ -25,6 +25,8 @@ public class Navigation {
 	 * Uses a custom condition. If true the walking task will complete.
 	 */
 	public static void walkTo( Locations location, Condition condition ) {
+		WebWalking.setUseAStar( true );
+
 		RSTile t   = Player.getPosition();
 		boolean playerUnderGround = Locations.isUnderGround(t);
 		int playerFloor = t.getPlane();

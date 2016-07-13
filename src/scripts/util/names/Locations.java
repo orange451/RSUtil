@@ -15,7 +15,7 @@ public enum Locations {
 	LUMBRIDGE_KITCHEN(             new Point(3205, 3217), new Point(3211, 3212), 0 ),
 	LUMBRIDGE_SPINNING(            new Point(3208, 3217), new Point(3212, 3212), 1 ),
 	LUMBRIDGE_BANK(                new Point(3207, 3220), new Point(3210, 3217), 2 ),
-	LUMBRIDGE_SWAMP(               new Point(3212, 3184), new Point(3222, 3172), 0 ),
+	LUMBRIDGE_SWAMP(               new Point(3202, 3194), new Point(3232, 3182), 0 ),
 	LUMBRIDGE_COWS_EAST(           new Point(3252, 3291), new Point(3264, 3257), 0 ),
 	LUMBRIDGE_COWS_WEST(           new Point(3194, 3300), new Point(3210, 3285), 0 ),
 	LUMBRIDGE_CHICKENS_EAST(       new Point(3225, 3300), new Point(3236, 3289), 0 ),
@@ -64,12 +64,12 @@ public enum Locations {
 	DRAYNOR_TRAPDOOR(       new Point(3080, 3275), new Point(3087, 3269), 0 ),
 	DRAYNOR_SEWER_ENTRANCE( new Point(3083, 9674), new Point(3086, 9670), 0 ),
 
-	WIZARD_TOWER(          new Point(3103, 3166), new Point(3114, 3157), 0 ),
-	WIZARD_TOWER_STAIRS(   new Point(3106, 3161), new Point(3107, 3160), 0 ),
-	WIZARD_TOWER_TRAIBORN( new Point(3111, 3164), new Point(3113, 3160), 1 ),
-	WIZARD_TOWER_MIZGOG(   new Point(3103, 3165), new Point(3105, 3162), 2 ),
-	WIZARD_TOWER_GRAYZAG(  new Point(3109, 3162), new Point(3111, 3159), 2 ),
-	WIZARD_TOWER_SEDRIDOR( new Point(3109, 9573), new Point(3107, 9568), 0 ),
+	WIZARDS_TOWER(          new Point(3103, 3166), new Point(3114, 3157), 0 ),
+	WIZARDS_TOWER_STAIRS(   new Point(3106, 3161), new Point(3107, 3160), 0 ),
+	WIZARDS_TOWER_TRAIBORN( new Point(3111, 3164), new Point(3113, 3160), 1 ),
+	WIZARDS_TOWER_MIZGOG(   new Point(3103, 3165), new Point(3105, 3162), 2 ),
+	WIZARDS_TOWER_GRAYZAG(  new Point(3109, 3162), new Point(3111, 3159), 2 ),
+	WIZARDS_TOWER_SEDRIDOR( new Point(3109, 9573), new Point(3107, 9568), 0 ),
 
 	PORT_SARIM(          new Point(3010, 3262), new Point(3026, 3241), 0 ),
 	PORT_SARIM_JAIL(     new Point(3010, 3192), new Point(3012, 3187), 0 ),
@@ -293,20 +293,7 @@ public enum Locations {
 	 * @return
 	 */
 	public static Locations closestLocation(String match, Locations from) {
-		Locations ret = null;
-		int dist = 99999;
-		for (int i = 0; i < locs.size(); i++) {
-			Locations loc = locs.get(i);
-			if ( loc.toString().toLowerCase().contains(match.toLowerCase())) {
-				int d = loc.getCenter().distanceTo(from.getCenter());
-				if ( d < dist ) {
-					dist = d;
-					ret = loc;
-				}
-			}
-		}
-
-		return ret;
+		return closestLocation( match, from.getCenter() );
 	}
 
 	/**
@@ -315,18 +302,20 @@ public enum Locations {
 	 * @param from
 	 * @return
 	 */
-	public static Locations closestLocation( RSTile tile ) {
+	public static Locations closestLocation( String match, RSTile tile ) {
 		Locations ret = null;
 		int dist = 99999;
 		for (int i = 0; i < locs.size(); i++) {
 			Locations loc = locs.get(i);
-			if ( loc.getFloor() != tile.getPlane() )
-				continue;
+			if ( match == null || loc.toString().toLowerCase().contains(match.toLowerCase())) {
+				if ( loc.getFloor() != tile.getPlane() )
+					continue;
 
-			int d = loc.getCenter().distanceTo(tile);
-			if ( d < dist ) {
-				dist = d;
-				ret = loc;
+				int d = loc.getCenter().distanceTo(tile);
+				if ( d < dist ) {
+					dist = d;
+					ret = loc;
+				}
 			}
 		}
 
