@@ -13,10 +13,16 @@ import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 
-import scripts.util.AntiBan;
+import scripts.util.ObjectUtil;
+import scripts.util.misc.AntiBan;
 import scripts.util.names.Locations;
 import scripts.util.names.ObjectNames;
 
+/**
+ * This is a very experimental class. It has not been refactored. And as such it is very ugly.
+ * It was an attempt to get webwalking to be able to go up and down stairs at specific locations.
+ * @author orange451
+ */
 public class Navigation {
 
 	/**
@@ -24,16 +30,20 @@ public class Navigation {
 	 * <br><br>
 	 * Uses a custom condition. If true the walking task will complete.
 	 */
-	public static void walkTo( Locations location, Condition condition ) {
+	public static void walkTo( RSTile to, Condition condition ) {
 		WebWalking.setUseAStar( true );
+
+		// If we cant find the mapped location. Webwalk.
+		Locations location = Locations.get(to);
+		if ( location == null ) {
+			General.println("Simple webwalk");
+			WebWalking.walkTo(to, condition, 100L);
+			return;
+		}
 
 		RSTile t   = Player.getPosition();
 		boolean playerUnderGround = Locations.isUnderGround(t);
 		int playerFloor = t.getPlane();
-
-		// If we're here ignore.
-		if ( location.contains( t ) )
-			return;
 
 		boolean locUnderGround = Locations.isUnderGround( location );
 		int locFloor = location.getFloor();
@@ -43,7 +53,9 @@ public class Navigation {
 		if ( !locUnderGround && locFloor == 0 ) {
 			if ( !playerUnderGround && playerFloor == 0 ) {
 				canSimpleWalk = true;
-				WebWalking.walkTo( location.getRandomizedCenter( 5 ), condition, 100L);
+				General.println("Simple webwalk 2");
+				WebWalking.walkTo( to, condition, 100L);
+				return;
 			}
 		}
 
@@ -59,7 +71,8 @@ public class Navigation {
 			// If dest is on ground level, walk to it!
 			if ( locFloor == 0 && !locUnderGround ) {
 				General.println("Walking to dest: " + location.toString());
-				WebWalking.walkTo( location.getRandomizedCenter( 5 ), condition, 100L);
+				WebWalking.walkTo( location.getRandomizedCenter( 4 ), condition, 100L);
+				return;
 			} else {
 				// We need to get to the closest location on ground level
 				Locations closestLoc = GET_GROUND_LOC( location, 0 );
@@ -67,7 +80,7 @@ public class Navigation {
 				if ( closestLoc != null ) {
 					General.println("  Closest location: " + closestLoc.toString());
 					while ( !closestLoc.contains(Player.getPosition()) ) {
-						WebWalking.walkTo( closestLoc.getRandomizedCenter( 5 ), condition, 100L );
+						WebWalking.walkTo( closestLoc.getRandomizedCenter( 4 ), condition, 100L );
 					}
 				} else {
 					General.println("  No closest location");
@@ -83,7 +96,7 @@ public class Navigation {
 				// Walk to dest
 				General.println("Walking to dest: " + location.toString());
 				if ( !location.contains( Player.getPosition() ) ) {
-					WebWalking.walkTo( location.getRandomizedCenter( 5 ), condition, 100L);
+					WebWalking.walkTo( location.getRandomizedCenter( 4 ), condition, 100L);
 				}
 
 				General.sleep(1000);
@@ -185,7 +198,7 @@ public class Navigation {
 
 		for (int i = 0; i < objects.length; i++) {
 			RSObject o = objects[i];
-			if ( ObjectNames.isA( o, ObjectNames.STAIRCASE ) || ObjectNames.isA( o, ObjectNames.LADDER ) ) {
+			if ( ObjectUtil.isA( o, ObjectNames.STAIRCASE ) || ObjectUtil.isA( o, ObjectNames.LADDER ) ) {
 				ret.add(o);
 			}
 		}
@@ -205,7 +218,7 @@ public class Navigation {
 	 * If (stopWhenInside) the player will stop trying to walk when he is inside the location.
 	 */
 	public static void walkTo( final Locations location, final boolean stopWhenInside ) {
-		walkTo( location, new Condition() {
+		walkTo( location.getRandomizedCenter(5), new Condition() {
 
 			@Override
 			public boolean active() {

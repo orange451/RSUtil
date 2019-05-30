@@ -1,20 +1,23 @@
 package scripts.util.names;
 
 public enum Animations {
-	MINING(625),
-	THIEVING(832),
-	NONE(-1);
+	MINING(new int[] { 629, 628 }), 
+	THIEVING(new int[] { 832 }), 
+	NONE(new int[] { -1 });
 
-	private int id;
-	private Animations(int id) {
-		this.id = id;
-	}
+	private int[] ids;
 
-	public int getId() {
-		return this.id;
+	private Animations(int... id) { this.ids = id; }
+
+	public int[] getIds() {
+		return this.ids;
 	}
 
 	public static boolean isA(int animation, Animations anim) {
-		return anim.getId() == animation;
+		for (int i = 0; i < anim.ids.length; i++) {
+			if (anim.ids[i] == animation)
+				return true;
+		}
+		return false;
 	}
 }

@@ -1,124 +1,60 @@
 package scripts.util.names;
 
-import java.util.ArrayList;
-
-import org.tribot.api2007.Objects;
-import org.tribot.api2007.Player;
-import org.tribot.api2007.types.RSObject;
-import org.tribot.api2007.types.RSTile;
-
 public enum ObjectNames {
-	BANK_BOOTH(7409),
-	ORE_NONE(7468),
-	ORE_COPPER(7453,7484),
-	ORE_TIN(7486, 7485),
-	ORE_IRON(7488, 7455),
-	STAIRCASE(12536, 12537, 12538, 16672, 16673, 16671, 11796, 17385, 11799, 24074, 24072, 24077, 24078, 24070, 24071, 881, 882, 6435),
-	LADDER(2417, 2418, 16683),
-	NULL(23849);
+	ANVIL(new int[] { 2097 }), 
+	BANK_BOOTH(new int[] { 7409 }), 
+	DOOR(new int[] { 131, 137, 138, 139, 140, 141, 142, 143, 144, 145 }), 
+	FURNACE(new int[] { 24009 }), 
+	COMPOSITE_HEAP(new int[] { 152 }), 
+	FOUNTAIN(new int[] { 153 }), 
+	BOOKCASE_INTERACT(new int[] { 155, 156 }), 
+	LEVER(new int[] { 146, 147, 148, 149, 150, 151, 160 }), 
+	ORE_NONE(new int[] { 11390, 11391 }), 
+	ORE_COPPER(new int[] { 11161, 10943 }), 
+	ORE_TIN(new int[] { 11360, 11361  }), 
+	ORE_IRON(new int[] { 11365, 11364 }), 
+	ORE_COAL(new int[] { 11367, 11366 }), 
+	ORE_GOLD(new int[] { 11371, 11370 }), 
+	ORE_ADAMANT(new int[] { 7493, 7460 }), 
+	WHEAT(new int[] { 15506, 15507 }), 
+	ONION(new int[] { 3366 }), 
+	CABBAGE(new int[] { 1161 }), 
+	CAULDRON(new int[] { 2024 }), 
+	RANGE(new int[] { 26181 }), 
+	HOPPER(new int[] { 24961 }), 
+	HOPPER_CONTROLS(new int[] { 24964 }), 
+	FLOWER_BIN(new int[] { 1781 }), 
+	STAIRCASE(new int[] { 12536, 12537, 12538, 16672, 16673, 16671, 11796, 17385, 11799, 24074, 24072, 24077, 24078, 24070, 24071, 881, 882, 6434, 6435 }), 
+	SPINNING_WHEEL(new int[] { 14889 }), 
+	LADDER(new int[] { 17385, 132, 133, 2417, 2418, 16683, 12964, 12965, 12966 }), 
+	NULL(new int[] { 23849 });
 
 	private int[] id;
-	private ObjectNames(int... id) {
-		this.id = id;
-	}
 
-	/**
-	 * Returns the list of Runescape ids associated with this Interactive Object type
-	 * @return
-	 */
+	private ObjectNames(int... id) { this.id = id; }
+
 	public int[] getId() {
-		return id;
+		return this.id;
 	}
 
-	/**
-	 * Returns the name of this enum with Title Casing.
-	 * <br>
-	 * Additionally the _ characters are replaced with a blank space.
-	 * @return
-	 */
 	public String getName() {
-	    String[] arr = toString().toLowerCase().replace("_", " ").split(" ");
-	    StringBuffer sb = new StringBuffer();
+		String[] arr = toString().toLowerCase().replace("_", " ").split(" ");
+		StringBuffer sb = new StringBuffer();
 
-	    for (int i = 0; i < arr.length; i++) {
-	        sb.append(Character.toUpperCase(arr[i].charAt(0)))
-	            .append(arr[i].substring(1)).append(" ");
-	    }
-	    return sb.toString().trim();
+		for (int i = 0; i < arr.length; i++) {
+			sb.append(Character.toUpperCase(arr[i].charAt(0))).append(arr[i].substring(1)).append(" ");
+		}
+		return sb.toString().trim();
 	}
 
-	/**
-	 * Returns all of the nearby RSObjects with a given Interactive Object type
-	 * @param obj
-	 * @return
-	 */
-	public static ArrayList<RSObject> getAll(ObjectNames obj) {
-		ArrayList<RSObject> objs = new ArrayList<RSObject>();
-		RSObject[] objects = Objects.getAll( 20 );
-		for (int i = 0; i < objects.length; i++) {
-			RSObject o = objects[i];
-			int[] ids = obj.getId();
-			for (int ii = 0; ii < ids.length; ii++) {
-				if ( o.getID() == ids[ii] ) {
-					objs.add(o);
-				}
+	public static ObjectNames find(String formattedName) {
+		ObjectNames[] types = values();
+		for (int i = 0; i < types.length; i++) {
+			if (types[i].getName().equals(formattedName)) {
+				return types[i];
 			}
 		}
 
-		return objs;
-	}
-
-	/**
-	 * Returns whether or not a RSObject is the specified Interactive Object type
-	 * @param o
-	 * @param obj
-	 * @return
-	 */
-	public static boolean isA(RSObject o, ObjectNames obj) {
-		int[] ids = obj.getId();
-		for (int ii = 0; ii < ids.length; ii++) {
-			if ( o.getID() == ids[ii] ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Returns an RSObject of the specified Interactive Object type.
-	 * <br>
-	 * The object will be the closest object to (near) and be within (MAX_DIST) tiles.
-	 * @param obj
-	 * @param near
-	 * @param MAX_DIST
-	 * @return
-	 */
-	public static RSObject get(ObjectNames obj, RSTile near, int MAX_DIST) {
-		ArrayList<RSObject> objects = ObjectNames.getAll( obj );
-		RSObject mine = null;
-		int dist = MAX_DIST;
-		for (int i = 0; i < objects.size(); i++) {
-			RSObject o = objects.get(i);
-			int tdist = o.getPosition().distanceTo( near );
-			if ( tdist < dist ) {
-				dist = tdist;
-				mine = o;
-			}
-		}
-
-		return mine;
-	}
-
-	/**
-	 * Returns an RSObject of the specified Interactive Object type.
-	 * <br>
-	 * The object will be the closest object to the Player and be within (MAX_DIST) tiles.
-	 * @param obj
-	 * @param near
-	 * @param MAX_DIST
-	 * @return
-	 */
-	public static RSObject get(ObjectNames obj, int MAX_DIST) {
-		return get( obj, Player.getPosition(), MAX_DIST );
+		return null;
 	}
 }
