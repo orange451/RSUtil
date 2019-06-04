@@ -1,5 +1,8 @@
 package scripts.util.names;
 
+import com.allatori.annotations.DoNotRename;
+
+@DoNotRename
 public enum ItemNamesExt {
 	TORAGS_PLATELEGS_100(4970),
 	TORAGS_PLATELEGS_75(4971),

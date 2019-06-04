@@ -78,7 +78,7 @@ public abstract class BotTaskWalk extends BotTask {
 			RSTile finalTile = finalTileTemp;
 			
 			// Fallback method!
-			if (this.attempts > 20) {
+			if (this.attempts > 30) {
 				Condition c = new Condition() {
 					@Override
 					public boolean active() {
@@ -126,6 +126,9 @@ public abstract class BotTaskWalk extends BotTask {
 							return (forceComplete) || (finalTile.distanceTo(Player.getRSPlayer()) <= BotTaskWalk.radius);
 						}
 					});
+					
+					// Sometimes AFK.
+					AntiBan.afk(AntiBan.generateAFKTime(Game.isRunOn()?3000:15000));
 
 					// Handle run logic
 					runLogic();

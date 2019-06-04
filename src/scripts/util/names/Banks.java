@@ -6,11 +6,14 @@ import org.tribot.api.General;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSTile;
 
+import com.allatori.annotations.DoNotRename;
+
 import scripts.dax_api.api_lib.WebWalkerServerApi;
 import scripts.dax_api.api_lib.models.PathResult;
 import scripts.dax_api.api_lib.models.PlayerDetails;
 import scripts.dax_api.api_lib.models.Point3D;
 
+@DoNotRename
 public enum Banks {
 	VARROK_EAST(Locations.VARROK_BANK_EAST), 
 	VARROK_WEST(Locations.VARROK_BANK_WEST), 
@@ -48,15 +51,16 @@ public enum Banks {
 			Banks bank = banks[i];
 			RSTile center = bank.getLocation().getCenter();
 
+			// Get distance to bank
 			ArrayList<RSTile> tiles = WebWalkerServerApi.getInstance().getPath(Point3D.fromPositionable(Player.getPosition()), Point3D.fromPositionable(center), PlayerDetails.generate()).toRSTilePath();
 			int pathDist = tiles.size();
-			int potDist = center.distanceTo(Player.getPosition());
-
-			if (pathDist != 0) {
-				if ((potDist < dist) || (potDist < 32)) {
-					dist = potDist;
-					ret = bank;
-				}
+			if ( pathDist == 0 )
+				pathDist = center.distanceTo(Player.getPosition());
+			
+			// Check if it's close
+			if (pathDist < dist) {
+				dist = pathDist;
+				ret = bank;
 			}
 		}
 		General.println("Closest Bank: " + ret.toString());

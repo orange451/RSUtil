@@ -77,7 +77,7 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static int generateAFKTime(float maxTime) {
-		float center = (float)(maxTime * General.randomDouble(0.025D, 0.06D));
+		float center = (float)(maxTime * General.randomDouble(0.01D, 0.026D));
 		float rightBound = maxTime - center;
 		float leftBound = center;
 		float powerRight = (float)Math.pow(Math.random(), 6.0D) * 2.0F;
@@ -95,7 +95,8 @@ public final class AntiBan {
 	 * @param maxTime
 	 */
 	public static void afk(float maxTime) {
-		int afkTime = generateResponseTime(maxTime);
+		double abcReac = Math.max(0.3, abc.generateReactionTime()/10000d);
+		int afkTime = (int) (generateAFKTime(maxTime)*abcReac);
 		long timeToWait = System.currentTimeMillis() + afkTime;
 
 		afk = true;
@@ -107,6 +108,9 @@ public final class AntiBan {
 			}
 		}
 		afk = false;
+		
+		// Regenerate trackers
+		abc.generateTrackers();
 	}
 
 	/**
@@ -144,6 +148,9 @@ public final class AntiBan {
 				break;
 			}
 		}
+		
+		// Regenerate trackers
+		abc.generateTrackers();
 	}
 
 	/**
@@ -157,12 +164,12 @@ public final class AntiBan {
 	}
 	
 	/**
-	 * Performs a sleep where each time is based around the average time. This provides more human-like results.
+	 * Performs a idle where each time is based around the average time. This provides more human-like results. See {@link #idle(long)}.
 	 * @param average
 	 * @param deviation
 	 */
 	public static void sleep(int average, int deviation) {
-		int time = average+generateResponseTime(deviation)-generateResponseTime(deviation);
+		int time = (int) (average*0.75+generateResponseTime(deviation));
 		idle(time);
 	}
 

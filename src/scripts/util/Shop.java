@@ -42,8 +42,12 @@ public class Shop {
 		return false;
 	}
 
+	/**
+	 * Returns all items sellable in the shop.
+	 * @return
+	 */
 	public static RSItem[] getAll() {
-		RSInterfaceComponent[] items1 = Interfaces.get(300).getChild(2).getChildren();
+		RSInterfaceComponent[] items1 = Interfaces.get(300).getChild(16).getChildren();
 
 		RSItem[] items = new RSItem[items1.length];
 		for (int i = 0; i < items1.length; i++) {
@@ -52,15 +56,16 @@ public class Shop {
 			items[i].setArea(item.getAbsoluteBounds());
 		}
 
+		// Return the items;
 		if (isShopOpen()) {
-			return createRectangles(items);
+			return items;
 		}
 
 		return new RSItem[0];
 	}
 
 	public static RSItem[] get(String... name) {
-		ArrayList<RSItem> items = new ArrayList();
+		ArrayList<RSItem> items = new ArrayList<RSItem>();
 		RSItem[] arrayOfRSItem;
 		int j = (arrayOfRSItem = getAll()).length;
 
@@ -80,10 +85,11 @@ public class Shop {
 	}
 
 	public static RSItem[] get(int... ids) {
-		ArrayList<RSItem> items = new ArrayList();
+		ArrayList<RSItem> items = new ArrayList<RSItem>();
 
 		RSItem[] arrayOfRSItem;
-		int j = (arrayOfRSItem = getAll()).length; for (int i = 0; i < j; i++) {
+		int j = (arrayOfRSItem = getAll()).length;
+		for (int i = 0; i < j; i++) {
 			RSItem it = arrayOfRSItem[i];
 
 			for (int a = 0; a < ids.length; a++) {
@@ -126,17 +132,6 @@ public class Shop {
 		return c;
 	}
 
-	private static RSItem[] createRectangles(RSItem[] items) {
-		RSItem[] arrayOfRSItem = items;int j = items.length;
-		for (int i = 0; i < j; i++) {
-			RSItem it = arrayOfRSItem[i];
-			int x = (int)Math.ceil(it.getIndex() % 8) * 47 + 80;
-			int k = (int)(Math.floor(it.getIndex()) / 8.0D % 5.0D) * 47 + 69;
-		}
-
-		return items;
-	}
-
 	public static boolean buy(int count, String... names) {
 		RSItem[] arrayOfRSItem;
 
@@ -161,7 +156,8 @@ public class Shop {
 		RSItem[] arrayOfRSItem;
 
 		int j = (arrayOfRSItem = get(ids)).length;
-		for (int i = 0; i < j; i++) { RSItem item = arrayOfRSItem[i];
+		for (int i = 0; i < j; i++) {
+			RSItem item = arrayOfRSItem[i];
 			if (item.getStack() > 0) {
 				if (count >= 10) {
 					return item.click(new String[] { "Buy 10" });

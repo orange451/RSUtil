@@ -12,7 +12,10 @@ public class NPCDialogue {
 	 * @return
 	 */
 	public static boolean isInConversation() {
-		return (NPCChat.getName() != null) || (NPCChat.getMessage() != null) || (NPCChat.getOptions() != null) || (NPCChat.getClickContinueInterface() != null);
+		return NPCChat.getName() != null
+				|| NPCChat.getMessage() != null
+				|| NPCChat.getOptions() != null 
+				|| NPCChat.getClickContinueInterface() != null;
 	}
 
 	/**
@@ -22,7 +25,7 @@ public class NPCDialogue {
 	public static boolean clickContinue() {
 		if (NPCChat.getClickContinueInterface() != null) {
 			NPCChat.clickContinue(true);
-			AntiBan.sleep(1000, 500);
+			AntiBan.sleep(1000, 400);
 			return true;
 		}
 		return false;
@@ -51,10 +54,13 @@ public class NPCDialogue {
 	/**
 	 * Clicks the last choice searched for via {@link #findChoice(String)}.
 	 */
-	public static void clickLastChoice() {
+	public static boolean clickLastChoice() {
 		if (lastChoice != null) {
-			NPCChat.selectOption(lastChoice, true);
+			boolean worked = NPCChat.selectOption(lastChoice, true);
 			AntiBan.sleep(1000, 500);
+			return worked;
 		}
+		
+		return false;
 	}
 }

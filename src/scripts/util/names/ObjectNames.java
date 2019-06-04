@@ -1,33 +1,42 @@
 package scripts.util.names;
 
+import com.allatori.annotations.DoNotRename;
+
+import scripts.util.misc.NameFormatter;
+
+@DoNotRename
 public enum ObjectNames {
-	ANVIL(new int[] { 2097 }), 
-	BANK_BOOTH(new int[] { 7409 }), 
-	DOOR(new int[] { 131, 137, 138, 139, 140, 141, 142, 143, 144, 145 }), 
-	FURNACE(new int[] { 24009 }), 
-	COMPOSITE_HEAP(new int[] { 152 }), 
-	FOUNTAIN(new int[] { 153 }), 
-	BOOKCASE_INTERACT(new int[] { 155, 156 }), 
-	LEVER(new int[] { 146, 147, 148, 149, 150, 151, 160 }), 
-	ORE_NONE(new int[] { 11390, 11391 }), 
-	ORE_COPPER(new int[] { 11161, 10943 }), 
-	ORE_TIN(new int[] { 11360, 11361  }), 
-	ORE_IRON(new int[] { 11365, 11364 }), 
-	ORE_COAL(new int[] { 11367, 11366 }), 
-	ORE_GOLD(new int[] { 11371, 11370 }), 
-	ORE_ADAMANT(new int[] { 7493, 7460 }), 
-	WHEAT(new int[] { 15506, 15507 }), 
-	ONION(new int[] { 3366 }), 
-	CABBAGE(new int[] { 1161 }), 
-	CAULDRON(new int[] { 2024 }), 
-	RANGE(new int[] { 26181 }), 
-	HOPPER(new int[] { 24961 }), 
-	HOPPER_CONTROLS(new int[] { 24964 }), 
-	FLOWER_BIN(new int[] { 1781 }), 
-	STAIRCASE(new int[] { 12536, 12537, 12538, 16672, 16673, 16671, 11796, 17385, 11799, 24074, 24072, 24077, 24078, 24070, 24071, 881, 882, 6434, 6435 }), 
-	SPINNING_WHEEL(new int[] { 14889 }), 
-	LADDER(new int[] { 17385, 132, 133, 2417, 2418, 16683, 12964, 12965, 12966 }), 
-	NULL(new int[] { 23849 });
+	ANVIL(2097),
+	BANK_BOOTH(10083, 7409),
+	DOOR(131, 137, 138, 139, 140, 141, 142, 143, 144, 145, 9710),
+	FURNACE(24009, 10082),
+	COMPOSITE_HEAP(152),
+	FOUNTAIN(153),
+	FIRE(26185),
+	BOOKCASE_INTERACT(155, 156),
+	LEVER(146, 147, 148, 149, 150, 151, 160),
+	ORE_NONE(11390, 11391),
+	ORE_COPPER(11161, 10943, 10079),
+	ORE_TIN(11360, 11361, 10080 ),
+	ORE_IRON(11365, 11364),
+	ORE_COAL(11367, 11366),
+	ORE_GOLD(11371, 11370),
+	ORE_ADAMANT(7493, 7460),
+	WHEAT(15506, 15507),
+	POLL_BOOTH(26815),
+	ONION(3366),
+	CABBAGE(1161),
+	CAULDRON(2024),
+	RANGE(26181, 9736),
+	TREE(9730),
+	HOPPER(24961),
+	HOPPER_CONTROLS(24964),
+	FLOWER_BIN(1781),
+	STAIRCASE(12536, 12537, 12538, 16672, 16673, 16671, 11796, 17385, 11799, 24074, 24072, 24077, 24078, 24070, 24071, 881, 882, 6434, 6435),
+	SPINNING_WHEEL(14889),
+	LADDER(17385, 132, 133, 2417, 2418, 16683, 12964, 12965, 12966, 9726),
+	NULL(23849),
+	GATE(9470, 9708, 9718);
 
 	private int[] id;
 
@@ -38,13 +47,7 @@ public enum ObjectNames {
 	}
 
 	public String getName() {
-		String[] arr = toString().toLowerCase().replace("_", " ").split(" ");
-		StringBuffer sb = new StringBuffer();
-
-		for (int i = 0; i < arr.length; i++) {
-			sb.append(Character.toUpperCase(arr[i].charAt(0))).append(arr[i].substring(1)).append(" ");
-		}
-		return sb.toString().trim();
+		return NameFormatter.get(toString());
 	}
 
 	public static ObjectNames find(String formattedName) {

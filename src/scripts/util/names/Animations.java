@@ -1,5 +1,8 @@
 package scripts.util.names;
 
+import com.allatori.annotations.DoNotRename;
+
+@DoNotRename
 public enum Animations {
 	MINING(new int[] { 629, 628 }), 
 	THIEVING(new int[] { 832 }), 

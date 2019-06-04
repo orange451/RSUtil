@@ -2,6 +2,9 @@ package scripts.util.player;
 
 import org.tribot.api2007.Skills;
 
+import com.allatori.annotations.DoNotRename;
+
+@DoNotRename
 public class TrackXP {
 	private Skills.SKILLS skill;
 	private int startXP;

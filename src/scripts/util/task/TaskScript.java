@@ -5,10 +5,29 @@ import org.tribot.script.Script;
 public abstract class TaskScript extends Script {
 	private boolean running;
 	private BotTask currentTask;
+	private boolean scriptStarted;
 
 	public void run() {
 		onInitialize();
-		start();
+		
+		if ( running )
+			return;
+		
+		this.running = true;
+		
+		// Start script
+		if ( autoStart() )
+			start();
+		
+		// logic loop
+		while (this.running) {
+			sleep(25L);
+
+			onStep();
+			if ((this.currentTask != null) && (this.currentTask.isTaskComplete())) {
+				this.currentTask = this.currentTask.getNextTask();
+			}
+		}
 	}
 
 	/**
@@ -22,22 +41,12 @@ public abstract class TaskScript extends Script {
 	 * Start the script. This method will call {@link #getStartingTask()} to determine which task is first.
 	 */
 	public void start() {
-		if ( running )
+		if ( scriptStarted )
 			return;
 		
-		this.running = true;
+		this.currentTask = getStartingTask();
+		this.scriptStarted = true;
 		
-		if ( autoStart() )
-			this.currentTask = getStartingTask();
-		
-		while (this.running) {
-			sleep(25L);
-
-			onStep();
-			if ((this.currentTask != null) && (this.currentTask.isTaskComplete())) {
-				this.currentTask = this.currentTask.getNextTask();
-			}
-		}
 	}
 
 	/**
@@ -46,6 +55,7 @@ public abstract class TaskScript extends Script {
 	public void stopCurrentTask() {
 		this.currentTask.forceComplete = true;
 		this.currentTask = null;
+		this.scriptStarted = false;
 	}
 
 	/**
@@ -53,7 +63,13 @@ public abstract class TaskScript extends Script {
 	 * @param task
 	 */
 	public void setCurrentTask(BotTask task) {
+		if ( task == null ) {
+			stopCurrentTask();
+			return;
+		}
+		
 		this.currentTask = task;
+		this.scriptStarted = true;
 	}
 
 	/**

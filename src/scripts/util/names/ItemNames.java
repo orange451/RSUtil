@@ -2,9 +2,13 @@ package scripts.util.names;
 
 import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSItem;
+
+import com.allatori.annotations.DoNotRename;
+
 import scripts.util.ItemUtil;
 import scripts.util.misc.NameFormatter;
 
+@DoNotRename
 public enum ItemNames {
 	SLIDING_PIECE(3640, 3638, 3639, 3630, 3631, 3632, 3633, 3634, 3635, 3636, 3637, 3650, 3651, 3649, 3641, 3642, 3643, 3644, 3645, 3646, 3647, 3648, 3660, 3661, 3662, 3652, 3653, 3654, 3655, 3656, 3657, 3658, 3659, 3663, 3664, 3665, 3666, 2749, 2760, 2757, 2756, 2755, 2754, 2753, 2752, 2751, 2750, 2759, 2758, 2771, 2770, 2768, 2767, 2766, 2765, 2764, 2763, 2762, 2761, 2769, 2772, 3619, 3626, 3625, 3624, 3623, 3622, 3621, 3620, 3629, 3628, 3627),
 	BURNT_PIZZA(2305),
@@ -1925,5 +1929,28 @@ public enum ItemNames {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Combines the IDs of a list of Itemnames
+	 * @param itemNames
+	 * @return
+	 */
+	public static int[] get(ItemNames... itemNames) {
+		int len = 0;
+		for (int i = 0 ;i < itemNames.length; i++) {
+			len += itemNames[i].getIds().length;
+		}
+		
+		int a = 0;
+		int[] ret = new int[len];
+		for (int i = 0; i < itemNames.length; i++) {
+			int[] t = itemNames[i].getIds();
+			for (int j = 0; j < t.length; j++) {
+				ret[a++] = t[j];
+			}
+		}
+		
+		return ret;
 	}
 }

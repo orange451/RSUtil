@@ -25,7 +25,7 @@ public class NPCUtil {
 			return;
 		}
 		int steps = 0;
-		while ((npc.getModel() != null) && (steps < 50)) {
+		while ((npc.getModel() != null) && (steps < 500)) {
 			steps++;
 			General.sleep(100L);
 		}
@@ -60,9 +60,16 @@ public class NPCUtil {
 			RSNPC npc = npcs[i];
 	
 			if ((npc != null) && (npc.getName() != null)) {
-				if ((!npc.isInCombat()) && (npc.getInteractingIndex() == -1)) {
-					attackable.add(npc);
-				}
+				boolean interacting = npc.getInteractingIndex() != -1;
+				boolean interactingWithMe = npc.getInteractingCharacter() != null && npc.getInteractingCharacter().equals(Player.getRSPlayer());
+				
+				if ( interacting && !interactingWithMe )
+					continue;
+				
+				if ( npc.getHealthPercent() <= 0 )
+					continue;
+				
+				attackable.add(npc);
 			}
 		}
 		
@@ -106,17 +113,20 @@ public class NPCUtil {
 	 */
 	public static RSNPC[] getNPCS(NPCNames... npcTypes) {
 		ArrayList<RSNPC> ret = new ArrayList<RSNPC>();
-
-		// Combine all ids into 1 array
+		int[] types = null;
 		int len = 0;
-		int k = 0;
-		for (int i = 0; i < npcTypes.length; i++)
-			len += npcTypes[i].getIds().length;
-		int[] types = new int[len];
-		for (int i = 0; i < npcTypes.length; i++) {
-			int[] subids = npcTypes[i].getIds();
-			for (int j = 0; j < subids.length; j++) {
-				types[k++] = subids[j];
+		
+		// Combine all ids into 1 array		
+		if ( npcTypes != null && npcTypes.length > 0 ) {
+			int k = 0;
+			for (int i = 0; i < npcTypes.length; i++)
+				len += npcTypes[i].getIds().length;
+			types = new int[len];
+			for (int i = 0; i < npcTypes.length; i++) {
+				int[] subids = npcTypes[i].getIds();
+				for (int j = 0; j < subids.length; j++) {
+					types[k++] = subids[j];
+				}
 			}
 		}
 		
@@ -125,11 +135,15 @@ public class NPCUtil {
 		for (int i = 0; i < npcs.length; i++) {
 			RSNPC npc = npcs[i];
 			if ((npc != null) && (npc.getName() != null)) {
-				for (int a = 0; a < types.length; a++) {
-					if (npc.getID() == types[a]) {
-						ret.add(npcs[i]);
-						break;
+				if ( types != null ) {
+					for (int a = 0; a < types.length; a++) {
+						if (npc.getID() == types[a]) {
+							ret.add(npcs[i]);
+							break;
+						}
 					}
+				} else {
+					ret.add(npcs[i]);
 				}
 			}
 		}
@@ -138,7 +152,10 @@ public class NPCUtil {
 		Collections.sort(ret, new Comparator<RSNPC>() {
 			@Override
 			public int compare(RSNPC o1, RSNPC o2) {
-				return o1.getPosition().distanceTo(Player.getPosition()) <= o2.getPosition().distanceTo(Player.getPosition()) ? -1 : 1;
+				double u1 = o1.getPosition().distanceToDouble(Player.getPosition());
+				double u2 = o2.getPosition().distanceToDouble(Player.getPosition());
+				
+				return (u1-u2>0)?(1):((u2-u1>0)?(-1):(0));
 			}
 		});
 

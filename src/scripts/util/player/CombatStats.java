@@ -2,6 +2,9 @@ package scripts.util.player;
 
 import org.tribot.api2007.Skills;
 
+import com.allatori.annotations.DoNotRename;
+
+@DoNotRename
 public class CombatStats {
 	private TrackXP attack = new TrackXP(Skills.SKILLS.ATTACK);
 	private TrackXP strength = new TrackXP(Skills.SKILLS.STRENGTH);

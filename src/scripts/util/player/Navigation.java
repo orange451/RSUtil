@@ -13,6 +13,8 @@ import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 
+import com.allatori.annotations.DoNotRename;
+
 import scripts.util.ObjectUtil;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.Locations;
@@ -23,6 +25,7 @@ import scripts.util.names.ObjectNames;
  * It was an attempt to get webwalking to be able to go up and down stairs at specific locations.
  * @author orange451
  */
+@DoNotRename
 public class Navigation {
 
 	/**

@@ -3,11 +3,16 @@ package scripts.util.names;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
+import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
 
+import com.allatori.annotations.DoNotRename;
+
 import scripts.util.misc.NameFormatter;
 
+@DoNotRename
 public enum Locations {
 	LUMBRIDGE(new Point(3201, 3233), new Point(3226, 3205), 0), 
 	LUMBRIDGE_CHURCH(new Point(3240, 3215), new Point(3247, 3204), 0), 
@@ -102,7 +107,8 @@ public enum Locations {
 	FALADOR_CASTLE_SIR_VYVIN(new Point(2981, 3341), new Point(2984, 3334), 2), 
 	FALADOR_CASTLE_SIR_AMIK(new Point(2958, 3341), new Point(2963, 3336), 2), 
 	FALADOR_GARDEN(new Point(3007, 3387), new Point(3012, 3375), 0), 
-	FALADOR_GARDEN_SHED(new Point(3027, 3380), new Point(3028, 3378), 0), 
+	FALADOR_GARDEN_SHED(new Point(3027, 3380), new Point(3028, 3378), 0),
+	FALADOR_CHICKENS(new Point(3015, 3287), new Point(3019, 3293), 0),
 
 	BARBARIAN_VILLAGE(new Point(3072, 3426), new Point(3089, 3412), 0), 
 	BARBARIAN_VILLAGE_SMELT(new Point(3083, 3411), new Point(3086, 3407), 0), 
@@ -125,7 +131,20 @@ public enum Locations {
 	EDGEVILLE_MAN_HOUSE(new Point(3092, 3512), new Point(3099, 3508), 0), 
 	EDGEVILLE_SMELT(new Point(3105, 3501), new Point(3110, 3497), 0), 
 
-	GRAND_EXCHANGE(new Point(3161, 3487), new Point(3168, 3483), 0);
+	GRAND_EXCHANGE(new Point(3161, 3487), new Point(3168, 3483), 0),
+	
+	TUTORIAL_ISLAND_START( new Point(3090, 3100), new Point(3098, 3112), 0 ),
+	TUTORIAL_ISLAND_SURVIVAL( new Point(3097, 3093), new Point(3106, 3100), 0 ),
+	TUTORIAL_ISLAND_COOK( new Point(3075, 3083), new Point(3077, 3085), 0 ),
+	TUTORIAL_ISLAND_QUEST( new Point(3084, 3120), new Point(3087, 3124), 0 ),
+	TUTORIAL_ISLAND_MINE( new Point(3078, 9499), new Point(3084, 9506), 0 ),
+	TUTORIAL_ISLAND_COMBAT( new Point(3109, 9509), new Point(3111, 9512), 0 ),
+	TUTORIAL_ISLAND_RAT_CAGE( new Point(3102, 9514), new Point(3108, 9521), 0 ),
+	TUTORIAL_ISLAND_BANK( new Point(3120, 3120), new Point(3123, 3123), 0 ),
+	TUTORIAL_ISLAND_CHURCH( new Point(3122, 3104), new Point(3124, 3109), 0),
+	TUTORIAL_ISLAND_MAGIC( new Point(3140, 3088), new Point(3142, 3090), 0),
+	
+	;
 
 	public static int BASEMENT_OFFSET = 6400;
 	private static ArrayList<Locations> locs = new ArrayList<Locations>();
@@ -336,5 +355,30 @@ public enum Locations {
 		}
 
 		return ret;
+	}
+
+	/**
+	 * Returns if the player is near the desired location. Being near means you are less than 8 tiles away, and on the same plane.
+	 * @param desiredLocation
+	 * @return
+	 */
+	public static boolean isNear(RSTile desiredLocation) {
+		double dist = Player.getPosition().distanceToDouble(desiredLocation);
+		if ( dist > 8 )
+			return false;
+		
+		if ( desiredLocation.getPlane() != Player.getPosition().getPlane() )
+			return false;
+		
+		return true;
+	}
+
+	/**
+	 * Returns if the player is near the desired location. Being near means you are less than 8 tiles away, and on the same plane.
+	 * @param draynorManorFarm
+	 * @return
+	 */
+	public static boolean isNear(Locations loc) {
+		return isNear(loc.getCenter());
 	}
 }

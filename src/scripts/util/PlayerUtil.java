@@ -7,11 +7,11 @@ import org.tribot.api2007.Game;
 import org.tribot.api2007.GameTab;
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.Inventory;
-import org.tribot.api2007.NPCs;
 import org.tribot.api2007.Options;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Players;
 import org.tribot.api2007.Skills;
+import org.tribot.api2007.types.RSCharacter;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSItem;
 import org.tribot.api2007.types.RSNPC;
@@ -230,6 +230,39 @@ public class PlayerUtil {
 		}
 		return null;
 	}
+	
+	/**
+	 * Convenience method to get a list of all attacking entities. See {@link #getAttackingPlayers()} and {@link #getAttackingNPCS()}
+	 * @param includeNPC
+	 * @return
+	 */
+	public static RSCharacter[] getAttackingEntities(boolean includeNPC) {
+		RSPlayer[] players = getAttackingPlayers();
+		RSNPC[] npcs = getAttackingNPCS();
+		
+		// Calculate total array len
+		int totalLen = players.length;
+		if ( includeNPC )
+			totalLen += npcs.length;
+		
+		int a = 0;
+		
+		// Add players
+		RSCharacter[] ret = new RSCharacter[totalLen];
+		for (int i = 0; i < players.length; i++) {
+			ret[a++] = players[i];
+		}
+		
+		// Add NPCS
+		if ( a < totalLen ) {
+			for (int i = 0; i < npcs.length; i++) {
+				ret[a++] = npcs[i];
+			}
+		}
+		
+		// Return
+		return ret;
+	}
 
 	/**
 	 * Returns a list of all attacking players.
@@ -237,7 +270,7 @@ public class PlayerUtil {
 	 */
 	public static RSPlayer[] getAttackingPlayers() {
 		RSPlayer[] players = Players.getAll();
-		ArrayList<RSPlayer> attacking = new ArrayList();
+		ArrayList<RSPlayer> attacking = new ArrayList<RSPlayer>();
 		for (int i = 0; i < players.length; i++) {
 			RSPlayer player = players[i];
 			boolean interact = player.isInteractingWithMe();
@@ -267,15 +300,18 @@ public class PlayerUtil {
 	}
 
 	/**
-	 * Returns a list of all attacking NPCs.
+	 * Returns a list of NPCS that are currently attacking you.
 	 * @return
 	 */
 	public static RSNPC[] getAttackingNPCS() {
-		RSNPC[] npcs = NPCs.getAll();
-		ArrayList<RSNPC> attacking = new ArrayList();
+		RSNPC[] npcs = NPCUtil.findAttackableNPCs();
+		
+		ArrayList<RSNPC> attacking = new ArrayList<RSNPC>();
 		for (int i = 0; i < npcs.length; i++) {
 			RSNPC npc = npcs[i];
-
+			
+			if ( npc.getHealthPercent() <= 0 )
+				continue;
 
 			String[] actions = npc.getActions();
 			boolean canAttack = false;
@@ -287,7 +323,6 @@ public class PlayerUtil {
 					}
 				}
 			}
-
 
 			if ((npc.isInteractingWithMe()) && (canAttack)) {
 				attacking.add(npc);
@@ -388,7 +423,7 @@ public class PlayerUtil {
 	}
 
 	/**
-	 * Returns whether the player is currenty under attack.
+	 * Returns whether the player is currently under attack.
 	 * @param includeNPC
 	 * @return
 	 */
@@ -396,8 +431,7 @@ public class PlayerUtil {
 		boolean isInTimeout = System.currentTimeMillis() < DANGER_TIMEOUT;
 		boolean npcAttack = (getAttackingNPCS().length > 0) && (includeNPC);
 		boolean playerAttack = getAttackingPlayers().length > 0;
-		boolean underAttack = (npcAttack) || (playerAttack);
-
+		boolean underAttack = npcAttack || playerAttack || Combat.isUnderAttack();
 
 		if ((underAttack) && (!isInTimeout)) {
 			DANGER_TIMEOUT = System.currentTimeMillis() + (npcAttack ? 5000 : 1000);
