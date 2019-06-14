@@ -89,18 +89,22 @@ public class NPCUtil {
 		}
 		
 		// Sort based on distance
-		Collections.sort(attackable, new Comparator<RSNPC>() {
-			@Override
-			public int compare(RSNPC arg0, RSNPC arg1) {
-				Double d1 = pathDistance.get(arg0);
-				Double d2 = pathDistance.get(arg1);
-
-				double u1 = d1 != null ? d1.doubleValue() : Double.MAX_VALUE;
-				double u2 = d2 != null ? d2.doubleValue() : Double.MAX_VALUE;
-				
-				return (u1-u2>0)?(1):((u2-u1>0)?(-1):(0));
-			}
-		});
+		try {
+			Collections.sort(attackable, new Comparator<RSNPC>() {
+				@Override
+				public int compare(RSNPC arg0, RSNPC arg1) {
+					Double d1 = pathDistance.get(arg0);
+					Double d2 = pathDistance.get(arg1);
+	
+					double u1 = d1 != null ? d1.doubleValue() : Double.MAX_VALUE;
+					double u2 = d2 != null ? d2.doubleValue() : Double.MAX_VALUE;
+					
+					return (u1>u2)?(1):((u2>u1)?(-1):(0));
+				}
+			});
+		} catch(Exception e) {
+			//
+		}
 	
 		// return RSNPC array
 		return attackable.toArray(new RSNPC[attackable.size()]);

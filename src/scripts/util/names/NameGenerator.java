@@ -43,11 +43,10 @@ public class NameGenerator {
 		
 		// Add the names to the array
 		names = new ArrayList<String>();
-		names.addAll(generateStrings(ItemNames.values()));
+		names.addAll(generateStrings(ItemNamesData.values()));
 		names.addAll(generateStrings(Locations.values()));
 		names.addAll(generateStrings(NPCNames.values()));
 		names.addAll(generateStrings(ObjectNames.values()));
-		names.addAll(generateStrings(ItemNamesExt.values()));
 	}
 
 	private static ArrayList<String> generateStrings(Object[] values) {

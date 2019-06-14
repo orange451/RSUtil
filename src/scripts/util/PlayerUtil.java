@@ -1,22 +1,29 @@
 package scripts.util;
 
 import java.util.ArrayList;
+
 import org.tribot.api.General;
+import org.tribot.api.interfaces.Positionable;
 import org.tribot.api2007.Combat;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.GameTab;
+import org.tribot.api2007.GroundItems;
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.Inventory;
+import org.tribot.api2007.NPCs;
 import org.tribot.api2007.Options;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Players;
 import org.tribot.api2007.Skills;
 import org.tribot.api2007.types.RSCharacter;
+import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSItem;
 import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSPlayer;
+
 import scripts.util.misc.AntiBan;
+import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
 public class PlayerUtil {
@@ -43,6 +50,34 @@ public class PlayerUtil {
 		RSItem[] items = Inventory.getAll();
 		return (items != null ? items.length : 0) == 28;
 	}
+	
+	/**
+	 * Loots the position for the items specified.
+	 * @param location
+	 * @param items
+	 */
+	public static void loot( Positionable location, ItemIds... items) {
+		RSGroundItem[] objs = GroundItems.getAll();
+		objs = GroundItems.sortByDistance(location, objs);
+
+		// Pick up desired items
+		for (int i = 0; i < objs.length; i++) {
+			RSGroundItem o = objs[i];
+			
+			// Stop picking up items if we're full
+			if ( Inventory.isFull() ) {
+				return;
+			}
+
+			// Pick up
+			if (o.getPosition().distanceTo(location) <= 2) {
+				if (items.length == 0 || ItemNames.is(o, items)) {
+					if ( o.click(new String[] { "Take " + o.getDefinition().getName() }) )
+						AntiBan.sleep(1000, 500);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Returns whether the players inventory contains at least 1 food item.
@@ -53,7 +88,9 @@ public class PlayerUtil {
 		for (int i = 0; i < items.length; i++) {
 			RSItem item = items[i];
 			if (ItemUtil.isFood(item)) {
-				return true;
+				if ( ItemUtil.hasAction(item, "eat") ) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -68,9 +105,11 @@ public class PlayerUtil {
 		for (int i = 0; i < items.length; i++) {
 			RSItem item = items[i];
 			if (ItemUtil.isFood(item)) {
-				if (item.click(new String[] { "" })) {
-					HP_EAT_AT = getHPToEatAt();
-					return true;
+				if ( ItemUtil.hasAction(item, "eat") ) {
+					if (item.click(new String[] { "eat" })) {
+						HP_EAT_AT = getHPToEatAt();
+						return true;
+					}
 				}
 			}
 		}
@@ -95,6 +134,11 @@ public class PlayerUtil {
 		if (timeout >= 96) {
 			HP_EAT_AT = (int)(getMaxHealth() * 0.5D);
 		}
+		
+		// Minimum eat alt.
+		if ( HP_EAT_AT < 4 )
+			HP_EAT_AT = 4;
+		
 		return HP_EAT_AT;
 	}
 
@@ -202,7 +246,7 @@ public class PlayerUtil {
 	 * @param check
 	 * @return
 	 */
-	public static int getAmountItemsInInventory(ItemNames... check) {
+	public static int getAmountItemsInInventory(ItemIds... check) {
 		int amt = 0;
 		RSItem[] items = Inventory.getAll();
 		for (int i = 0; i < items.length; i++) {
@@ -220,7 +264,7 @@ public class PlayerUtil {
 	 * @param check
 	 * @return
 	 */
-	public static RSItem getFirstItemInInventory(ItemNames... check) {
+	public static RSItem getFirstItemInInventory(ItemIds... check) {
 		RSItem[] items = Inventory.getAll();
 		for (int i = 0; i < items.length; i++) {
 			RSItem item = items[i];
@@ -229,6 +273,42 @@ public class PlayerUtil {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns a list of all Players interacting with you.
+	 * @return
+	 */
+	public static RSPlayer[] getInteractingPlayers() {
+		ArrayList<RSPlayer> ret = new ArrayList<>();
+		
+		RSPlayer[] npcs = Players.getAll();
+		for (int i = 0; i < npcs.length; i++) {
+			RSPlayer npc = npcs[i];
+			
+			if ( npc.getInteractingCharacter() != null && npc.getInteractingCharacter().equals(Player.getRSPlayer()) )
+				ret.add(npc);
+		}
+		
+		return ret.toArray(new RSPlayer[ret.size()]);
+	}
+	
+	/**
+	 * Returns a list of all NPCS interacting with you.
+	 * @return
+	 */
+	public static RSNPC[] getInteractingNPCS() {
+		ArrayList<RSNPC> ret = new ArrayList<>();
+		
+		RSNPC[] npcs = NPCs.getAll();
+		for (int i = 0; i < npcs.length; i++) {
+			RSNPC npc = npcs[i];
+			
+			if ( npc.getInteractingCharacter() != null && npc.getInteractingCharacter().equals(Player.getRSPlayer()) )
+				ret.add(npc);
+		}
+		
+		return ret.toArray(new RSNPC[ret.size()]);
 	}
 	
 	/**
@@ -386,7 +466,7 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static int getAmountOfMoney() {
-		RSItem coinStack = getFirstItemInInventory(new ItemNames[] { ItemNames.COINS });
+		RSItem coinStack = getFirstItemInInventory(ItemNames.COINS);
 		if (coinStack == null) {
 			return 0;
 		}
@@ -412,7 +492,7 @@ public class PlayerUtil {
 	public static boolean isInDanger() {
 		boolean isInTimeout = System.currentTimeMillis() < DANGER_TIMEOUT;
 		boolean attacked = (getAttackingNPCS().length > 0 && !ignoreNPC) || (getAttackingPlayers().length > 0 && !ignorePlayers);
-		boolean danger = (attacked) || (getHealth() < getMaxHealth() * 0.2F);
+		boolean danger = (attacked) || (getHealth() < getMaxHealth() * 0.25F);
 
 		// You're in danger for 8 seconds 
 		if ((danger) && (!isInTimeout)) {
@@ -432,10 +512,6 @@ public class PlayerUtil {
 		boolean npcAttack = (getAttackingNPCS().length > 0) && (includeNPC);
 		boolean playerAttack = getAttackingPlayers().length > 0;
 		boolean underAttack = npcAttack || playerAttack || Combat.isUnderAttack();
-
-		if ((underAttack) && (!isInTimeout)) {
-			DANGER_TIMEOUT = System.currentTimeMillis() + (npcAttack ? 5000 : 1000);
-		}
 
 		return (underAttack) || (isInTimeout);
 	}

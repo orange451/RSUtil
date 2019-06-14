@@ -41,7 +41,7 @@ public abstract class BotTaskWalk extends BotTask {
 				nearestLoc = loc.getName();
 			}
 		}
-		return "Walk: " + (this.walkTo != null ? this.walkTo.toString() : nearestLoc != null ? nearestLoc : "null") + " ";
+		return "Walk: " + (nearestLoc != null ? nearestLoc : this.walkTo.toString());
 	}
 
 	public abstract BotTask getNextTask();
@@ -106,7 +106,8 @@ public abstract class BotTaskWalk extends BotTask {
 					}
 				};
 				Navigation.walkTo(finalTile, c);
-				return true;
+				if ( finalTile.distanceTo(Player.getRSPlayer()) < 6)
+					return true;
 			}
 
 			// Use DaxWalker first
@@ -140,6 +141,8 @@ public abstract class BotTaskWalk extends BotTask {
 				
 			};
 			DaxWalker.walkTo(finalTile, c);
+			if ( finalTile.distanceTo(Player.getRSPlayer()) < 6)
+				return true;
 			
 			this.attempts += 1;
 			return false;

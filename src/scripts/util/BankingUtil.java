@@ -1,8 +1,12 @@
 package scripts.util;
 
 import org.tribot.api2007.Banking;
+import org.tribot.api2007.Interfaces;
+import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSItem;
-import scripts.util.names.ItemNames;
+
+import scripts.util.misc.AntiBan;
+import scripts.util.names.ItemNamesData;
 
 public class BankingUtil {
 	
@@ -11,7 +15,7 @@ public class BankingUtil {
 	 * @param item
 	 * @return
 	 */
-	public static int getAmountOfItems(ItemNames item) {
+	public static int getAmountOfItems(ItemNamesData item) {
 		RSItem[] is = Banking.find(item.getIds());
 		if (is == null) {
 			return 0;
@@ -33,12 +37,44 @@ public class BankingUtil {
 		if (!Banking.isBankScreenOpen()) {
 			return false;
 		}
-		ItemNames[] names = ItemUtil.getFood();
+		ItemNamesData[] names = ItemUtil.getFood();
 		for (int i = 0; i < names.length; i++) {
 			if (Banking.withdraw(amount, names[i].getIds())) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Sets the note flag in the bank UI
+	 * @param b
+	 */
+	public static boolean setNote(boolean note) {
+		RSInterfaceChild u = Interfaces.get(12, note?24:22);
+		if ( u != null ) {
+			return u.click("");
+		}
+		return false;
+	}
+
+	/**
+	 * Force deposit all items and close the bank ONLY IF the inventory is NON EMPTY. Will open bank too if not already in bank.
+	 */
+	public static void depositAllAndClose() {
+		if ( PlayerUtil.isInventoryEmpty() )
+			return;
+		
+		while ( !Banking.isBankScreenOpen() ) {
+			Banking.openBank();
+			AntiBan.sleep(500, 250);
+		}
+		
+		while ( Banking.isBankScreenOpen() ) {
+			Banking.depositAll();
+			AntiBan.sleep(500, 250);
+			Banking.close();
+			AntiBan.sleep(500, 250);
+		}
 	}
 }

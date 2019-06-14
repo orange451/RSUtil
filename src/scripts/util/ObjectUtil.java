@@ -7,6 +7,7 @@ import org.tribot.api2007.Objects;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
+
 import scripts.util.names.ObjectNames;
 
 public class ObjectUtil {

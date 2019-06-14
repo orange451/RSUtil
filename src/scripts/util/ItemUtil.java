@@ -7,7 +7,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.tribot.api2007.types.RSItem;
-import scripts.util.names.ItemNames;
+import scripts.util.names.ItemNamesData;
 
 public class ItemUtil {
 	private static HashMap<String, Integer> prices = new HashMap<String, Integer>();
@@ -18,30 +18,46 @@ public class ItemUtil {
 	 * @return
 	 */
 	public static boolean isFood(RSItem item) {
-		return ItemNames.is(item, getFood());
+		return ItemNamesData.is(item, getFood());
 	}
 
 	/**
-	 * Returns a list of ItemNames that are considered food.
+	 * Returns a list of ItemNamesData that are considered food.
 	 * @return
 	 */
-	public static ItemNames[] getFood() {
-		int[] foodIds = {
-				361, 365, 373, 379, 385, 391, 397, 355, 351, 347, 339, 337, 333, 329, 325, 319, 315, 2309, 2142 };
+	public static ItemNamesData[] getFood() {
+		// These are food IDS
+		int[] foodIds = { 361, 365, 373, 379, 385, 391, 397, 355, 351, 347, 339, 337, 333, 329, 325, 319, 315, 2309, 2142 };
 
-		ItemNames[] items = ItemNames.values();
-		ArrayList<ItemNames> itemsList = new ArrayList<ItemNames>();
+		// Get all ItemNamesData objects with the food ids
+		ArrayList<ItemNamesData> itemsList = new ArrayList<ItemNamesData>();
+		ItemNamesData[] items = ItemNamesData.values();
 		for (int i = 0; i < items.length; i++) {
-			ItemNames itm = items[i];
+			ItemNamesData itm = items[i];
 			if (itm.hasId(foodIds)) {
 				itemsList.add(itm);
 			}
 		}
-		items = new ItemNames[itemsList.size()];
-		for (int i = 0; i < itemsList.size(); i++) {
-			items[i] = ((ItemNames)itemsList.get(i));
+		
+		// Return
+		return itemsList.toArray(new ItemNamesData[itemsList.size()]);
+	}
+	
+	/**
+	 * Returns if this RSItem contains the specified action when right-clicked.
+	 * @param item
+	 * @param action
+	 * @return
+	 */
+	public static boolean hasAction(RSItem item, String action) {
+		String[] actions = item.getDefinition().getActions();
+		for (int i = 0; i < actions.length; i++) {
+			String s = actions[i];
+			if ( s.toLowerCase().contains(action.toLowerCase())) {
+				return true;
+			}
 		}
-		return items;
+		return false;
 	}
 
 	/**

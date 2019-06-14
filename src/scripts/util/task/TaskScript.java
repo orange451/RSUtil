@@ -24,10 +24,13 @@ public abstract class TaskScript extends Script {
 			sleep(25L);
 
 			onStep();
+			
 			if ((this.currentTask != null) && (this.currentTask.isTaskComplete())) {
 				this.currentTask = this.currentTask.getNextTask();
 			}
 		}
+		
+		stop();
 	}
 
 	/**
@@ -35,6 +38,7 @@ public abstract class TaskScript extends Script {
 	 */
 	public void stop() {
 		this.running = false;
+		this.stopScript();
 	}
 	
 	/**
