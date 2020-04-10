@@ -39,8 +39,11 @@ public class BankingUtil {
 		}
 		ItemNamesData[] names = ItemUtil.getFood();
 		for (int i = 0; i < names.length; i++) {
-			if (Banking.withdraw(amount, names[i].getIds())) {
-				return true;
+			RSItem[] t = Banking.find(names[i].getIds());
+			if ( t != null && t.length > 0 ) {
+				if (Banking.withdraw(amount, names[i].getIds())) {
+					return true;
+				}
 			}
 		}
 		return false;

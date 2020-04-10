@@ -1,16 +1,21 @@
 package scripts.util;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.tribot.api2007.types.RSItem;
+
+import scripts.dax_api.shared.jsonSimple.JSONObject;
+import scripts.dax_api.shared.jsonSimple.parser.JSONParser;
 import scripts.util.names.ItemNamesData;
 
 public class ItemUtil {
 	private static HashMap<String, Integer> prices = new HashMap<String, Integer>();
+	private static JSONObject priceData;
 
 	/**
 	 * Returns whether an RSItem is a consumable food item.
@@ -69,7 +74,7 @@ public class ItemUtil {
 		String key = ""+id;
 
 		if (prices.containsKey(key)) {
-			return ((Integer)prices.get(key)).intValue();
+			return prices.get(key).intValue();
 		}
 		String lookup = "http://api.rsbuddy.com/grandExchange?a=guidePrice&i=" + id;
 		try {
@@ -84,5 +89,38 @@ public class ItemUtil {
 			return value;
 		} catch (Exception e) {}
 		return 0;
+	}
+
+	/**
+	 * Returns the GE price of an item. Requires a socket connection.
+	 * @param id
+	 * @return
+	 */
+	public static int getPriceAlt(int id) {
+		try {
+			if ( priceData == null ) {
+				String address = "https://rsbuddy.com/exchange/summary.json";
+				URL url = new URL(address);
+				URLConnection connection = url.openConnection();
+				InputStream inputStream = connection.getInputStream();
+				InputStreamReader reader = new InputStreamReader(inputStream);
+				BufferedReader bufferedReader = new BufferedReader(reader);
+				String jsonSource = bufferedReader.readLine();
+				
+				JSONParser parser = new JSONParser();
+				priceData = (JSONObject) parser.parse(jsonSource);
+			}
+			
+			JSONObject itemData = (JSONObject) priceData.get(""+id);
+			long sellPrice = (long) itemData.get("sell_average");
+			return (int) sellPrice;
+		} catch(Exception e ) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(getPriceAlt(532));
 	}
 }

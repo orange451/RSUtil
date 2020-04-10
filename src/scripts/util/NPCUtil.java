@@ -1,6 +1,7 @@
 package scripts.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import org.tribot.api.General;
 import org.tribot.api2007.NPCs;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSNPC;
+import org.tribot.api2007.types.RSNPCDefinition;
 import org.tribot.api2007.types.RSTile;
 import org.tribot.api2007.util.DPathNavigator;
 
@@ -43,6 +45,38 @@ public class NPCUtil {
 		}
 		return null;
 	}
+	
+	/**
+	 * Returns whether this npc is currently attackable. An NPC is attackable if they have an attack option, are not engaging in battle with another player, and have at least 1% health.
+	 * @param npc
+	 * @return
+	 */
+	public static boolean canAttack(RSNPC npc) {
+		boolean interacting = npc.getInteractingIndex() != -1;
+		boolean interactingWithMe = npc.getInteractingCharacter() != null && npc.getInteractingCharacter().equals(Player.getRSPlayer());
+		
+		boolean atkble = false;
+		RSNPCDefinition definition = npc.getDefinition();
+		if ( definition != null ) {
+			String[] actions = definition.getActions();
+			for (int i = 0; i < actions.length; i++) {
+				String action = actions[i];
+				if ( action.contains("Attack") )
+					atkble = true;
+			}
+			
+			if ( !atkble )
+				return false;
+		}
+		
+		if ( interacting && !interactingWithMe )
+			return false;
+		
+		if ( npc.getHealthPercent() <= 0 )
+			return false;
+		
+		return true;
+	}
 
 	/**
 	 * Returns a list of attackable NPCs with a specific npcType.<br>
@@ -60,16 +94,9 @@ public class NPCUtil {
 			RSNPC npc = npcs[i];
 	
 			if ((npc != null) && (npc.getName() != null)) {
-				boolean interacting = npc.getInteractingIndex() != -1;
-				boolean interactingWithMe = npc.getInteractingCharacter() != null && npc.getInteractingCharacter().equals(Player.getRSPlayer());
-				
-				if ( interacting && !interactingWithMe )
-					continue;
-				
-				if ( npc.getHealthPercent() <= 0 )
-					continue;
-				
-				attackable.add(npc);
+				if ( canAttack(npc) ) {
+					attackable.add(npc);
+				}
 			}
 		}
 		
@@ -117,37 +144,33 @@ public class NPCUtil {
 	 */
 	public static RSNPC[] getNPCS(NPCNames... npcTypes) {
 		ArrayList<RSNPC> ret = new ArrayList<RSNPC>();
-		int[] types = null;
-		int len = 0;
-		
-		// Combine all ids into 1 array		
-		if ( npcTypes != null && npcTypes.length > 0 ) {
-			int k = 0;
-			for (int i = 0; i < npcTypes.length; i++)
-				len += npcTypes[i].getIds().length;
-			types = new int[len];
-			for (int i = 0; i < npcTypes.length; i++) {
-				int[] subids = npcTypes[i].getIds();
-				for (int j = 0; j < subids.length; j++) {
-					types[k++] = subids[j];
-				}
-			}
-		}
 		
 		// Find all npcs that match our ids
 		RSNPC[] npcs = NPCs.getAll();
 		for (int i = 0; i < npcs.length; i++) {
 			RSNPC npc = npcs[i];
-			if ((npc != null) && (npc.getName() != null)) {
-				if ( types != null ) {
-					for (int a = 0; a < types.length; a++) {
-						if (npc.getID() == types[a]) {
-							ret.add(npcs[i]);
-							break;
+			if (npc != null) {
+				String npcName = npc.getName();
+				if ( npcName != null ) {
+					npcName = npcName.toLowerCase();
+					
+					if ( npcTypes != null ) {
+						for (int a = 0; a < npcTypes.length; a++) {
+							String n1 = npcTypes[a].getName().toLowerCase();
+							
+							if ( n1.equalsIgnoreCase(npcName) ) {
+								ret.add(npcs[i]);
+								break;
+							}
+							
+							if ( npcTypes[a].hasId(npc.getID()) ) {
+								ret.add(npcs[i]);
+								break;
+							}
 						}
+					} else {
+						ret.add(npcs[i]);
 					}
-				} else {
-					ret.add(npcs[i]);
 				}
 			}
 		}
@@ -165,5 +188,45 @@ public class NPCUtil {
 
 		// Return array
 		return ret.toArray(new RSNPC[ret.size()]);
+	}
+	
+	/**
+	 * Returns NPCS of a specific type that also contain a specific right-click action.
+	 * @param sheep
+	 * @param string
+	 * @return
+	 */
+	public static RSNPC[] getNPCSWithAction(String option, NPCNames... types) {
+		RSNPC[] npcs = getNPCS(types);
+		ArrayList<RSNPC> npcsA = new ArrayList<RSNPC>(Arrays.asList(npcs));
+		for (int i = 0; i < npcsA.size(); i++) {
+			RSNPC t = npcsA.get(i);
+			if ( !hasAction(t, option) ) {
+				npcsA.remove(i--);
+			}
+		}
+		
+		return npcsA.toArray(new RSNPC[npcsA.size()]);
+	}
+
+	/**
+	 * Returns whether an npc has a specific right-click action
+	 * @param npc
+	 * @param option
+	 * @return
+	 */
+	public static boolean hasAction(RSNPC npc, String option) {
+		RSNPCDefinition definition = npc.getDefinition();
+		if ( definition == null )
+			return false;
+		
+		String[] actions = definition.getActions();
+		for (int i = 0; i < actions.length; i++) {
+			String a = actions[i];
+			if ( a.equalsIgnoreCase(option) )
+				return true;
+		}
+		
+		return false;
 	}
 }

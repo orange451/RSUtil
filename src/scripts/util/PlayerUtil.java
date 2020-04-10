@@ -25,6 +25,7 @@ import org.tribot.api2007.types.RSPlayer;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
+import scripts.util.names.ItemNamesData;
 
 public class PlayerUtil {
 	private static long DANGER_TIMEOUT;
@@ -57,6 +58,16 @@ public class PlayerUtil {
 	 * @param items
 	 */
 	public static void loot( Positionable location, ItemIds... items) {
+		int[] ids = ItemNamesData.get(items);
+		loot(location, ids);
+	}
+	
+	/**
+	 * Loots the position for the items specified.
+	 * @param location
+	 * @param items
+	 */
+	public static void loot( Positionable location, int...ids ) {
 		RSGroundItem[] objs = GroundItems.getAll();
 		objs = GroundItems.sortByDistance(location, objs);
 
@@ -71,12 +82,44 @@ public class PlayerUtil {
 
 			// Pick up
 			if (o.getPosition().distanceTo(location) <= 2) {
-				if (items.length == 0 || ItemNames.is(o, items)) {
-					if ( o.click(new String[] { "Take " + o.getDefinition().getName() }) )
-						AntiBan.sleep(1000, 500);
+				for (int j = 0; j < ids.length; j++) {
+					int id = ids[j];
+					if ( id == o.getID() ) {
+						if ( o.click(new String[] { "Take " + o.getDefinition().getName() }) )
+							AntiBan.sleep(1000, 500);
+						break;
+					}
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Loots the position for all of the items that have at least the minGP price on the GE. See {@link ItemUtil#getPrice(int)}.
+	 * @param location
+	 * @param minGP
+	 */
+	public static void lootByPrice( Positionable location, int minGP ) {
+		RSGroundItem[] objs = GroundItems.getAll();
+		objs = GroundItems.sortByDistance(location, objs);
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+
+		// Get up desired items
+		for (int i = 0; i < objs.length; i++) {
+			RSGroundItem o = objs[i];
+			int id = o.getID();
+			int price = ItemUtil.getPriceAlt(id);
+			if ( price >= minGP ) {
+				ids.add(id);
+			}
+		}
+		
+		// Loot the found items
+		int[] ret = new int[ids.size()];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = ids.get(i);
+		}
+		loot( location, ret);
 	}
 
 	/**
@@ -180,6 +223,7 @@ public class PlayerUtil {
 	 * Sets the run toggle for the player.
 	 * @param run
 	 */
+	@SuppressWarnings("deprecation")
 	public static void setRun(boolean run) {
 		if (((run) && (Game.isRunOn())) || ((!run) && (!Game.isRunOn()))) {
 			return;
@@ -258,6 +302,15 @@ public class PlayerUtil {
 
 		return amt;
 	}
+	
+	/**
+	 * Returns whether the user has at least one of the specified items in the inventory.
+	 * @param check
+	 * @return
+	 */
+	public static boolean hasItemsInInventory(ItemIds...check) {
+		return getAmountItemsInInventory(check) > 0;
+	}
 
 	/**
 	 * Returns the first occurence of a specific item in the players inventory.
@@ -273,6 +326,28 @@ public class PlayerUtil {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Equips a set of items. Returns false if no items were equipped
+	 * @param bronzeArrow
+	 */
+	public static boolean equipItem(ItemIds... items) {
+		int a = 0;
+		for (int i = 0; i < items.length; i++) {
+
+			RSItem item = PlayerUtil.getFirstItemInInventory(items[i]);
+			if ( item == null )
+				continue;
+			
+			a++;
+			item.click("");
+			
+			if (i < items.length - 1 )
+				AntiBan.sleep(500, 150);
+		}
+		
+		return a > 0;
 	}
 	
 	/**
@@ -353,6 +428,10 @@ public class PlayerUtil {
 		ArrayList<RSPlayer> attacking = new ArrayList<RSPlayer>();
 		for (int i = 0; i < players.length; i++) {
 			RSPlayer player = players[i];
+			
+			if ( player.equals(Player.getRSPlayer()) )
+				continue;
+			
 			boolean interact = player.isInteractingWithMe();
 			boolean inCombat = player.isInCombat();
 			boolean hasAnimation = player.getAnimation() != -1;
@@ -360,23 +439,16 @@ public class PlayerUtil {
 			boolean inWilderness = (Combat.getWildernessLevel() > 0) || (getWildernessLevelBackup() > 0);
 			boolean canWilderKill = canPlayerAttackUsWilderness(player);
 
-
-			if (((inWilderness) && (skulled) && (canWilderKill)) || 
-					((inWilderness) && (interact)) || 
-					((hasAnimation) && (interact)) || (
-							(inCombat) && (interact))) {
+			if ((inWilderness && skulled && canWilderKill) || 
+					(inWilderness && interact) || 
+					(hasAnimation && interact) ||
+					(inCombat && interact)) {
+				General.println(player.getName() + " is attacking us.");
 				attacking.add(player);
 			}
 		}
 
-
-		players = new RSPlayer[attacking.size()];
-		for (int i = 0; i < players.length; i++) {
-			players[i] = ((RSPlayer)attacking.get(i));
-		}
-
-
-		return players;
+		return attacking.toArray(new RSPlayer[attacking.size()]);
 	}
 
 	/**
@@ -508,11 +580,8 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static boolean isUnderAttack(boolean includeNPC) {
-		boolean isInTimeout = System.currentTimeMillis() < DANGER_TIMEOUT;
 		boolean npcAttack = (getAttackingNPCS().length > 0) && (includeNPC);
 		boolean playerAttack = getAttackingPlayers().length > 0;
-		boolean underAttack = npcAttack || playerAttack || Combat.isUnderAttack();
-
-		return (underAttack) || (isInTimeout);
+		return npcAttack || playerAttack || (Combat.isUnderAttack()&&includeNPC);
 	}
 }

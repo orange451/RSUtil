@@ -6,8 +6,10 @@ import org.tribot.api2007.Combat;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Player;
+import org.tribot.api2007.Players;
 import org.tribot.api2007.Skills;
 import org.tribot.api2007.types.RSNPC;
+import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.util.AccurateMouse;
@@ -20,6 +22,7 @@ import scripts.util.names.NPCNames;
 @SuppressWarnings("deprecation")
 public class AIOAttack {
 	public static boolean CANCEL_IF_NEAR_DEATH = true;
+	public static int MAX_AFK_TIME = 25000;
 
 	/**
 	 * Will attempt to search-for and attack specific NPCs. <br>
@@ -40,8 +43,14 @@ public class AIOAttack {
 			return null;
 		}
 		
-		// Ignore attacking players/npcs as marking us as in danger
-		PlayerUtil.setIgnoreAttacking(true, true);
+		// Player attacking us
+		if ( PlayerUtil.isUnderAttack(false) && Combat.getWildernessLevel() > 0 ) {
+			status.setType(StatusType.EMERGENCY);
+			return null;
+		}
+		
+		// Ignore attacking npcs as marking us as in danger, since we're attacking npcs.
+		PlayerUtil.setIgnoreAttacking(true, false);
 		
 		// Reset status
 		status.setStatus("Searching for npc");
@@ -59,7 +68,7 @@ public class AIOAttack {
 		// Maybe we're already under attack...
 		RSNPC alreadyAttacking = fixAlreadyAttack(status);
 		if (alreadyAttacking != null) {
-			if ( sucessfullyTargeted(alreadyAttacking) ) {
+			if ( sucessfullyTargeted(status, alreadyAttacking) ) {
 				return waitForAttackResult(status, alreadyAttacking);
 			}
 		}
@@ -93,6 +102,17 @@ public class AIOAttack {
 		// Try to click
 		for (int a = 0; a <= 2 + (int)(Math.random() * 3.0D); a++) {
 			
+			// If the npc is attacking someone else...
+			if ( !NPCUtil.canAttack(npc) ) {
+				break;
+			}
+			
+			// Player attacking us
+			if ( PlayerUtil.isUnderAttack(false) && Combat.getWildernessLevel() > 0 ) {
+				status.setType(StatusType.EMERGENCY);
+				return null;
+			}
+			
 			// We're in danger, stop targeting.
 			if ( PlayerUtil.isInDanger() && CANCEL_IF_NEAR_DEATH ) {
 				status.setType(StatusType.EMERGENCY);
@@ -102,7 +122,7 @@ public class AIOAttack {
 			// Maybe we're already under attack...
 			alreadyAttacking = fixAlreadyAttack(status);
 			if (alreadyAttacking != null) {
-				if ( sucessfullyTargeted(npc) ) {
+				if ( sucessfullyTargeted(status, npc) ) {
 					return waitForAttackResult(status, alreadyAttacking);
 				} else {
 					return attackNPC(status, types); // Try again.
@@ -117,7 +137,7 @@ public class AIOAttack {
 			
 			// Try to click
 			if (clickAttack(npc)) {
-				if ( sucessfullyTargeted(npc) ) {
+				if ( sucessfullyTargeted(status, npc) ) {
 					return waitForAttackResult(status, npc);
 				} else {
 					return attackNPC(status, types); // Try again.
@@ -151,7 +171,7 @@ public class AIOAttack {
 	 * @param attacking
 	 * @return
 	 */
-	private static boolean sucessfullyTargeted(RSNPC attacking) {
+	private static boolean sucessfullyTargeted(AIOStatus status, RSNPC attacking) {
 		AntiBan.sleep(700, 250);
 		
 		double dist = attacking.getPosition().distanceToDouble(Player.getRSPlayer());
@@ -167,9 +187,17 @@ public class AIOAttack {
 		boolean areTheyInteracting = attacking.getInteractingCharacter() != null && attacking.getInteractingCharacter().equals(Player.getRSPlayer());
 		boolean inCombat = PlayerUtil.isUnderAttack(true);
 		
-		// Ded
-		if (PlayerUtil.isDead() )
+		// Player attacking us
+		if ( PlayerUtil.isUnderAttack(false) && Combat.getWildernessLevel() > 0 ) {
+			status.setType(StatusType.EMERGENCY);
 			return false;
+		}
+		
+		// Ded
+		if (PlayerUtil.isDead() ) {
+			status.setType(StatusType.DEATH);
+			return false;
+		}
 		
 		// We're in danger, stop targeting.
 		if ( PlayerUtil.isInDanger() && CANCEL_IF_NEAR_DEATH )
@@ -196,14 +224,43 @@ public class AIOAttack {
 			
 			// Ded
 			if (PlayerUtil.isDead() ) {
+				status.setType(StatusType.DEATH);
 				return null;
 			}
 			
+			// Player attacking us
+			if ( PlayerUtil.isUnderAttack(false) && Combat.getWildernessLevel() > 0 ) {
+				status.setType(StatusType.EMERGENCY);
+				return null;
+			}
+			
+			// Player CAN attack us
+			if ( Combat.getWildernessLevel() > 0 ) {
+				RSPlayer[] players = Players.getAll();
+				for (int i = 0; i < players.length; i++) {
+					RSPlayer player = players[i];
+
+					// Ignore ourself.
+					if (!player.equals(Player.getRSPlayer())) {
+						
+						// If they can attack us that's not good!
+						if (PlayerUtil.canPlayerAttackUsWilderness(player)) {
+
+							// If they're skulled, ALERT us!
+							if (player.getSkullIcon() != -1) {
+								status.setType(StatusType.EMERGENCY);
+								return null;
+							}
+						}
+					}
+				}
+			}
+			
 			// Do some idling
-			PlayerUtil.setIgnoreAttacking(true, true);
+			PlayerUtil.setIgnoreAttacking(true, false);
 			AntiBan.afk(AntiBan.generateAFKTime(1000.0F));
-			AntiBan.idle(AntiBan.generateResponseTime(3500.0F));
-			AntiBan.afk(AntiBan.generateAFKTime(30000.0F));
+			AntiBan.idle(AntiBan.generateResponseTime(MAX_AFK_TIME * 0.1f));
+			AntiBan.afk(AntiBan.generateAFKTime(MAX_AFK_TIME));
 			
 			// Heal!
 			if (doHealth(status)) {
@@ -346,18 +403,17 @@ public class AIOAttack {
 	 */
 	private static boolean doHealth(AIOStatus status) {
 		if (PlayerUtil.needsToEat()) {
-			status.setStatus("Looking for food");
 
 			if ((!PlayerUtil.hasFood()) && (AIOAttack.CANCEL_IF_NEAR_DEATH)) {
 				return false;
 			}
 
-			status.setStatus("Eating food");
 			General.sleep(500, 1500);
 
 
 			boolean eat = false;
 			while ((PlayerUtil.needsToEat()) && (PlayerUtil.hasFood())) {
+				status.setStatus("Eating food");
 				if (PlayerUtil.eatFood()) {
 					eat = true;
 					General.sleep(500, 900);
@@ -369,9 +425,11 @@ public class AIOAttack {
 			}
 		}
 
+		// Randomly eat
 		int minHealth = (int)(Skills.getActualLevel(Skills.SKILLS.HITPOINTS) * 0.7D);
 		int currentHealth = Skills.getCurrentLevel(Skills.SKILLS.HITPOINTS);
 		if ((PlayerUtil.hasFood()) && (currentHealth <= minHealth) && (AntiBan.randomChance(60))) {
+			status.setStatus("Eating food");
 			PlayerUtil.eatFood();
 			return true;
 		}

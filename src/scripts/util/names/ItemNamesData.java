@@ -127,7 +127,7 @@ public class ItemNamesData extends ItemIds {
 	public static final ItemNamesData MITHRIL_PLATELEGS = new ItemNamesData(1071);
 	public static final ItemNamesData STEEL_PLATELEGS = new ItemNamesData(1069);
 	public static final ItemNamesData SILVERLIGHT_KEY = new ItemNamesData(2399, 2401, 2400);
-	public static final ItemNamesData IRON_PLATELEGS = new ItemNamesData(1067);
+	public static final ItemNamesData RUNE = new ItemNamesData(1067);
 	public static final ItemNamesData CAVE_NIGHTSHADE = new ItemNamesData(2398);
 	public static final ItemNamesData BRONZE_PLATESKIRT = new ItemNamesData(1087);
 	public static final ItemNamesData MITHRIL_PLATESKIRT = new ItemNamesData(1085);
@@ -295,6 +295,7 @@ public class ItemNamesData extends ItemIds {
 	public static final ItemNamesData BRONZE_PLATEBODY = new ItemNamesData(1117);
 	public static final ItemNamesData SUPERANTIPOISON4 = new ItemNamesData(2448);
 	public static final ItemNamesData IRON_PLATEBODY = new ItemNamesData(1115);
+	public static final ItemNamesData IRON_PLATELEGS = new ItemNamesData(1067);
 	public static final ItemNamesData ANTIPOISON4 = new ItemNamesData(2446);
 	public static final ItemNamesData RUNE_CHAINBODY = new ItemNamesData(1113);
 	public static final ItemNamesData RANGING_POTION4 = new ItemNamesData(2444);
@@ -527,7 +528,6 @@ public class ItemNamesData extends ItemIds {
 	public static final ItemNamesData GAMES_NECKLACE7 = new ItemNamesData(3855);
 	public static final ItemNamesData LAMP = new ItemNamesData(2528);
 	public static final ItemNamesData GAMES_NECKLACE6 = new ItemNamesData(3857);
-	public static final ItemNamesData ALL = new ItemNamesData(get(values()));
 	protected int[] id;
 
 	private static ArrayList<ItemNamesData> items;
@@ -535,9 +535,10 @@ public class ItemNamesData extends ItemIds {
 	protected ItemNamesData(int... id) {
 		this.id = id;
 		
-		if ( items == null )
-			items = new ArrayList<ItemNamesData>();
-		items.add(this);
+		if ( ItemNamesData.items == null ) {
+			ItemNamesData.items = new ArrayList<ItemNamesData>();
+		}
+		ItemNamesData.items.add(this);
 	}
 
 	@Override
@@ -570,8 +571,10 @@ public class ItemNamesData extends ItemIds {
 	 */
 	public static boolean is(RSItem check, ItemIds... types) {
 		for (int i = 0; i < types.length; i++) {
-			for (int j = 0; j < types[i].getIds().length; j++) {
-				if (types[i].getIds()[j] == check.getID()) {
+			ItemIds itemData = types[i];
+			int[] ids = itemData.getIds();
+			for (int j = 0; j < ids.length; j++) {
+				if (ids[j] == check.getID()) {
 					return true;
 				}
 			}
@@ -587,8 +590,10 @@ public class ItemNamesData extends ItemIds {
 	 */
 	public static boolean is(RSGroundItem check, ItemIds... types) {
 		for (int i = 0; i < types.length; i++) {
-			for (int j = 0; j < types[i].getIds().length; j++) {
-				if (types[i].getIds()[j] == check.getID()) {
+			ItemIds itemData = types[i];
+			int[] ids = itemData.getIds();
+			for (int j = 0; j < ids.length; j++) {
+				if (ids[j] == check.getID()) {
 					return true;
 				}
 			}
@@ -601,13 +606,13 @@ public class ItemNamesData extends ItemIds {
 	 * @param array
 	 * @return
 	 */
-	public boolean hasId(int[] array) {
+	public boolean hasId(int... ids) {
 		int[] t = getIds();
 		for (int i = 0; i < t.length; i++) {
 			int mid = t[i];
 			
-			for (int a = 0; a < array.length; a++) {
-				int fid = array[a];
+			for (int a = 0; a < ids.length; a++) {
+				int fid = ids[a];
 				
 				// It has the id!
 				if (  mid == fid ) {
@@ -616,6 +621,20 @@ public class ItemNamesData extends ItemIds {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Get an ItemName data from an item ID.
+	 * @param id
+	 * @return
+	 */
+	public static ItemNamesData get(int id) {
+		for (int i = 0; i < items.size(); i++) {
+			ItemNamesData data = items.get(i);
+			if ( data.hasId(id) )
+				return data;
+		}
+		return null;
 	}
 
 	/**

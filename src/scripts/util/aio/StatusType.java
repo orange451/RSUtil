@@ -5,5 +5,6 @@ public enum StatusType {
 	FAILED,
 	SUCCESS,
 	EMERGENCY,
-	CANCELLED;
+	CANCELLED,
+	DEATH;
 }

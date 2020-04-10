@@ -16,4 +16,8 @@ public class QuestUtil {
 	public static boolean isQuestCompleted(Quests quest) {
 		return getQuestSetting(quest) >= quest.getFinished();
 	}
+	
+	public static int getQuestPoints() {
+		return Game.getSetting(101);
+	}
 }

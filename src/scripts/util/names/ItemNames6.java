@@ -429,7 +429,7 @@ class ItemNames6 extends ItemNames5 {
 	public static final ItemNamesData PUDDLE_OF_SLIME = new ItemNamesData(4238);
 	public static final ItemNamesData CUBE = new ItemNamesData(6899);
 	public static final ItemNamesData SODIUM_CHLORIDE = new ItemNamesData(5580);
-	public static final ItemNamesData GHOSTSPEAK_AMULET = new ItemNamesData(4250);
+	public static final ItemNamesData GHOSTSPEAK_AMULET = new ItemNamesData(552,4250);
 	public static final ItemNamesData NITROUS_OXIDE = new ItemNamesData(5581);
 	public static final ItemNamesData ECTOPHIAL = new ItemNamesData(4251, 4252);
 	public static final ItemNamesData VIAL_OF_LIQUID = new ItemNamesData(5582);
@@ -519,4 +519,6 @@ class ItemNames6 extends ItemNames5 {
 	public static final ItemNamesData ADAMANT_DARTPpp = new ItemNamesData(5640);
 	public static final ItemNamesData PYRAMID_TOP = new ItemNamesData(6970);
 	public static final ItemNamesData HAM_BOOTS = new ItemNamesData(4310);
+	public static final ItemNamesData MITHRIL_BOLTS = new ItemNamesData(9142);
+    public static final ItemNamesData LOOTING_BAG = new ItemNamesData(11941);
 }

@@ -1,7 +1,6 @@
 package scripts.util;
 
 import scripts.util.names.ItemIds;
-import scripts.util.names.ItemNames;
 import scripts.util.names.ItemNamesData;
 
 public class NotedItem extends ItemIds {

@@ -59,7 +59,7 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static int generateResponseTime(float maxTime) {
-		float center = (float)(maxTime * General.randomDouble(0.25D, 0.275D));
+		float center = (float)(maxTime * General.randomDouble(0.2D, 0.25D));
 		float rightBound = maxTime - center;
 		float leftBound = center;
 		float powerRight = (float)Math.pow(Math.random(), 6.0D) * 2.0F;
@@ -77,7 +77,7 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static int generateAFKTime(float maxTime) {
-		float center = (float)(maxTime * General.randomDouble(0.01D, 0.026D));
+		float center = (float)(maxTime * General.randomDouble(0.005D, 0.013D));
 		float rightBound = maxTime - center;
 		float leftBound = center;
 		float powerRight = (float)Math.pow(Math.random(), 6.0D) * 2.0F;
@@ -133,20 +133,32 @@ public final class AntiBan {
 		
 		while (System.currentTimeMillis() < timeToWait) {
 
+			// Break if we're in danger
+			if (PlayerUtil.needsToEat() || PlayerUtil.isInDanger() || PlayerUtil.isDead())
+				break;
+			
+			// do the condition
 			if ((condition != null) && (condition.active())) {
 				break;
 			}
 
 			General.sleep(100L);
+			
+			// Break if we're in danger
+			if (PlayerUtil.needsToEat() || PlayerUtil.isInDanger() || PlayerUtil.isDead())
+				break;
+			
+			// Antiban
 			timedActions();
 
+			// Camera rotation because we're not a bot i swear
 			if (randomChance(128)) {
 				rotateCameraRandom();
 			}
 
-			if ((PlayerUtil.needsToEat()) || (PlayerUtil.isInDanger())) {
+			// Break if we're in danger
+			if (PlayerUtil.needsToEat() || PlayerUtil.isInDanger() || PlayerUtil.isDead())
 				break;
-			}
 		}
 		
 		// Regenerate trackers
@@ -201,6 +213,15 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static boolean randomChance(int i) {
-		return (int)(Math.random() * i) == i / 2;
+		return random(i) == i / 2;
+	}
+	
+	/**
+	 * Returns a random number between (0) and (i-1);
+	 * @param max
+	 * @return
+	 */
+	public static int random(int i) {
+		return (int)(Math.random()*i);
 	}
 }

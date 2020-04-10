@@ -22,6 +22,7 @@ public class NameGenerator {
 		
 		String str = "";
 		
+		// Slap random words at it
 		while(str.length() < 10) {
 			String nextName = names.get((int)(random.nextDouble()*names.size()));
 			if ( nextName.length() + str.length() <= 12 ) {
@@ -35,6 +36,16 @@ public class NameGenerator {
 				str += (int)(random.nextDouble()*1000);
 		}
 		
+		// Get number from first character.
+		int n = -1;
+		try { n = Integer.parseInt("" + str.charAt(0)); } catch(Exception e) {}
+		
+		// Name starts with number, that's no good.
+		if ( n != -1 ) {
+			return generateName();
+		}
+		
+		// Name checks out!
 		return str.substring(0, Math.min(str.length(), 12));
 	}
 
@@ -63,7 +74,7 @@ public class NameGenerator {
 			String[] temp = formatted.split(" ");
 			for (int j = 0; j < temp.length; j++) {
 				String word = temp[j];
-				if ( word.length() < 3 )
+				if ( word.length() < 3 || word.length() > 12 )
 					continue;
 				if ( word.equalsIgnoreCase("the") )
 					continue;

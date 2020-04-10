@@ -15,6 +15,10 @@ public abstract class BotTaskOpenBank extends BotTask {
 			return true;
 		}
 		
+		// Wait until we're in the bank
+		if ( !Banking.isInBank() )
+			return false;
+		
 		// Open the bank
 		final OpenBankPreference pref = AntiBan.getABC().generateOpenBankPreference();
 			switch (pref) {

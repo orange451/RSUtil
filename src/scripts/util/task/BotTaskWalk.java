@@ -18,9 +18,16 @@ import scripts.util.player.Navigation;
 public abstract class BotTaskWalk extends BotTask {
 	protected static float radius = 6.0F;
 
+	// Walking variables
 	protected RSTile walkTo;
 	protected int attempts;
 	protected boolean shouldRun;
+	
+	// Timeout variables
+	private RSTile lastPosition;
+	boolean timedOut = false;
+	long startTimedOut = -1;
+	final long MAX_TIME_OUT = 1000;
 
 	public BotTaskWalk(Locations location, boolean runTo) {
 		this(location.getRandomizedCenter(radius), runTo);
@@ -110,13 +117,18 @@ public abstract class BotTaskWalk extends BotTask {
 					return true;
 			}
 
+			// Reset timeout variables
+			lastPosition = null;
+			timedOut = false;
+			startTimedOut = -1;
+
 			// Use DaxWalker first
 			WalkingCondition c = new WalkingCondition() {
 
 				@Override
 				public WalkingCondition.State action() {
 					// Force quit
-					if (forceComplete) {
+					if (forceComplete || timedOut) {
 						return WalkingCondition.State.EXIT_OUT_WALKER_FAIL;
 					}
 
@@ -133,6 +145,19 @@ public abstract class BotTaskWalk extends BotTask {
 
 					// Handle run logic
 					runLogic();
+					
+					// Handle timeout
+					RSTile currentPosition = Player.getPosition();
+					if ( currentPosition.equals(lastPosition) && startTimedOut == -1 ) {
+						startTimedOut = System.currentTimeMillis();
+					} else {
+						startTimedOut = -1;
+					}
+					if ( startTimedOut > 0 && (System.currentTimeMillis()-startTimedOut > MAX_TIME_OUT)) {
+						General.println("Timed out");
+						timedOut = true;
+					}
+					lastPosition = currentPosition;
 
 					// Exit condition
 					WalkingCondition.State ret = finalTile.distanceTo(Player.getRSPlayer()) <= BotTaskWalk.radius ? WalkingCondition.State.EXIT_OUT_WALKER_SUCCESS : WalkingCondition.State.CONTINUE_WALKER;
