@@ -3,11 +3,15 @@ package scripts.util;
 import java.util.ArrayList;
 import org.tribot.api.General;
 import org.tribot.api.interfaces.Positionable;
+import org.tribot.api2007.Camera;
 import org.tribot.api2007.Objects;
+import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 
+import scripts.util.aio.AIOWalk;
+import scripts.util.misc.AntiBan;
 import scripts.util.names.ObjectNames;
 
 public class ObjectUtil {
@@ -109,5 +113,49 @@ public class ObjectUtil {
 			General.sleep(86, 173);
 		}
 		General.sleep(1000L);
+	}
+	
+	/**
+	 * Attempt to interact with a specific object
+	 * @param object
+	 * @param click
+	 * @return
+	 */
+	public static boolean interactWithObject(ObjectNames object) {
+		return interactWithObject(object, "");
+	}
+	
+	/**
+	 * Attempt to interact with a specific object
+	 * @param object
+	 * @param click
+	 * @return
+	 */
+	public static boolean interactWithObject(ObjectNames object, String click) {
+		RSObject obj = scripts.util.ObjectUtil.get(object, 10);
+		if (obj == null) {
+			return false;
+		}
+
+		if (!PathFinding.canReach(obj, false)) {
+			AIOWalk.walkToLegacy(obj.getPosition());
+		}
+		Camera.turnToTile(obj);
+
+
+		int tries = 0;
+		while (!obj.click(new String[] { click }) && tries < 8) {
+			AntiBan.idle(83, 156);
+			tries++;
+		}
+		
+		if ( tries >= 8 )
+			return false;
+		
+		General.sleep(1000L);
+		while ((Player.isMoving()) || (Player.getAnimation() != -1)) {
+			General.sleep(500L);
+		}
+		return true;
 	}
 }

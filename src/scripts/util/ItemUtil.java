@@ -71,7 +71,7 @@ public class ItemUtil {
 	 * @return
 	 */
 	public static int getPrice(int id) {
-		String key = ""+id;
+		String key = new Integer(id).toString();
 
 		if (prices.containsKey(key)) {
 			return prices.get(key).intValue();

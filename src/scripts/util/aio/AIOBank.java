@@ -1,6 +1,5 @@
 package scripts.util.aio;
 
-import org.tribot.api.General;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.Inventory;
 
@@ -8,50 +7,22 @@ import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
-import scripts.util.task.BotTask;
-import scripts.util.task.BotTaskWalkToBank;
 
 public class AIOBank {
 	/**
-	 * Walks to nearest bank.
+	 * Walks to nearest bank. Uses {@link AIOWalk#walkToNearestBank()}
 	 * @return
 	 */
 	public static boolean walkToNearestBank() {
-		return walkToNearestBank(new AIOStatus());
+		return AIOWalk.walkToNearestBank();
 	}
 	
 	/**
-	 * Walks to nearest bank.
+	 * Walks to nearest bank. Uses {@link AIOWalk#walkToNearestBank()}
 	 * @return
 	 */
 	public static boolean walkToNearestBank(AIOStatus status) {
-		status.setStatus("Walking to bank...");
-		
-		// Generate walk to bank task
-		BotTaskWalkToBank walkToBank = new BotTaskWalkToBank() {
-			@Override
-			public BotTask getNextTask() {
-				return null;
-			}
-
-			@Override
-			public void init() {
-				//
-			}
-		};
-		
-		// Complete the task
-		int tries = 0;
-		while( !walkToBank.isTaskComplete() ) { // Forces task to run
-			General.sleep(1000);
-			tries++;
-			if ( tries > 20 ) {
-				status.setType(StatusType.FAILED);
-				return false;
-			}
-		}
-		
-		return true;
+		return AIOWalk.walkToNearestBank(status);
 	}
 	
 	/**
