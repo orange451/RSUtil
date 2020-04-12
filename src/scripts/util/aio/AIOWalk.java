@@ -29,6 +29,7 @@ import scripts.util.task.BotTask;
 import scripts.util.task.BotTaskWalk;
 import scripts.util.task.BotTaskWalkToBank;
 
+@SuppressWarnings("deprecation")
 public class AIOWalk {
 
 	/**

@@ -9,7 +9,6 @@ import org.tribot.api2007.types.RSTile;
 import com.allatori.annotations.DoNotRename;
 
 import scripts.dax_api.api_lib.WebWalkerServerApi;
-import scripts.dax_api.api_lib.models.PathResult;
 import scripts.dax_api.api_lib.models.PlayerDetails;
 import scripts.dax_api.api_lib.models.Point3D;
 
