@@ -60,6 +60,7 @@ public enum Locations {
 	VARROK_SHOP_STAFF(new RSTile(3201, 3436), new RSTile(3204, 3431), 0), 
 	VARROK_SHOP_RUNES(new RSTile(3252, 3399), new RSTile(3254, 3403), 0),
 	VARROK_CHURCH(new RSTile(3252, 3487), new RSTile(3259, 3476), 0), 
+	VARROK_CASTLE_KINGS_ROOM(new RSTile(3219, 3474), new RSTile(3225, 3471), 0),
 	VARROK_CASTLE_LOWER(new RSTile(3201, 3498), new RSTile(3224, 3471), 0), 
 	VARROK_CASTLE_NW_STAIR(new RSTile(3200, 3500), new RSTile(3206, 3494), 2), 
 	VARROK_CASTLE_LIBRARY(new RSTile(3207, 3497), new RSTile(3214, 3490), 0), 
@@ -94,7 +95,7 @@ public enum Locations {
 	WIZARDS_TOWER_GRAYZAG(new RSTile(3109, 3162), new RSTile(3111, 3159), 2), 
 	WIZARDS_TOWER_SEDRIDOR(new RSTile(3109, 9573), new RSTile(3107, 9568), 0), 
 	WIZARDS_TOWER_BASEMENT(new RSTile(3108, 9577), new RSTile(3110, 9570), 0),
-	WIZARDS_TOWER_ALTAR(new RSTile(3111, 9564), new RSTile(3119, 9569), 0),
+	WIZARDS_TOWER_ALTAR(new RSTile(3116, 9568), new RSTile(3121, 9565), 0),
 
 	PORT_SARIM(new RSTile(3010, 3262), new RSTile(3026, 3241), 0), 
 	PORT_SARIM_JAIL(new RSTile(3010, 3192), new RSTile(3012, 3187), 0), 
@@ -114,6 +115,8 @@ public enum Locations {
 	FALADOR_GARDEN(new RSTile(3007, 3387), new RSTile(3012, 3375), 0), 
 	FALADOR_GARDEN_SHED(new RSTile(3027, 3380), new RSTile(3028, 3378), 0),
 	FALADOR_CHICKENS(new RSTile(3015, 3287), new RSTile(3019, 3293), 0),
+	
+	THURGOS_HOUSE(new RSTile(3001, 3145), new RSTile(2999, 3143), 0),
 
 	BARBARIAN_VILLAGE(new RSTile(3072, 3426), new RSTile(3089, 3412), 0), 
 	BARBARIAN_VILLAGE_SMELT(new RSTile(3083, 3411), new RSTile(3086, 3407), 0), 
@@ -152,6 +155,14 @@ public enum Locations {
 	TUTORIAL_ISLAND_BANK( new RSTile(3120, 3120), new RSTile(3123, 3123), 0 ),
 	TUTORIAL_ISLAND_CHURCH( new RSTile(3122, 3104), new RSTile(3124, 3109), 0),
 	TUTORIAL_ISLAND_MAGIC( new RSTile(3140, 3088), new RSTile(3142, 3090), 0),
+	
+	TEMPLE_PASS(new RSTile(3405, 3490), new RSTile(3408, 3487), 0),
+	TEMPLE_DUNGEON(new RSTile(3404, 9906), new RSTile(3406, 9905), 0),
+	TEMPLE_DUNGEON_WELL(new RSTile(0, 0), new RSTile(0, 0), 0),
+	TEMPLE_DUNGEON_DREZELS_ROOM(new RSTile(0, 0), new RSTile(0, 0), 0),
+	TEMPLE_ALTAR(new RSTile(0, 0), new RSTile(0, 0), 0),
+	TEMPLE_ALTAR_2ND_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
+	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
 
 	;
 
