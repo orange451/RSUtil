@@ -7,7 +7,9 @@ import org.tribot.api2007.Camera;
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Player;
+import org.tribot.api2007.Players;
 import org.tribot.api2007.types.RSObject;
+import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
 
 import scripts.util.aio.AIOWalk;
@@ -21,7 +23,7 @@ public class ObjectUtil {
 	 * @return
 	 */
 	public static ArrayList<RSObject> getAll(ObjectNames obj) {
-		return getAll(obj, 20);
+		return getAll(obj, 25);
 	}
 	
 	/**
@@ -70,12 +72,29 @@ public class ObjectUtil {
 	 * @return
 	 */
 	public static RSObject get(ObjectNames obj, Positionable position, int MAX_DIST) {
+		return get(obj, position, MAX_DIST, false);
+	}
+	
+	/**
+	 * Returns the closest object with a matching object name to the given position.
+	 * @param obj
+	 * @param position
+	 * @param MAX_DIST
+	 * @return
+	 */
+	public static RSObject get(ObjectNames obj, Positionable position, int MAX_DIST, boolean adjacentPlayersAddDistance) {
 		ArrayList<RSObject> objects = getAll(obj);
 		RSObject mine = null;
 		int dist = MAX_DIST;
+		
 		for (int i = 0; i < objects.size(); i++) {
 			RSObject o = (RSObject)objects.get(i);
 			int tdist = o.getPosition().distanceTo(position);
+			boolean hasAdjacent = hasAdjacentPlayer(o);
+			
+			if ( hasAdjacent ) 
+				tdist += 10;
+			
 			if (tdist < dist) {
 				dist = tdist;
 				mine = o;
@@ -83,6 +102,29 @@ public class ObjectUtil {
 		}
 
 		return mine;
+	}
+
+	private static boolean hasAdjacentPlayer(RSObject object) {
+		RSTile center = object.getPosition();
+		RSTile[] adjacentTiles = new RSTile[] {
+				new RSTile(center.getX() + 1, center.getY(), center.getPlane()),
+				new RSTile(center.getX() - 1, center.getY(), center.getPlane()),
+				new RSTile(center.getX(), center.getY() + 1, center.getPlane()),
+				new RSTile(center.getX(), center.getY() - 2, center.getPlane())
+		};
+		
+		RSPlayer[] players = Players.getAll();
+		for (RSTile tile : adjacentTiles) {
+			for (RSPlayer player : players) {
+				if ( player == Player.getRSPlayer())
+					continue;
+				
+				if ( player.getPosition().equals(tile) )
+					return true;
+			}
+		}
+		
+		return false;
 	}
 
 	/**

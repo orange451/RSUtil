@@ -6,6 +6,7 @@ import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSItem;
 
 import scripts.util.misc.AntiBan;
+import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNamesData;
 
 public class BankingUtil {
@@ -46,6 +47,28 @@ public class BankingUtil {
 				}
 			}
 		}
+		return false;
+	}
+	
+	/**
+	 * Withdraws the first item in your bank from a list of desired items
+	 * @param desiredItems
+	 */
+	public static boolean withdrawFirstItem(ItemIds[] desiredItems) {
+		if (!Banking.isBankScreenOpen())
+			return false;
+		
+		for (ItemIds item : desiredItems) {
+			RSItem[] t = Banking.find(item.getIds());
+			if ( t == null || t.length == 0 )
+				continue;
+			
+			if ( Banking.withdraw(1, item.getIds()) ) {
+					AntiBan.sleep(800, 250);
+					return true;
+			}
+		}
+		
 		return false;
 	}
 

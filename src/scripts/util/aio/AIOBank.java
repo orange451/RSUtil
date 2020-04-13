@@ -26,6 +26,36 @@ public class AIOBank {
 	}
 	
 	/**
+	 * Walks to nearest bank and opens. Uses {@link AIOWalk#walkToNearestBank()}
+	 * @return
+	 */
+	public static boolean walkToNearestBankAndOpen() {
+		return walkToNearestBankAndOpen(new AIOStatus());
+	}
+	
+	/**
+	 * Walks to nearest bank and opens. Uses {@link AIOWalk#walkToNearestBank()}
+	 * @return
+	 */
+	public static boolean walkToNearestBankAndOpen(AIOStatus status) {
+		// Walk to nearest bank
+		if ( !walkToNearestBank(status) ) {
+			status.setType(StatusType.FAILED);
+			return false;
+		}
+		
+		// Open Bank
+		status.setStatus("Opening bank");
+		while ( !Banking.isBankScreenOpen() ) {
+			Banking.openBank();
+			AntiBan.sleep(1000, 500);
+		}
+		AntiBan.sleep(2000, 1000);
+		
+		return true;
+	}
+	
+	/**
 	 * Walks the player to the nearest bank. Opens the bank. Deposits all.
 	 */
 	public static boolean bankNearest() {
@@ -59,19 +89,9 @@ public class AIOBank {
 			return true;
 		}
 		
-		// Walk to nearest bank
-		if ( !walkToNearestBank(status) ) {
-			status.setType(StatusType.FAILED);
+		// Walk to nearest bank and open it
+		if ( !walkToNearestBankAndOpen(status) )
 			return false;
-		}
-		
-		// Open Bank
-		status.setStatus("Opening bank");
-		while ( !Banking.isBankScreenOpen() ) {
-			Banking.openBank();
-			AntiBan.sleep(1000, 500);
-		}
-		AntiBan.sleep(2000, 1000);
 		
 		// Deposit
 		status.setStatus("Depositing Items");

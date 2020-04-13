@@ -45,7 +45,7 @@ public final class AntiBan {
 		if (abc.shouldRotateCamera()) {
 			abc.rotateCamera();
 		}
-		if (abc.shouldLeaveGame())
+		if (abc.shouldLeaveGame() && randomChance(5))
 			abc.leaveGame();
 	}
 
@@ -152,7 +152,7 @@ public final class AntiBan {
 			timedActions();
 
 			// Camera rotation because we're not a bot i swear
-			if (randomChance(128)) {
+			if (randomChance(250)) {
 				rotateCameraRandom();
 			}
 
