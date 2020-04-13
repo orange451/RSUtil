@@ -18,6 +18,7 @@ import org.tribot.api2007.Skills;
 import org.tribot.api2007.types.RSCharacter;
 import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSInterfaceChild;
+import org.tribot.api2007.types.RSInterfaceMaster;
 import org.tribot.api2007.types.RSItem;
 import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSPlayer;
@@ -583,5 +584,28 @@ public class PlayerUtil {
 		boolean npcAttack = (getAttackingNPCS().length > 0) && (includeNPC);
 		boolean playerAttack = getAttackingPlayers().length > 0;
 		return npcAttack || playerAttack || (Combat.isUnderAttack()&&includeNPC);
+	}
+	
+	/**
+	 * @return Whether the player is a p2p member or not.
+	 */
+	public static boolean isP2P() {
+		RSInterfaceMaster root = Interfaces.get(109);
+		if ( root == null )
+			return false;
+		
+		RSInterfaceChild child = root.getChild(25);
+		if ( child == null )
+			return false;
+		
+		String text = child.getText();
+		
+		if ( text.contains("None") )
+			return false;
+		
+		if ( text.contains(" days ") )
+			return true;
+		
+		return false;
 	}
 }
