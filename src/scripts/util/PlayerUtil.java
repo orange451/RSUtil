@@ -245,7 +245,7 @@ public class PlayerUtil {
 		}
 
 
-		RSInterfaceChild retaliateInterface = Interfaces.get(593, 33);
+		RSInterfaceChild retaliateInterface = Interfaces.get(593, 34);
 		if (retaliateInterface == null) {
 			return;
 		}
