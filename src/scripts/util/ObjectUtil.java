@@ -173,6 +173,7 @@ public class ObjectUtil {
 	 * @param click
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean interactWithObject(ObjectNames object, String click) {
 		RSObject obj = scripts.util.ObjectUtil.get(object, 10);
 		if (obj == null) {

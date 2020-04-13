@@ -58,28 +58,28 @@ public class AIOBank {
 	/**
 	 * Walks the player to the nearest bank. Opens the bank. Deposits all.
 	 */
-	public static boolean bankNearest() {
-		return bankNearest(new AIOStatus());
+	public static boolean walkToNearestBankAndDepositAll() {
+		return walkToNearestBankAndDepositAll(new AIOStatus());
 	}
 	
 	/**
 	 * Walks the player to the nearest bank. Opens the bank. Deposits all.
 	 */
-	public static boolean bankNearest(AIOStatus status) {
-		return bankNearestExcept(status, new ItemNames[] {});
+	public static boolean walkToNearestBankAndDepositAll(AIOStatus status) {
+		return walkToNearestBankAndDepositAllExcept(status, new ItemNames[] {});
 	}
 	
 	/**
 	 * Walks the player to the nearest bank. Opens the bank. Deposits everything except the exclusion list.
 	 */
-	public static boolean bankNearestExcept(ItemIds... exclude) {
-		return bankNearestExcept( new AIOStatus(), exclude );
+	public static boolean walkToNearestBankAndDepositAllExcept(ItemIds... exclude) {
+		return walkToNearestBankAndDepositAllExcept( new AIOStatus(), exclude );
 	}
 	
 	/**
 	 * Walks the player to the nearest bank. Opens the bank. Deposits everything except the exclusion list.
 	 */
-	public static boolean bankNearestExcept(AIOStatus status, ItemIds... exclude) {
+	public static boolean walkToNearestBankAndDepositAllExcept(AIOStatus status, ItemIds... exclude) {
 		
 		// Return since inventory is empty
 		int excludedItemsInInventory = PlayerUtil.getAmountItemsInInventory(exclude);
