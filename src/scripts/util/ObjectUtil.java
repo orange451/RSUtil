@@ -90,7 +90,7 @@ public class ObjectUtil {
 		for (int i = 0; i < objects.size(); i++) {
 			RSObject o = (RSObject)objects.get(i);
 			int tdist = o.getPosition().distanceTo(position);
-			boolean hasAdjacent = hasAdjacentPlayer(o);
+			boolean hasAdjacent = adjacentPlayersAddDistance && hasAdjacentPlayer(o);
 			
 			if ( hasAdjacent ) 
 				tdist += 10;
@@ -110,13 +110,13 @@ public class ObjectUtil {
 				new RSTile(center.getX() + 1, center.getY(), center.getPlane()),
 				new RSTile(center.getX() - 1, center.getY(), center.getPlane()),
 				new RSTile(center.getX(), center.getY() + 1, center.getPlane()),
-				new RSTile(center.getX(), center.getY() - 2, center.getPlane())
+				new RSTile(center.getX(), center.getY() - 1, center.getPlane())
 		};
 		
 		RSPlayer[] players = Players.getAll();
 		for (RSTile tile : adjacentTiles) {
 			for (RSPlayer player : players) {
-				if ( player == Player.getRSPlayer())
+				if ( player.equals(Player.getRSPlayer()))
 					continue;
 				
 				if ( player.getPosition().equals(tile) )
