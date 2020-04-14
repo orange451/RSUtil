@@ -80,6 +80,8 @@ public class AIOBank {
 	 * Walks the player to the nearest bank. Opens the bank. Deposits everything except the exclusion list.
 	 */
 	public static boolean walkToNearestBankAndDepositAllExcept(AIOStatus status, ItemIds... exclude) {
+		if ( PlayerUtil.isInDanger() )
+			walkToNearestBank();
 		
 		// Return since inventory is empty
 		int excludedItemsInInventory = PlayerUtil.getAmountItemsInInventory(exclude);

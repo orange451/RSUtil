@@ -6,9 +6,13 @@ public abstract class TaskScript extends Script {
 	private boolean running;
 	private BotTask currentTask;
 	private boolean scriptStarted;
+	
+	private static TaskScript script;
 
 	public void run() {
 		onInitialize();
+		
+		script = this;
 		
 		if ( running )
 			return;
@@ -32,48 +36,47 @@ public abstract class TaskScript extends Script {
 		
 		stop();
 	}
-
-	/**
-	 * Stop the script from running.
-	 */
-	public void stop() {
-		this.running = false;
-		this.stopScript();
-	}
 	
 	/**
 	 * Start the script. This method will call {@link #getStartingTask()} to determine which task is first.
 	 */
-	public void start() {
-		if ( scriptStarted )
+	public static void start() {
+		if ( script.scriptStarted )
 			return;
 		
-		this.currentTask = getStartingTask();
-		this.scriptStarted = true;
-		
+		script.currentTask = script.getStartingTask();
+		script.scriptStarted = true;
 	}
 
 	/**
+	 * Stop the script from running.
+	 */
+	public static void stop() {
+		script.running = false;
+		//script.stopScript();
+	}
+	
+	/**
 	 * Stops the current task.
 	 */
-	public void stopCurrentTask() {
-		this.currentTask.forceComplete = true;
-		this.currentTask = null;
-		this.scriptStarted = false;
+	public static void stopCurrentTask() {
+		script.currentTask.forceComplete = true;
+		script.currentTask = null;
+		script.scriptStarted = false;
 	}
 
 	/**
 	 * Overrides the current task.
 	 * @param task
 	 */
-	public void setCurrentTask(BotTask task) {
+	public static void setCurrentTask(BotTask task) {
 		if ( task == null ) {
 			stopCurrentTask();
 			return;
 		}
 		
-		this.currentTask = task;
-		this.scriptStarted = true;
+		script.currentTask = task;
+		script.scriptStarted = true;
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package scripts.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.tribot.api.General;
 import org.tribot.api.interfaces.Positionable;
@@ -59,8 +60,7 @@ public class PlayerUtil {
 	 * @param items
 	 */
 	public static void loot( Positionable location, ItemIds... items) {
-		int[] ids = ItemNamesData.get(items);
-		loot(location, ids);
+		loot(location, ItemNamesData.get(items));
 	}
 	
 	/**
@@ -224,13 +224,12 @@ public class PlayerUtil {
 	 * Sets the run toggle for the player.
 	 * @param run
 	 */
-	@SuppressWarnings("deprecation")
 	public static void setRun(boolean run) {
-		if (((run) && (Game.isRunOn())) || ((!run) && (!Game.isRunOn()))) {
+		if (((run) && (Game.isRunOn())) || ((!run) && (!Game.isRunOn())))
 			return;
-		}
+		
 		General.println("Current run: " + Game.isRunOn() + "  /  Setting run to: " + run);
-		Options.setRunOn(run);
+		Options.setRunEnabled(run);
 	}
 
 	/**
@@ -457,7 +456,7 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static RSNPC[] getAttackingNPCS() {
-		RSNPC[] npcs = NPCUtil.findAttackableNPCs();
+		RSNPC[] npcs = NPCs.getAll();
 		
 		ArrayList<RSNPC> attacking = new ArrayList<RSNPC>();
 		for (int i = 0; i < npcs.length; i++) {
@@ -487,7 +486,6 @@ public class PlayerUtil {
 		for (int i = 0; i < attacking.size(); i++) {
 			npcs[i] = ((RSNPC)attacking.get(i));
 		}
-
 
 		return npcs;
 	}
@@ -563,8 +561,16 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static boolean isInDanger() {
+		RSNPC[] attackingNPCS = getAttackingNPCS();
+		List<RSNPC> attackingNPCSThatWeShouldActuallyWorryAboutPerhaps = new ArrayList<>();
+		for (RSNPC npc : attackingNPCS) {
+			if ( npc.getCombatLevel() > Player.getRSPlayer().getCombatLevel() - 1 ) {
+				attackingNPCSThatWeShouldActuallyWorryAboutPerhaps.add(npc);
+			}
+		}
+		
 		boolean isInTimeout = System.currentTimeMillis() < DANGER_TIMEOUT;
-		boolean attacked = (getAttackingNPCS().length > 0 && !ignoreNPC) || (getAttackingPlayers().length > 0 && !ignorePlayers);
+		boolean attacked = (!attackingNPCSThatWeShouldActuallyWorryAboutPerhaps.isEmpty() && !ignoreNPC) || (getAttackingPlayers().length > 0 && !ignorePlayers);
 		boolean danger = (attacked) || (getHealth() < getMaxHealth() * 0.25F);
 
 		// You're in danger for 8 seconds 

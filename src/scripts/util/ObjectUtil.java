@@ -129,6 +129,14 @@ public class ObjectUtil {
 
 	/**
 	 * Returns the closest object with a matching object name to the player. See {@link #get(ObjectNames, RSTile, int)}.
+	 * @return
+	 */
+	public static RSObject get(ObjectNames obj) {
+		return get(obj, 25);
+	}
+
+	/**
+	 * Returns the closest object with a matching object name to the player. See {@link #get(ObjectNames, RSTile, int)}.
 	 * @param obj
 	 * @param MAX_DIST
 	 * @return

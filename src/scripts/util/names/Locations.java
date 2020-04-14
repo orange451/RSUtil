@@ -3,6 +3,7 @@ package scripts.util.names;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import org.tribot.api.General;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
@@ -70,6 +71,7 @@ public enum Locations {
 	VARROK_SEWER_DEEP(new RSTile(3247, 9918), new RSTile(3253, 9915), 0), 
 	VARROK_ENTRANCE_WEST(new RSTile(3172, 3432), new RSTile(3179, 3424), 0), 
 	VARROK_WIZARD(new RSTile(3219, 3376), new RSTile(3234, 3362), 0), 
+	VARROK_WOODS_EAST(new RSTile(3275, 3432), new RSTile(3285, 3414), 0),
 
 	DRAYNOR(new RSTile(3083, 3279), new RSTile(3105, 3249), 0), 
 	DRAYNOR_BANK(new RSTile(3092, 3246), new RSTile(3095, 3241), 0), 
@@ -87,7 +89,7 @@ public enum Locations {
 	DRAYNOR_MANOR_FOUNTAIN(new RSTile(3085, 3336), new RSTile(3090, 3332), 0), 
 	DRAYNOR_KITCHEN(new RSTile(3097, 3366), new RSTile(3100, 3365), 0), 
 	DRAYNOR_MANOR_LOBBY(new RSTile(3106, 3359), new RSTile(3112, 3364), 0),
-
+	DRAYNOR_WILLOW(new RSTile(3093, 3226), new RSTile(3085, 3239), 0),
 
 	WIZARDS_TOWER(new RSTile(3103, 3166), new RSTile(3114, 3157), 0), 
 	WIZARDS_TOWER_TRAIBORN(new RSTile(3111, 3164), new RSTile(3113, 3160), 1), 
@@ -422,7 +424,7 @@ public enum Locations {
 		double wid = loc.getBounds().getWidth();
 		double hei = loc.getBounds().getHeight();
 		double area = Math.sqrt(wid*wid+hei*hei);
-		double minDist = area*1.25;
+		double minDist = area * 0.8;
 		minDist = Math.min(minDist, 24);
 		minDist = Math.max(minDist, 8);
 		

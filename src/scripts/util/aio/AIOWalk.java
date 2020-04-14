@@ -10,12 +10,14 @@ import org.tribot.api2007.Player;
 import org.tribot.api2007.Walking;
 import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSNPC;
+import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 import org.tribot.api2007.util.DPathNavigator;
 
+import scripts.aio.f2pquester.F2PQuester;
 import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.walker_engine.WalkingCondition;
-import scripts.f2pquester.F2PQuester;
+import scripts.util.AccurateMouse;
 import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
 import scripts.util.PlayerUtil;
@@ -66,7 +68,7 @@ public class AIOWalk {
 
 			@Override
 			public void init() {
-				//
+				General.println("Walking to location: " + location);
 			}
 		};
 				
@@ -312,17 +314,26 @@ public class AIOWalk {
 
 	@SuppressWarnings("deprecation")
 	protected static void walkToLegacyInternal(final RSTile tile) {
+		if ( tile == null )
+			return;
+		
 		DPathNavigator nav = new DPathNavigator();
-		nav.setStoppingConditionCheckDelay(10L);
+		nav.setStoppingConditionCheckDelay(100L);
 		nav.setStoppingCondition(new Condition() {
+
+			@Override
 			public boolean active() {
+				if ( PlayerUtil.isInDanger() )
+					return true;
 				AntiBan.idle(AntiBan.generateAFKTime(4000.0F));
-				boolean reach = Player.getPosition().distanceTo(tile)<2;
-				return reach;
+				return PathFinding.canReach(tile.getPosition(), false) && Player.getPosition().distanceTo(tile)<8;
 			}
 		});
-		if (!nav.traverse(tile)) {
+
+		if ( !nav.traverse(tile.getPosition()) ) {
 			Walking.blindWalkTo(tile);
+		} else {
+			AccurateMouse.clickMinimap(tile.getPosition());
 		}
 	}
 	

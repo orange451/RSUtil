@@ -47,8 +47,10 @@ public class AIOEquipment {
 		
 		// Check if we have it already equipped
 		int count = Equipment.getCount(desiredItemIds);
-		if ( count > 0 )
+		if ( count > 0 ) {
+			General.println("Has equipped: " + tool);
 			return true;
+		}
 		
 		General.println("Checking inventory for: " + tool);
 		
