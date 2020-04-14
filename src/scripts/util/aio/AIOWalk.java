@@ -59,6 +59,9 @@ public class AIOWalk {
 	 * @return
 	 */
 	public static boolean walkTo(Locations location, boolean shouldRunTo, AIOStatus status) {
+		if ( location == null )
+			return true;
+		
 		BotTaskWalk task = new BotTaskWalk(location, shouldRunTo) {
 
 			@Override
