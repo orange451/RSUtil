@@ -47,7 +47,7 @@ public enum ObjectNames {
 
 	private ObjectNames(int... id) { this.id = id; }
 
-	public int[] getId() {
+	public int[] getIds() {
 		return this.id;
 	}
 
@@ -64,5 +64,23 @@ public enum ObjectNames {
 		}
 
 		return null;
+	}
+	
+	public static int[] get(ObjectNames... itemNames) {
+		int len = 0;
+		for (int i = 0 ;i < itemNames.length; i++) {
+			len += itemNames[i].getIds().length;
+		}
+		
+		int a = 0;
+		int[] ret = new int[len];
+		for (int i = 0; i < itemNames.length; i++) {
+			int[] t = itemNames[i].getIds();
+			for (int j = 0; j < t.length; j++) {
+				ret[a++] = t[j];
+			}
+		}
+		
+		return ret;
 	}
 }

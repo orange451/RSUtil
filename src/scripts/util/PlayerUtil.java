@@ -564,7 +564,7 @@ public class PlayerUtil {
 		RSNPC[] attackingNPCS = getAttackingNPCS();
 		List<RSNPC> attackingNPCSThatWeShouldActuallyWorryAboutPerhaps = new ArrayList<>();
 		for (RSNPC npc : attackingNPCS) {
-			if ( npc.getCombatLevel() > Player.getRSPlayer().getCombatLevel() - 1 ) {
+			if ( npc.getCombatLevel() > Player.getRSPlayer().getCombatLevel() ) {
 				attackingNPCSThatWeShouldActuallyWorryAboutPerhaps.add(npc);
 			}
 		}

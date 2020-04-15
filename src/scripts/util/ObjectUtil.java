@@ -1,6 +1,9 @@
 package scripts.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.tribot.api.General;
 import org.tribot.api.interfaces.Positionable;
 import org.tribot.api2007.Camera;
@@ -22,7 +25,7 @@ public class ObjectUtil {
 	 * @param obj
 	 * @return
 	 */
-	public static ArrayList<RSObject> getAll(ObjectNames obj) {
+	public static List<RSObject> getAll(ObjectNames obj) {
 		return getAll(obj, 25);
 	}
 	
@@ -32,20 +35,9 @@ public class ObjectUtil {
 	 * @param distance
 	 * @return
 	 */
-	public static ArrayList<RSObject> getAll(ObjectNames obj, int distance) {
-		ArrayList<RSObject> objs = new ArrayList<RSObject>();
-		RSObject[] objects = Objects.getAll(distance);
-		for (int i = 0; i < objects.length; i++) {
-			RSObject o = objects[i];
-			int[] ids = obj.getId();
-			for (int ii = 0; ii < ids.length; ii++) {
-				if (o.getID() == ids[ii]) {
-					objs.add(o);
-				}
-			}
-		}
-
-		return objs;
+	public static List<RSObject> getAll(ObjectNames obj, int distance) {
+		RSObject[] objects = Objects.findNearest(distance, obj.getIds());
+		return Arrays.asList(objects);
 	}
 
 	/**
@@ -55,7 +47,7 @@ public class ObjectUtil {
 	 * @return
 	 */
 	public static boolean isA(RSObject o, ObjectNames obj) {
-		int[] ids = obj.getId();
+		int[] ids = obj.getIds();
 		for (int ii = 0; ii < ids.length; ii++) {
 			if (o.getID() == ids[ii]) {
 				return true;
@@ -83,7 +75,7 @@ public class ObjectUtil {
 	 * @return
 	 */
 	public static RSObject get(ObjectNames obj, Positionable position, int MAX_DIST, boolean adjacentPlayersAddDistance) {
-		ArrayList<RSObject> objects = getAll(obj);
+		List<RSObject> objects = getAll(obj);
 		RSObject mine = null;
 		int dist = MAX_DIST;
 		
