@@ -114,11 +114,11 @@ public final class AntiBan {
 	}
 
 	/**
-	 * Idles for a max of maxTime milliseconds. See {@link #idle(long, Condition)}.
+	 * Idles for idleTime milliseconds. See {@link #idle(long, Condition)}.
 	 * @param maxTime
 	 */
-	public static void idle(long maxTime) {
-		idle(maxTime, null);
+	public static void idle(long idleTime) {
+		idle(idleTime, null);
 	}
 
 	/**

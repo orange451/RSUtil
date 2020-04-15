@@ -66,6 +66,19 @@ public enum ObjectNames {
 		return null;
 	}
 	
+	public static ObjectNames match(int id) {
+		ObjectNames[] types = values();
+		for (ObjectNames obj : types) {
+			int[] t = obj.getIds();
+			for (int i = 0; i < t.length; i++) {
+				if (t[i] == id)
+					return obj;
+			}
+		}
+		
+		return null;
+	}
+	
 	public static int[] get(ObjectNames... itemNames) {
 		int len = 0;
 		for (int i = 0 ;i < itemNames.length; i++) {
