@@ -17,6 +17,11 @@ import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
+import scripts.util.names.type.ArmorClassification;
+import scripts.util.names.type.ArmorType;
+import scripts.util.names.type.EquipmentMaterial;
+import scripts.util.names.type.ToolType;
+
 import static scripts.util.names.ItemNamesData.get;
 
 public class AIOEquipment {
@@ -82,11 +87,11 @@ public class AIOEquipment {
 		return false;
 	}
 
-	public static RSItem equipArmor(ArmorType armor) {
+	public static RSItem equipArmor(ArmorClassification armor) {
 		return equipArmor( armor, EquipmentMaterial.BRONZE );
 	}
 
-	public static RSItem equipArmor(ArmorType armor, EquipmentMaterial minimumMaterial) {
+	public static RSItem equipArmor(ArmorClassification armor, EquipmentMaterial minimumMaterial) {
 		//Equipment.
 		// Check current wearing armor
 		// 		CAN RETURN TRUE IF SUCCESS
@@ -109,12 +114,12 @@ public class AIOEquipment {
 		return null;
 	}
 	
-	private static Tools[] getToolTypes(ToolType type, EquipmentMaterial minimumMaterial) {
+	private static ToolType[] getToolTypes(ToolType type, EquipmentMaterial minimumMaterial) {
 		
 		// Get Tools that match type, and minimum quality
-		List<Tools> ret = new ArrayList<>();
-		Tools[] temp = Tools.values();
-		for (Tools tool : temp) {
+		List<ToolType> ret = new ArrayList<>();
+		ToolType[] temp = ToolType.values();
+		for (ToolType tool : temp) {
 			if ( !tool.getType().equals(type) )
 				continue;
 			
@@ -125,42 +130,42 @@ public class AIOEquipment {
 		}
 		
 		// Sort based on quality
-		Collections.sort(ret, new Comparator<Tools>() {
+		Collections.sort(ret, new Comparator<ToolType>() {
 			@Override
-			public int compare(Tools arg0, Tools arg1) {
+			public int compare(ToolType arg0, ToolType arg1) {
 				return compareQuality(arg0.getMaterial().getQuality(), arg1.getMaterial().getQuality());
 			}
 		});
 		
-		return ret.toArray(new Tools[ret.size()]);
+		return ret.toArray(new ToolType[ret.size()]);
 	}
 	
-	private static Armor[] getArmorTypes(ArmorType type) {
-		Armor[] armorArray = Armor.values();
+	private static ArmorType[] getArmorClassifications(ArmorClassification type) {
+		ArmorType[] armorArray = ArmorType.values();
 		
 		// Get armors that match this type
-		List<Armor> temp = new ArrayList<>();
-		for (Armor armor : armorArray) {
+		List<ArmorType> temp = new ArrayList<>();
+		for (ArmorType armor : armorArray) {
 			if ( armor.getType().equals(type) )
 				temp.add(armor);
 		}
 		
 		// Sort on quality
-		Collections.sort(temp, new Comparator<Armor>() {
+		Collections.sort(temp, new Comparator<ArmorType>() {
 			@Override
-			public int compare(Armor arg0, Armor arg1) {
+			public int compare(ArmorType arg0, ArmorType arg1) {
 				return compareQuality(arg0.getMaterial().getQuality(), arg1.getMaterial().getQuality());
 			}
 		});
 		
-		return temp.toArray(new Armor[temp.size()]);
+		return temp.toArray(new ArmorType[temp.size()]);
 	}
 	
 	private static int compareQuality(int a, int b) {
 		return a-b;
 	}
 	
-	private static ItemIds[] convertToItems(Tools[] toolTypes) {
+	private static ItemIds[] convertToItems(ToolType[] toolTypes) {
 		// Turn into list of ItemIds
 		ItemIds[] ret = new ItemIds[toolTypes.length];
 		for (int i = 0; i < toolTypes.length; i++) {
@@ -170,162 +175,13 @@ public class AIOEquipment {
 		return ret;
 	}
 	
-	private static ItemIds[] convertToItems(Armor[] armorTypes) {
+	private static ItemIds[] convertToItems(ArmorType[] ArmorClassifications) {
 		// Turn into list of ItemIds
-		ItemIds[] ret = new ItemIds[armorTypes.length];
-		for (int i = 0; i < armorTypes.length; i++) {
-			ret[i] = armorTypes[i].getItem();
+		ItemIds[] ret = new ItemIds[ArmorClassifications.length];
+		for (int i = 0; i < ArmorClassifications.length; i++) {
+			ret[i] = ArmorClassifications[i].getItem();
 		}
 		
 		return ret;
-	}
-
-	public static enum Tools {
-		BRONZE_SWORD(EquipmentMaterial.BRONZE, ToolType.SWORD, ItemNames.BRONZE_SWORD),
-		IRON_SWORD(EquipmentMaterial.IRON, ToolType.SWORD, ItemNames.IRON_SWORD),
-		STEEL_SWORD(EquipmentMaterial.STEEL, ToolType.SWORD, ItemNames.STEEL_SWORD),
-		MITHRIL_SWORD(EquipmentMaterial.MITHRIL, ToolType.SWORD, ItemNames.MITHRIL_SWORD),
-		ADAMANT_SWORD(EquipmentMaterial.ADAMANT, ToolType.SWORD, ItemNames.ADAMANT_SWORD),
-		RUNE_SWORD(EquipmentMaterial.RUNE, ToolType.SWORD, ItemNames.RUNE_SWORD),
-
-		BRONZE_SCIMITAR(EquipmentMaterial.BRONZE, ToolType.SWORD, ItemNames.BRONZE_SCIMITAR),
-		IRON_SCIMITAR(EquipmentMaterial.IRON, ToolType.SWORD, ItemNames.IRON_SCIMITAR),
-		STEEL_SCIMITAR(EquipmentMaterial.STEEL, ToolType.SWORD, ItemNames.STEEL_SCIMITAR),
-		MITHRIL_SCIMITAR(EquipmentMaterial.MITHRIL, ToolType.SWORD, ItemNames.MITHRIL_SCIMITAR),
-		ADAMANT_SCIMITAR(EquipmentMaterial.ADAMANT, ToolType.SWORD, ItemNames.ADAMANT_SCIMITAR),
-		RUNE_SCIMITAR(EquipmentMaterial.RUNE, ToolType.SWORD, ItemNames.RUNE_SCIMITAR),
-		
-		BRONZE_LONGSWORD(EquipmentMaterial.BRONZE, ToolType.SWORD, ItemNames.BRONZE_LONGSWORD),
-		IRON_LONGSWORD(EquipmentMaterial.IRON, ToolType.SWORD, ItemNames.IRON_LONGSWORD),
-		STEEL_LONGSWORD(EquipmentMaterial.STEEL, ToolType.SWORD, ItemNames.STEEL_LONGSWORD),
-		MITHRIL_LONGSWORD(EquipmentMaterial.MITHRIL, ToolType.SWORD, ItemNames.MITHRIL_LONGSWORD),
-		ADAMANT_LONGSWORD(EquipmentMaterial.ADAMANT, ToolType.SWORD, ItemNames.ADAMANT_LONGSWORD),
-		RUNE_LONGSWORD(EquipmentMaterial.RUNE, ToolType.SWORD, ItemNames.RUNE_LONGSWORD),
-
-		BRONZE_PICKAXE(EquipmentMaterial.BRONZE, ToolType.PICKAXE, ItemNames.BRONZE_PICKAXE),
-		IRON_PICKAXE(EquipmentMaterial.IRON, ToolType.PICKAXE, ItemNames.IRON_PICKAXE),
-		STEEL_PICKAXE(EquipmentMaterial.STEEL, ToolType.PICKAXE, ItemNames.STEEL_PICKAXE),
-		MITHRIL_PICKAXE(EquipmentMaterial.MITHRIL, ToolType.PICKAXE, ItemNames.MITHRIL_PICKAXE),
-		ADAMANT_PICKAXE(EquipmentMaterial.ADAMANT, ToolType.PICKAXE, ItemNames.ADAMANT_PICKAXE),
-		RUNE_PICKAXE(EquipmentMaterial.RUNE, ToolType.PICKAXE, ItemNames.RUNE_PICKAXE),
-
-		BRONZE_AXE(EquipmentMaterial.BRONZE, ToolType.AXE, ItemNames.BRONZE_AXE),
-		IRON_AXE(EquipmentMaterial.IRON, ToolType.AXE, ItemNames.IRON_AXE),
-		STEEL_AXE(EquipmentMaterial.STEEL, ToolType.AXE, ItemNames.STEEL_AXE),
-		MITHRIL_AXE(EquipmentMaterial.MITHRIL, ToolType.AXE, ItemNames.MITHRIL_AXE),
-		ADAMANT_AXE(EquipmentMaterial.ADAMANT, ToolType.AXE, ItemNames.ADAMANT_AXE),
-		RUNE_AXE(EquipmentMaterial.RUNE, ToolType.AXE, ItemNames.RUNE_AXE),
-
-		WOODEN_SHIELD(EquipmentMaterial.WOODEN, ToolType.SHIELD, ItemNames.WOODEN_SHIELD),
-		
-		BRONZE_SQ_SHIELD(EquipmentMaterial.BRONZE, ToolType.SHIELD, ItemNames.BRONZE_SQ_SHIELD),
-		IRON_SQ_SHIELD(EquipmentMaterial.IRON, ToolType.SHIELD, ItemNames.IRON_SQ_SHIELD),
-		STEEL_SQ_SHIELD(EquipmentMaterial.STEEL, ToolType.SHIELD, ItemNames.STEEL_SQ_SHIELD),
-		MITHRIL_SQ_SHIELD(EquipmentMaterial.MITHRIL, ToolType.SHIELD, ItemNames.MITHRIL_SQ_SHIELD),
-		ADAMANT_SQ_SHIELD(EquipmentMaterial.ADAMANT, ToolType.SHIELD, ItemNames.ADAMANT_SQ_SHIELD),
-		RUNE_SQ_SHIELD(EquipmentMaterial.RUNE, ToolType.SHIELD, ItemNames.RUNE_SQ_SHIELD),
-
-		BRONZE_KITESHIELD(EquipmentMaterial.BRONZE, ToolType.SHIELD, ItemNames.BRONZE_KITESHIELD),
-		IRON_KITESHIELD(EquipmentMaterial.IRON, ToolType.SHIELD, ItemNames.IRON_KITESHIELD),
-		STEEL_KITESHIELD(EquipmentMaterial.STEEL, ToolType.SHIELD, ItemNames.STEEL_KITESHIELD),
-		MITHRIL_KITESHIELD(EquipmentMaterial.MITHRIL, ToolType.SHIELD, ItemNames.MITHRIL_KITESHIELD),
-		ADAMANT_KITESHIELD(EquipmentMaterial.ADAMANT, ToolType.SHIELD, ItemNames.ADAMANT_KITESHIELD),
-		RUNE_KITESHIELD(EquipmentMaterial.RUNE, ToolType.SHIELD, ItemNames.RUNE_KITESHIELD);
-		
-		private ItemIds item;
-		private EquipmentMaterial material;
-		private ToolType type;
-		
-		private Tools(EquipmentMaterial material, ToolType type, ItemIds item) {
-			this.material = material;
-			this.type = type;
-			this.item = item;
-		}
-		
-		public ToolType getType() {
-			return this.type;
-		}
-		
-		public EquipmentMaterial getMaterial() {
-			return this.material;
-		}
-		
-		public ItemIds getItem() {
-			return this.item;
-		}
-	}
-	
-	public static enum ToolType {
-		PICKAXE,
-		SWORD,
-		AXE,
-		SHIELD,
-	}
-	
-	public static enum EquipmentMaterial {
-		ALL(Integer.MIN_VALUE),
-		WOODEN(0),
-		BRONZE(1),
-		IRON(2),
-		STEEL(3),
-		BLACK(4),
-		MITHRIL(5),
-		ADAMANT(6),
-		RUNE(7),
-		DRAGON(8);
-		
-		private int quality;
-		
-		public int getQuality() {
-			return this.quality;
-		}
-		
-		EquipmentMaterial(int quality) {
-			this.quality = quality;
-		}
-	}
-	
-	public static enum ArmorType {
-		PLATEBODY,
-		LEGGINGS,
-		HELMET,
-		BOOTS
-	}
-	
-	public static enum Armor {
-		BRONZE_PLATEBODY(EquipmentMaterial.BRONZE, ArmorType.PLATEBODY, ItemNames.BRONZE_PLATEBODY),
-		BRONZE_CHAINBODY(EquipmentMaterial.BRONZE, ArmorType.PLATEBODY, ItemNames.BRONZE_CHAINBODY),
-		IRON_PLATEBODY(EquipmentMaterial.IRON, ArmorType.PLATEBODY, ItemNames.IRON_PLATEBODY),
-		IRON_CHAINBODY(EquipmentMaterial.IRON, ArmorType.PLATEBODY, ItemNames.IRON_CHAINBODY),
-		STEEL_PLATEBODY(EquipmentMaterial.STEEL, ArmorType.PLATEBODY, ItemNames.STEEL_PLATEBODY),
-		STEEL_CHAINBODY(EquipmentMaterial.STEEL, ArmorType.PLATEBODY, ItemNames.STEEL_CHAINBODY),
-		MITHRIL_PLATEBODY(EquipmentMaterial.MITHRIL, ArmorType.PLATEBODY, ItemNames.MITHRIL_PLATEBODY),
-		MITHRIL_CHAINBODY(EquipmentMaterial.MITHRIL, ArmorType.PLATEBODY, ItemNames.MITHRIL_CHAINBODY),
-		ADAMANT_PLATEBODY(EquipmentMaterial.ADAMANT, ArmorType.PLATEBODY, ItemNames.ADAMANT_PLATEBODY),
-		ADAMANT_CHAINBODY(EquipmentMaterial.ADAMANT, ArmorType.PLATEBODY, ItemNames.ADAMANT_CHAINBODY),
-		RUNE_PLATEBODY(EquipmentMaterial.RUNE, ArmorType.PLATEBODY, ItemNames.RUNE_PLATEBODY),
-		RUNE_CHAINBODY(EquipmentMaterial.RUNE, ArmorType.PLATEBODY, ItemNames.RUNE_CHAINBODY);
-		
-		private ItemIds item;
-		private EquipmentMaterial material;
-		private ArmorType type;
-		
-		private Armor(EquipmentMaterial material, ArmorType type, ItemIds item) {
-			this.material = material;
-			this.type = type;
-			this.item = item;
-		}
-		
-		public ArmorType getType() {
-			return this.type;
-		}
-		
-		public EquipmentMaterial getMaterial() {
-			return this.material;
-		}
-		
-		public ItemIds getItem() {
-			return this.item;
-		}
 	}
 }

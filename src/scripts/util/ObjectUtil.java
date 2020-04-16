@@ -58,6 +58,7 @@ public class ObjectUtil {
 	
 	/**
 	 * Returns the closest object with a matching object name to the given position.
+	 * All objects returned MUST be reachable from {@link PathFinding#canReach()}.
 	 * @param obj
 	 * @param position
 	 * @param MAX_DIST
@@ -69,6 +70,7 @@ public class ObjectUtil {
 	
 	/**
 	 * Returns the closest object with a matching object name to the given position.
+	 * All objects returned MUST be reachable from {@link PathFinding#canReach()}.
 	 * @param obj
 	 * @param position
 	 * @param MAX_DIST
@@ -86,6 +88,9 @@ public class ObjectUtil {
 			
 			if ( hasAdjacent ) 
 				tdist += 10;
+			
+			if ( !PathFinding.canReach(Player.getPosition(), o.getPosition(), true) )
+				tdist = Integer.MAX_VALUE;
 			
 			if (tdist < dist) {
 				dist = tdist;
@@ -121,6 +126,7 @@ public class ObjectUtil {
 
 	/**
 	 * Returns the closest object with a matching object name to the player. See {@link #get(ObjectNames, RSTile, int)}.
+	 * Additionally, all objects returned MUST be reachable from {@link PathFinding#canReach()}.
 	 * @return
 	 */
 	public static RSObject get(ObjectNames obj) {
@@ -129,6 +135,7 @@ public class ObjectUtil {
 
 	/**
 	 * Returns the closest object with a matching object name to the player. See {@link #get(ObjectNames, RSTile, int)}.
+	 * Additionally, all objects returned MUST be reachable from {@link PathFinding#canReach()}.
 	 * @param obj
 	 * @param MAX_DIST
 	 * @return

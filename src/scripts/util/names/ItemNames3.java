@@ -1,6 +1,6 @@
 package scripts.util.names;
 
-class ItemNames3 extends ItemNames2 {
+public class ItemNames3 extends ItemNames2 {
 	public static final ItemNamesData BOARD_GAME_PIECE = new ItemNamesData(3870, 3871, 3869, 3880, 3881, 3882, 3872, 3873, 3874, 3875, 3876, 3877, 3878, 3879, 3890, 3891, 3892, 3883, 3884, 3885, 3886, 3887, 3888, 3889);
 	public static final ItemNamesData RUNE_FIRE_ARROWS = new ItemNamesData(2540, 2541);
 	public static final ItemNamesData MITHRIL_FIRE_ARROWS = new ItemNamesData(2537, 2536);

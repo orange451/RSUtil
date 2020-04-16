@@ -10,14 +10,13 @@ import org.tribot.api2007.Player;
 import org.tribot.api2007.Walking;
 import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSNPC;
-import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.aio.f2pquester.F2PQuester;
 import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.walker_engine.WalkingCondition;
-import scripts.util.AccurateMouse;
+import scripts.dax_api.walker_engine.interaction_handling.AccurateMouse;
 import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
 import scripts.util.PlayerUtil;

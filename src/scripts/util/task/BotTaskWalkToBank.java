@@ -1,6 +1,7 @@
 package scripts.util.task;
 
 import org.tribot.api2007.Combat;
+
 import scripts.util.names.Banks;
 
 public abstract class BotTaskWalkToBank extends BotTaskWalk {

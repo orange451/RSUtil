@@ -521,4 +521,8 @@ class ItemNames6 extends ItemNames5 {
 	public static final ItemNamesData HAM_BOOTS = new ItemNamesData(4310);
 	public static final ItemNamesData MITHRIL_BOLTS = new ItemNamesData(9142);
     public static final ItemNamesData LOOTING_BAG = new ItemNamesData(11941);
+    public static final ItemNamesData STEAM_BATTLESTAFF = new ItemNamesData(11787);
+    public static final ItemNamesData MYSTIC_STEAM_STAFF = new ItemNamesData(11738);
+    public static final ItemNamesData SMOKE_BATTLESTAFF = new ItemNamesData(11998);
+    public static final ItemNamesData MYSTIC_SMOKE_STAFF = new ItemNamesData(12000);
 }

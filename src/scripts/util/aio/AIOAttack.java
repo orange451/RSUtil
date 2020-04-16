@@ -1,7 +1,6 @@
 package scripts.util.aio;
 
 import org.tribot.api.General;
-import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Combat;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.PathFinding;
@@ -10,9 +9,7 @@ import org.tribot.api2007.Players;
 import org.tribot.api2007.Skills;
 import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSPlayer;
-import org.tribot.api2007.util.DPathNavigator;
-
-import scripts.util.AccurateMouse;
+import scripts.dax_api.walker_engine.interaction_handling.AccurateMouse;
 import scripts.util.NPCUtil;
 import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;
@@ -86,7 +83,7 @@ public class AIOAttack {
 		// Walk to enemy
 		if ( !PathFinding.canReach(npc.getPosition(), false) ) {
 			status.setStatus("Walking to npc");
-			walkTo(npc);
+			AIOWalk.walkToLegacy(npc.getPosition());
 			AntiBan.sleep(1000, 250);
 		}
 		
@@ -131,7 +128,7 @@ public class AIOAttack {
 			
 			// Walk to enemy sometimes.
 			if ( a > 0 && AntiBan.randomChance(2) ) {
-				walkTo(npc);
+				AIOWalk.walkToLegacy(npc.getPosition());
 				AntiBan.sleep(1000, 500);
 			}
 			
@@ -341,30 +338,6 @@ public class AIOAttack {
 	}
 	
 	/**
-	 * Attempts to walk to the desired npc. It will stop when it's reachable via direct walking.
-	 * @param npc
-	 */
-	private static void walkTo(RSNPC npc) {
-		if ( npc == null )
-			return;
-		
-		DPathNavigator nav = new DPathNavigator();
-		nav.setStoppingConditionCheckDelay(100L);
-		nav.setStoppingCondition(new Condition() {
-
-			@Override
-			public boolean active() {
-				if ( PlayerUtil.isInDanger() )
-					return true;
-				return PathFinding.canReach(npc.getPosition(), false);
-			}
-		});
-
-		nav.traverse(npc.getPosition());
-		AccurateMouse.clickMinimap(npc.getPosition());
-	}
-	
-	/**
 	 * Attempts to attacking an NPC that is already attacking us.
 	 * @return
 	 */
@@ -380,7 +353,7 @@ public class AIOAttack {
 			
 			// Walk to it
 			if ( !PathFinding.canReach(npc, false) )
-				walkTo(npc);
+				AIOWalk.walkToLegacy(npc.getPosition());
 
 			// Try to click/moveto target
 			int fails = 0;
