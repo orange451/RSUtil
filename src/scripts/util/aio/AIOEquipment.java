@@ -17,9 +17,10 @@ import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
-import scripts.util.names.type.ArmorClassification;
+import scripts.util.names.type.ArmorClass;
 import scripts.util.names.type.ArmorType;
 import scripts.util.names.type.EquipmentMaterial;
+import scripts.util.names.type.ToolClass;
 import scripts.util.names.type.ToolType;
 
 import static scripts.util.names.ItemNamesData.get;
@@ -34,7 +35,7 @@ public class AIOEquipment {
 	 * TODO Make it go to GE and buy item.
 	 * @return Whether or not the tool was/is equipped.
 	 */
-	public static boolean equipTool(ToolType tool) {
+	public static boolean equipTool(ToolClass tool) {
 		return equipTool(tool, EquipmentMaterial.BRONZE);
 	}
 	
@@ -46,7 +47,7 @@ public class AIOEquipment {
 	 * TODO Make it go to GE and buy item.
 	 * @return Whether or not the tool was/is equipped.
 	 */
-	public static boolean equipTool(ToolType tool, EquipmentMaterial minimumMaterial) {
+	public static boolean equipTool(ToolClass tool, EquipmentMaterial minimumMaterial) {
 		ItemIds[] desiredItems = convertToItems(getToolTypes(tool, minimumMaterial));
 		int[] desiredItemIds = get(desiredItems);
 		
@@ -87,11 +88,11 @@ public class AIOEquipment {
 		return false;
 	}
 
-	public static RSItem equipArmor(ArmorClassification armor) {
+	public static RSItem equipArmor(ArmorClass armor) {
 		return equipArmor( armor, EquipmentMaterial.BRONZE );
 	}
 
-	public static RSItem equipArmor(ArmorClassification armor, EquipmentMaterial minimumMaterial) {
+	public static RSItem equipArmor(ArmorClass armor, EquipmentMaterial minimumMaterial) {
 		//Equipment.
 		// Check current wearing armor
 		// 		CAN RETURN TRUE IF SUCCESS
@@ -114,7 +115,7 @@ public class AIOEquipment {
 		return null;
 	}
 	
-	private static ToolType[] getToolTypes(ToolType type, EquipmentMaterial minimumMaterial) {
+	private static ToolType[] getToolTypes(ToolClass type, EquipmentMaterial minimumMaterial) {
 		
 		// Get Tools that match type, and minimum quality
 		List<ToolType> ret = new ArrayList<>();
@@ -140,12 +141,15 @@ public class AIOEquipment {
 		return ret.toArray(new ToolType[ret.size()]);
 	}
 	
-	private static ArmorType[] getArmorClassifications(ArmorClassification type) {
+	private static ArmorType[] getArmorClassifications(ArmorClass type, EquipmentMaterial minimumMaterial) {
 		ArmorType[] armorArray = ArmorType.values();
 		
 		// Get armors that match this type
 		List<ArmorType> temp = new ArrayList<>();
 		for (ArmorType armor : armorArray) {
+			if ( armor.getMaterial().getQuality() < minimumMaterial.getQuality() )
+				continue;
+			
 			if ( armor.getType().equals(type) )
 				temp.add(armor);
 		}
