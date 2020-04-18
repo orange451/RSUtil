@@ -6,6 +6,7 @@ import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSItem;
 
 import scripts.util.ItemUtil;
+import scripts.util.misc.ItemWrapper;
 import scripts.util.misc.NameFormatter;
 
 public class ItemNamesData extends ItemIds {
@@ -655,6 +656,15 @@ public class ItemNamesData extends ItemIds {
 			for (int j = 0; j < t.length; j++) {
 				ret[a++] = t[j];
 			}
+		}
+		
+		return ret;
+	}
+	
+	public static ItemIds[] get(ItemWrapper... wrapper) {
+		ItemIds[] ret = new ItemIds[wrapper.length];
+		for (int i = 0; i < wrapper.length; i++) {
+			ret[i] = wrapper[i].getItem();
 		}
 		
 		return ret;
