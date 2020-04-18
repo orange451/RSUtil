@@ -3,6 +3,7 @@ package scripts.util.aio;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.Inventory;
 
+import scripts.util.BankingUtil;
 import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
@@ -108,6 +109,18 @@ public class AIOBank {
 		
 		// Everything went successful.
 		status.setType(StatusType.SUCCESS);
+		return true;
+	}
+
+	public static boolean walkToNearestBankAndWithdrawFirstItem(int quantity, ItemIds desiredItem) {
+		// Go to bank
+		if ( !walkToNearestBankAndOpen() )
+			return false;
+		
+		// Withdraw
+		if ( !BankingUtil.withdrawFirstItem(quantity, desiredItem) )
+			return false;
+		
 		return true;
 	}
 }

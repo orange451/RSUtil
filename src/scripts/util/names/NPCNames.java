@@ -70,7 +70,8 @@ public enum NPCNames {
 	WIZARD(true),
 	WHITE_KNIGHT(true),
 	WYSON(false),
-	ZOMBIE(true);
+	ZOMBIE(true),
+	GRAND_EXCHANGE_CLERK(false);
 
 	private boolean attackable;
 	private String name;

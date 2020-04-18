@@ -45,7 +45,7 @@ public final class AntiBan {
 		if (abc.shouldRotateCamera()) {
 			abc.rotateCamera();
 		}
-		if (abc.shouldLeaveGame() && randomChance(5))
+		if (abc.shouldLeaveGame() && randomChance(32))
 			abc.leaveGame();
 	}
 

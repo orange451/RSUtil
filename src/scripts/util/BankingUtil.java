@@ -55,6 +55,14 @@ public class BankingUtil {
 	 * @param desiredItems
 	 */
 	public static boolean withdrawFirstItem(ItemIds... desiredItems) {
+		return withdrawFirstItem(1, desiredItems);
+	}
+	
+	/**
+	 * Withdraws the first item in your bank from a list of desired items
+	 * @param desiredItems
+	 */
+	public static boolean withdrawFirstItem(int quantity, ItemIds... desiredItems) {
 		if (!Banking.isBankScreenOpen())
 			return false;
 		
@@ -63,7 +71,7 @@ public class BankingUtil {
 			if ( t == null || t.length == 0 )
 				continue;
 			
-			if ( Banking.withdraw(1, item.getIds()) ) {
+			if ( Banking.withdraw(quantity, item.getIds()) ) {
 					AntiBan.sleep(800, 250);
 					return true;
 			}

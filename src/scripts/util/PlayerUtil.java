@@ -109,7 +109,7 @@ public class PlayerUtil {
 		for (int i = 0; i < objs.length; i++) {
 			RSGroundItem o = objs[i];
 			int id = o.getID();
-			int price = ItemUtil.getPriceAlt(id);
+			int price = ItemUtil.getPrice(id);
 			if ( price >= minGP ) {
 				ids.add(id);
 			}
@@ -533,7 +533,7 @@ public class PlayerUtil {
 	}
 
 	/**
-	 * Returns the amount of money i nthe players inventory.
+	 * Returns the amount of money in the players inventory.
 	 * @return
 	 */
 	public static int getAmountOfMoney() {

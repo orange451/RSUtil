@@ -2,6 +2,7 @@ package scripts.util.aio;
 
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
+import org.tribot.api2007.Banking;
 import org.tribot.api2007.Camera;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.GroundItems;
@@ -101,6 +102,9 @@ public class AIOWalk {
 	 * @return
 	 */
 	public static boolean walkToNearestBank(AIOStatus status) {
+		if ( Banking.isBankScreenOpen() )
+			return true;
+		
 		status.setStatus("Walking to bank...");
 		
 		// Generate walk to bank task

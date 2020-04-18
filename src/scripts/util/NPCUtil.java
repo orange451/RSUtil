@@ -229,4 +229,12 @@ public class NPCUtil {
 		
 		return false;
 	}
+
+	public static boolean interactWithFirstNPC(String action, NPCNames npcs) {
+		RSNPC[] npcList = NPCUtil.getNPCSWithAction("Exchange", NPCNames.GRAND_EXCHANGE_CLERK);
+		if ( npcList == null || npcList.length == 0 )
+			return false;
+		
+		return npcList[0].click(new String[] { action });
+	}
 }
