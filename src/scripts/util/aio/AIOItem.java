@@ -9,6 +9,7 @@ import java.util.List;
 import org.tribot.api.General;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.GrandExchange;
+import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSItem;
 
 import scripts.util.NPCUtil;
@@ -143,7 +144,10 @@ public class AIOItem {
 		// Open GE
 		while(!NPCUtil.interactWithFirstNPC("Exchange G", NPCNames.GRAND_EXCHANGE_CLERK) )
 			General.sleep(1000);
-		General.sleep(1000, 1400);
+		General.sleep(2000, 2400);
+		while(Player.isMoving())
+			General.sleep(1000);
+		General.sleep(250);
 		General.println("Attempting to buy " + quantity + " " + ge.getName() + " for " + buyPrice + " gp");
 		
 		// If the item isn't available to collect, make an offer!
