@@ -291,12 +291,21 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static int getAmountItemsInInventory(ItemIds... check) {
+		return getAmountItemsInInventory(true, check);
+	}
+
+	/**
+	 * Returns the amount of a specific item type in the players inventory.
+	 * @param check
+	 * @return
+	 */
+	public static int getAmountItemsInInventory(boolean countStacks, ItemIds... check) {
 		int amt = 0;
 		RSItem[] items = Inventory.getAll();
 		for (int i = 0; i < items.length; i++) {
 			RSItem item = items[i];
 			if (ItemNames.is(item, check)) {
-				amt += item.getStack();
+				amt += countStacks?item.getStack():1;
 			}
 		}
 
@@ -309,11 +318,11 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static boolean hasItemsInInventory(ItemIds...check) {
-		return getAmountItemsInInventory(check) > 0;
+		return getAmountItemsInInventory(false, check) > 0;
 	}
 
 	/**
-	 * Returns the first occurence of a specific item in the players inventory.
+	 * Returns the first occurrence of a specific item in the players inventory.
 	 * @param check
 	 * @return
 	 */

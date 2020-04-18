@@ -84,7 +84,7 @@ public class AIOItem {
 		int[] desiredItemIds = get(desiredItem);
 		
 		// Check if it is in inventory, and equip if not.
-		General.println("Checking inventory for: " + desiredItem);
+		General.println("Checking inventory for: " + desiredItem + " (" + Arrays.toString(desiredItemIds) + ")");
 		int count = PlayerUtil.getAmountItemsInInventory(desiredItem);
 		if ( count >= quantity ) {
 			RSItem item = PlayerUtil.getFirstItemInInventory(desiredItem);

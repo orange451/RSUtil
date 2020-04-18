@@ -8,6 +8,7 @@ import org.tribot.api2007.types.RSTile;
 
 import com.allatori.annotations.DoNotRename;
 
+import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.api_lib.WebWalkerServerApi;
 import scripts.dax_api.api_lib.models.PlayerDetails;
 import scripts.dax_api.api_lib.models.Point3D;
@@ -46,7 +47,7 @@ public enum Banks {
 	public static Banks getNearestBank() {
 		Banks[] banks = values();
 		Banks ret = null;
-		int dist = 999999;
+		int dist = Integer.MAX_VALUE;
 		for (int i = 0; i < banks.length; i++) {
 			Banks bank = banks[i];
 
@@ -55,11 +56,17 @@ public enum Banks {
 			// Get distance to bank
 			int pathDist = -1;
 			while(tries < 6) {
-				RSTile center = bank.getLocation().getRandomizedCenter(AntiBan.random(4));
+				// Force initialize dax
+				DaxWalker.getGlobalWalkingCondition();
+				
+				RSTile center = bank.getLocation().getRandomizedPosition();
 				ArrayList<RSTile> tiles = WebWalkerServerApi.getInstance().getPath(Point3D.fromPositionable(Player.getPosition()), Point3D.fromPositionable(center), PlayerDetails.generate()).toRSTilePath();
+				
 				int tempDist = tiles.size();
-				if ( tempDist > 0 )
+				if ( tempDist > 0 ) {
 					pathDist = tempDist;
+					break;
+				}
 				
 				tries++;
 			}
