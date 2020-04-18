@@ -54,7 +54,7 @@ public class BankingUtil {
 	 * Withdraws the first item in your bank from a list of desired items
 	 * @param desiredItems
 	 */
-	public static boolean withdrawFirstItem(ItemIds[] desiredItems) {
+	public static boolean withdrawFirstItem(ItemIds... desiredItems) {
 		if (!Banking.isBankScreenOpen())
 			return false;
 		

@@ -377,7 +377,7 @@ public class ItemNamesData extends ItemIds {
 	public static final ItemNamesData ADAMANT_KITESHIELD = new ItemNamesData(1199);
 	public static final ItemNamesData RATS_TAIL = new ItemNamesData(300);
 	public static final ItemNamesData LOBSTER_POT = new ItemNamesData(301);
-	public static final ItemNamesData SMALL_FISHING_NET = new ItemNamesData(303);
+	public static final ItemNamesData SMALL_FISHING_NET = new ItemNamesData(303, 6209);
 	public static final ItemNamesData BIG_FISHING_NET = new ItemNamesData(305);
 	public static final ItemNamesData FISHING_ROD = new ItemNamesData(307);
 	public static final ItemNamesData FLY_FISHING_ROD = new ItemNamesData(309);

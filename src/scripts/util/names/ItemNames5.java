@@ -34,7 +34,6 @@ class ItemNames5 extends ItemNames4 {
 	public static final ItemNamesData DIVING_APPARATUS = new ItemNamesData(7535);
 	public static final ItemNamesData FRESH_CRAB_SHELL = new ItemNamesData(7538);
 	public static final ItemNamesData CRAB_CLAW = new ItemNamesData(7537);
-	public static final ItemNamesData SMALL_FISHING_NET = new ItemNamesData(6209);
 	public static final ItemNamesData CRAB_HELMET = new ItemNamesData(7539);
 	public static final ItemNamesData ONION_SEED = new ItemNamesData(7550, 5319);
 	public static final ItemNamesData BROODOO_SHIELD_7 = new ItemNamesData(6221, 6243, 6265);

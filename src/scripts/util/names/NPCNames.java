@@ -32,6 +32,7 @@ public enum NPCNames {
 	FATHER_AERECK(false),
 	FATHER_URHNEY(false),
 	FISHING_SPOT(false),
+	ROD_FISHING_SPOT(false),
 	FROG(true),
 	FRED_THE_FARMER(false),
 	GIANT_RAT(true),

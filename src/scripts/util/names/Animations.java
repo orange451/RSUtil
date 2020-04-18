@@ -6,7 +6,8 @@ import com.allatori.annotations.DoNotRename;
 public enum Animations {
 	MINING(new int[] { 629, 628 }), 
 	THIEVING(new int[] { 832 }), 
-	NONE(new int[] { -1 });
+	NONE(new int[] { -1 }),
+	FISHING(new int[] { 621 });
 
 	private int[] ids;
 

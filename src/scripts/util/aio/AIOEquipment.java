@@ -58,33 +58,17 @@ public class AIOEquipment {
 			return true;
 		}
 		
-		General.println("Checking inventory for: " + tool);
-		
-		// Check if it is in inventory, and equip if not.
-		count = Inventory.getCount(desiredItemIds);
-		if ( count > 0 ) {
-			RSItem item = PlayerUtil.getFirstItemInInventory(desiredItems);
-			Inventory.open();
-			AntiBan.sleep(500, 250);
-			item.click("wield");
-			AntiBan.sleep(800, 500);
-			return equipTool(tool, minimumMaterial);
+		// Try to go get the item
+		for (int i = 0; i < desiredItems.length; i++) {
+			RSItem item = AIOItem.getItem(desiredItems[i]);
+			if ( item != null ) {
+				AntiBan.sleep(500, 250);
+				item.click("wield");
+				AntiBan.sleep(1000, 500);
+				return equipTool(tool, minimumMaterial);
+			}
 		}
 		
-		General.println("Checking bank for: " + tool + "(" + Arrays.toString(desiredItemIds) + ")");
-		
-		// Go to bank
-		if ( !AIOBank.walkToNearestBankAndOpen() )
-			return false;
-		
-		// Withdraw
-		if ( BankingUtil.withdrawFirstItem(desiredItems) )
-			return equipTool(tool, minimumMaterial);
-		
-		General.println("Could not find items at bank! " + "(" + Arrays.toString(desiredItemIds) + ")");
-		
-		// Not in bank, lets go to GE and buy it!
-		// TODO implement GE stuff
 		return false;
 	}
 

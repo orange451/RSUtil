@@ -5,22 +5,28 @@ import scripts.util.misc.ObjectWrapper;
 import scripts.util.names.ObjectNames;
 
 public enum RockType implements ObjectWrapper {
-	COPPER(ObjectNames.ORE_COPPER, 1),
-	TIN(ObjectNames.ORE_TIN, 1),
-	COAL(ObjectNames.ORE_COAL, 2),
-	GOLD(ObjectNames.ORE_GOLD, 16),
-	IRON(ObjectNames.ORE_IRON, 3);
+	COPPER(ObjectNames.ORE_COPPER, 1, 1),
+	TIN(ObjectNames.ORE_TIN, 1, 1),
+	COAL(ObjectNames.ORE_COAL, 2, 30),
+	GOLD(ObjectNames.ORE_GOLD, 16, 40),
+	IRON(ObjectNames.ORE_IRON, 3, 15);
 	
 	private ObjectNames objectType;
 	private int minTravelDistance;
+	private int minLevelRequired;
 	
-	private RockType(ObjectNames objectType, int minTravelDistance) {
+	private RockType(ObjectNames objectType, int minTravelDistance, int minLevelRequired) {
 		this.objectType = objectType;
 		this.minTravelDistance = minTravelDistance;
+		this.minLevelRequired = minLevelRequired;
 	}
 	
 	public ObjectNames getObjectName() {
 		return this.objectType;
+	}
+	
+	public int getMinimumLevelRequired() {
+		return this.minLevelRequired;
 	}
 	
 	public int getMinimumTravelDistance() {

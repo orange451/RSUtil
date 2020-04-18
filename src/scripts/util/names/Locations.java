@@ -91,6 +91,7 @@ public enum Locations {
 	DRAYNOR_KITCHEN(new RSTile(3097, 3366), new RSTile(3100, 3365), 0), 
 	DRAYNOR_MANOR_LOBBY(new RSTile(3106, 3359), new RSTile(3112, 3364), 0),
 	DRAYNOR_WILLOW(new RSTile(3093, 3226), new RSTile(3085, 3239), 0),
+	DRAYNOR_FISHING_AREA(new RSTile(3085, 3233), new RSTile(3089, 3223), 0),
 
 	WIZARDS_TOWER(new RSTile(3103, 3166), new RSTile(3114, 3157), 0), 
 	WIZARDS_TOWER_TRAIBORN(new RSTile(3111, 3164), new RSTile(3113, 3160), 1), 
