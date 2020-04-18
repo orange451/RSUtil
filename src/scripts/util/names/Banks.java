@@ -11,6 +11,7 @@ import com.allatori.annotations.DoNotRename;
 import scripts.dax_api.api_lib.WebWalkerServerApi;
 import scripts.dax_api.api_lib.models.PlayerDetails;
 import scripts.dax_api.api_lib.models.Point3D;
+import scripts.util.misc.AntiBan;
 
 @DoNotRename
 public enum Banks {
@@ -48,13 +49,24 @@ public enum Banks {
 		int dist = 999999;
 		for (int i = 0; i < banks.length; i++) {
 			Banks bank = banks[i];
-			RSTile center = bank.getLocation().getCenter();
 
+			int tries = 0;
+			
 			// Get distance to bank
-			ArrayList<RSTile> tiles = WebWalkerServerApi.getInstance().getPath(Point3D.fromPositionable(Player.getPosition()), Point3D.fromPositionable(center), PlayerDetails.generate()).toRSTilePath();
-			int pathDist = tiles.size();
-			if ( pathDist == 0 )
-				pathDist = center.distanceTo(Player.getPosition());
+			int pathDist = -1;
+			while(tries < 6) {
+				RSTile center = bank.getLocation().getRandomizedCenter(AntiBan.random(4));
+				ArrayList<RSTile> tiles = WebWalkerServerApi.getInstance().getPath(Point3D.fromPositionable(Player.getPosition()), Point3D.fromPositionable(center), PlayerDetails.generate()).toRSTilePath();
+				int tempDist = tiles.size();
+				if ( tempDist > 0 )
+					pathDist = tempDist;
+				
+				tries++;
+			}
+			
+			// Fallback if no valid bank tile was found
+			if ( pathDist == -1 )
+				pathDist = bank.getLocation().getCenter().distanceTo(Player.getPosition());
 			
 			// Check if it's close
 			if (pathDist < dist) {
