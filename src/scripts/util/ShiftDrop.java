@@ -103,7 +103,8 @@ public class ShiftDrop {
 			Keyboard.sendPress(KeyEvent.CHAR_UNDEFINED, KeyEvent.VK_SHIFT);
 			General.sleep(250, 500);
 			for (RSItem it : itemsToDropOrdered) {
-				it.click(it.getDefinition().getName());
+				while(!it.click(it.getDefinition().getName()))
+					General.sleep(50,100);
 				General.sleep(General.randomSD(50, 1000, 200, 1));
 			}
 			General.sleep(250, 500);
