@@ -87,7 +87,9 @@ public enum Locations {
 	DRAYNOR_MANOR_BACK(new RSTile(3121, 3359), new RSTile(3124, 3355), 0), 
 	DRAYNOR_MANOR_FARM(new RSTile(3084, 3362), new RSTile(3088, 3359), 0), 
 	DRAYNOR_MANOR_CLOSET(new RSTile(3108, 3366), new RSTile(3111, 3368), 0), 
-	DRAYNOR_MANOR_FOUNTAIN(new RSTile(3085, 3336), new RSTile(3090, 3332), 0), 
+	DRAYNOR_MANOR_FOUNTAIN(new RSTile(3085, 3336), new RSTile(3090, 3332), 0),
+	DRAYNOR_OAKS(new RSTile(3120, 3288), new RSTile(3113, 3213), 0),
+	DRAYNOR_LOW_LVL_TREES(new RSTile(3074, 3264), new RSTile(3085,3274), 0),
 	DRAYNOR_KITCHEN(new RSTile(3097, 3366), new RSTile(3100, 3365), 0), 
 	DRAYNOR_MANOR_LOBBY(new RSTile(3106, 3359), new RSTile(3112, 3364), 0),
 	DRAYNOR_WILLOW(new RSTile(3093, 3226), new RSTile(3085, 3239), 0),
@@ -166,7 +168,7 @@ public enum Locations {
 	TEMPLE_DUNGEON_DREZELS_ROOM(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR_2ND_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
-	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
+	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0), 
 
 	;
 
