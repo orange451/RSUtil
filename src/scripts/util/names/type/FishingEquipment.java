@@ -9,22 +9,31 @@ import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 import scripts.util.names.NPCNames;
 
-public enum FishingEquipment implements NPCWrapper {
+public enum FishingEquipment {
 	SMALL_FISHING_NET(NPCNames.FISHING_SPOT, "Net", "Small Net", ItemNames.SMALL_FISHING_NET),
-	FISHING_ROD(NPCNames.FISHING_SPOT, "Bait", ItemNames.FISHING_ROD, ItemNames.FISHING_BAIT);
+	FISHING_ROD(new NPCNames[] {NPCNames.FISHING_SPOT, NPCNames.ROD_FISHING_SPOT}, "Bait", ItemNames.FISHING_ROD, ItemNames.FISHING_BAIT),
+	FLY_FISHING_ROD(NPCNames.ROD_FISHING_SPOT, "Lure", ItemNames.FLY_FISHING_ROD, ItemNames.FEATHER);
 	
-	private NPCNames NPCType;
+	private NPCNames[] NPCTypes;
 	private String actionName;
 	private ItemIds primaryItem;
 	private ItemIds[] subItems;
 	private String displayName;
 	
-	private FishingEquipment(NPCNames npc, String action, String displayName, ItemIds primaryItem, ItemIds... subItems) {
+	private FishingEquipment(NPCNames[] npcs, String action, String displayName, ItemIds primaryItem, ItemIds... subItems) {
 		this.primaryItem = primaryItem;
 		this.subItems = subItems;
-		this.NPCType = npc;
+		this.NPCTypes = npcs;
 		this.actionName = action;
 		this.displayName = displayName;
+	}
+	
+	private FishingEquipment(NPCNames[] npcs, String action, ItemIds primaryItem, ItemIds... subItems) {
+		this(npcs, action, null, primaryItem, subItems);
+	}
+	
+	private FishingEquipment(NPCNames npc, String action, String displayName, ItemIds primaryItem, ItemIds... subItems) {
+		this(new NPCNames[] {npc}, action, displayName, primaryItem, subItems);
 	}
 	
 	private FishingEquipment(NPCNames npc, String action, ItemIds primaryItem, ItemIds... subItems) {
@@ -35,9 +44,8 @@ public enum FishingEquipment implements NPCWrapper {
 		return displayName==null?NameFormatter.get(this.toString()):this.displayName;
 	}
 
-	@Override
-	public NPCNames getNPCName() {
-		return NPCType;
+	public NPCNames[] getNPCNames() {
+		return NPCTypes;
 	}
 	
 	public String getActionName() {

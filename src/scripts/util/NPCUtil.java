@@ -39,7 +39,7 @@ public class NPCUtil {
 	 * @param npcType
 	 * @return
 	 */
-	public static RSNPC getFirstNPC(NPCNames npcType) {
+	public static RSNPC getFirstNPC(NPCNames... npcType) {
 		RSNPC[] t = getNPCS(npcType);
 		if ((t != null) && (t.length > 0)) {
 			return t[0];

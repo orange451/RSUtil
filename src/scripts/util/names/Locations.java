@@ -86,10 +86,10 @@ public enum Locations {
 	DRAYNOR_MANOR_FISH(new RSTile(3107, 3360), new RSTile(3110, 3355), 1), 
 	DRAYNOR_MANOR_BACK(new RSTile(3121, 3359), new RSTile(3124, 3355), 0), 
 	DRAYNOR_MANOR_FARM(new RSTile(3084, 3362), new RSTile(3088, 3359), 0), 
-	DRAYNOR_MANOR_CLOSET(new RSTile(3108, 3366), new RSTile(3111, 3368), 0), 
-	DRAYNOR_MANOR_FOUNTAIN(new RSTile(3085, 3336), new RSTile(3090, 3332), 0),
+	DRAYNOR_MANOR_CLOSET(new RSTile(3108, 3366), new RSTile(3111, 3368), 0),
 	DRAYNOR_OAKS(new RSTile(3120, 3288), new RSTile(3113, 3213), 0),
 	DRAYNOR_LOW_LVL_TREES(new RSTile(3074, 3264), new RSTile(3085,3274), 0),
+	DRAYNOR_MANOR_FOUNTAIN(new RSTile(3085, 3336), new RSTile(3090, 3332), 0), 
 	DRAYNOR_KITCHEN(new RSTile(3097, 3366), new RSTile(3100, 3365), 0), 
 	DRAYNOR_MANOR_LOBBY(new RSTile(3106, 3359), new RSTile(3112, 3364), 0),
 	DRAYNOR_WILLOW(new RSTile(3093, 3226), new RSTile(3085, 3239), 0),
@@ -127,6 +127,7 @@ public enum Locations {
 	BARBARIAN_VILLAGE(new RSTile(3072, 3426), new RSTile(3089, 3412), 0), 
 	BARBARIAN_VILLAGE_SMELT(new RSTile(3083, 3411), new RSTile(3086, 3407), 0), 
 	BARBARIAN_VILLAGE_SHOP_HELMET(new RSTile(3074, 3431), new RSTile(3077, 3427), 0), 
+	BARBARIAN_VILLAGE_FISH(new RSTile(3100, 3434), new RSTile(3103, 3424), 0), 
 
 	RIMMINGTON(new RSTile(2953, 3217), new RSTile(2962, 3207), 0), 
 	RIMMINGTON_WITCH(new RSTile(2966, 3207), new RSTile(2969, 3204), 0), 
@@ -168,7 +169,7 @@ public enum Locations {
 	TEMPLE_DUNGEON_DREZELS_ROOM(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR_2ND_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
-	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0), 
+	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
 
 	;
 
