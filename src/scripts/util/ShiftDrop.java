@@ -101,10 +101,12 @@ public class ShiftDrop {
 		// Drop items.
 		if (Inventory.open()) {
 			Keyboard.sendPress(KeyEvent.CHAR_UNDEFINED, KeyEvent.VK_SHIFT);
+			General.sleep(250, 500);
 			for (RSItem it : itemsToDropOrdered) {
 				it.click(it.getDefinition().getName());
-				General.sleep(General.randomSD(10, 1000, 50, 1));
+				General.sleep(General.randomSD(50, 1000, 200, 1));
 			}
+			General.sleep(250, 500);
 			Keyboard.sendRelease(KeyEvent.CHAR_UNDEFINED, KeyEvent.VK_SHIFT);
 		}
 	}
