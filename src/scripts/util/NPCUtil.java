@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.tribot.api.General;
 import org.tribot.api2007.NPCs;
@@ -102,13 +103,13 @@ public class NPCUtil {
 		
 		// Filter out nonreachable NPCS
 		DPathNavigator pather = new DPathNavigator();
-		HashMap<RSNPC,Double> pathDistance = new HashMap<RSNPC,Double>();
+		Map<RSNPC,Double> pathDistance = new HashMap<RSNPC,Double>();
 		for (int i = 0; i < attackable.size(); i++) {
 			RSNPC npc = attackable.get(i);
 			
 			// Get the path
 			RSTile[] path = pather.findPath(npc.getPosition());
-			if ( path == null || path.length > 20 )
+			if ( path == null || path.length > 50 )
 				attackable.remove(i--);
 			
 			// Store path distance

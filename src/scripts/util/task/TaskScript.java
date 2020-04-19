@@ -78,13 +78,28 @@ public abstract class TaskScript extends Script {
 		script.currentTask = task;
 		script.scriptStarted = true;
 	}
+	
+	/**
+	 * Returns the current running script instance
+	 * @return
+	 */
+	public static Script getScript() {
+		return script;
+	}
+	
+	/**
+	 * Returns whether the task script is currently trying to perform tasks
+	 */
+	public static boolean isStarted() {
+		return script.scriptStarted;
+	}
 
 	/**
 	 * Returns the current task
 	 * @return 
 	 */
-	public BotTask getCurrentTask() {
-		return this.currentTask;
+	public static BotTask getCurrentTask() {
+		return script.currentTask;
 	}
 
 	/**
