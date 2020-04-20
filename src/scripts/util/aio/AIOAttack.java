@@ -9,7 +9,8 @@ import org.tribot.api2007.Players;
 import org.tribot.api2007.Skills;
 import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSPlayer;
-import scripts.dax_api.walker_engine.interaction_handling.AccurateMouse;
+
+import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.util.NPCUtil;
 import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;

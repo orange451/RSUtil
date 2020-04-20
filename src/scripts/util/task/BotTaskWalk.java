@@ -64,7 +64,7 @@ public abstract class BotTaskWalk extends BotTask {
 		// Break wait tasks if we're attacked by both NPCS and Players
 		PlayerUtil.setIgnoreAttacking(false, false);
 
-		General.println(this.walkTo.distanceTo(Player.getRSPlayer()) + "   /   " + radius);
+		//General.println(this.walkTo.distanceTo(Player.getRSPlayer()) + "   /   " + radius);
 		if ((this.walkTo.distanceTo(Player.getRSPlayer()) > radius) || (this.walkTo.getPlane() != Player.getPosition().getPlane())) {
 			
 			// Compute final tile

@@ -1,23 +1,11 @@
 package scripts.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.net.ssl.HttpsURLConnection;
-
 import org.tribot.api.General;
 import org.tribot.api.interfaces.Positionable;
 import org.tribot.api2007.Player;
@@ -26,9 +14,6 @@ import org.tribot.api2007.types.RSTile;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-import scripts.autocow.TradeServer;
-import scripts.dax_api.api_lib.json.Json;
-import scripts.dax_api.api_lib.json.JsonValue;
 import scripts.dax_api.api_lib.json.ParseException;
 import scripts.dax_api.api_lib.models.PathResult;
 import scripts.dax_api.api_lib.models.PathStatus;

@@ -16,8 +16,8 @@ import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.aio.f2pquester.F2PQuester;
 import scripts.dax_api.api_lib.DaxWalker;
+import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.dax_api.walker_engine.WalkingCondition;
-import scripts.dax_api.walker_engine.interaction_handling.AccurateMouse;
 import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
 import scripts.util.PlayerUtil;
