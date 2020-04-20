@@ -4,13 +4,15 @@ import scripts.util.misc.ItemWrapper;
 import scripts.util.misc.NameFormatter;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
-import scripts.util.names.ItemNamesData;
 
 public enum FishType implements ItemWrapper {
 	SHRIMPS(ItemNames.RAW_SHRIMPS, ItemNames.SHRIMPS, FishingEquipment.SMALL_FISHING_NET, 1, 1),
 	ANCHOVIES(ItemNames.RAW_ANCHOVIES, ItemNames.ANCHOVIES, FishingEquipment.SMALL_FISHING_NET, 15, 1),
 	SARDINE(ItemNames.RAW_SARDINE, ItemNames.SARDINE, FishingEquipment.FISHING_ROD, 5, 1),
-	HERRING(ItemNames.RAW_HERRING, ItemNames.HERRING, FishingEquipment.FISHING_ROD, 10, 5);
+	HERRING(ItemNames.RAW_HERRING, ItemNames.HERRING, FishingEquipment.FISHING_ROD, 10, 5),
+	TROUT(ItemNames.RAW_TROUT, ItemNames.TROUT, FishingEquipment.FLY_FISHING_ROD, 20, 15),
+	PIKE(ItemNames.RAW_PIKE, ItemNames.PIKE, FishingEquipment.FISHING_ROD, 25, 20),
+	SALMON(ItemNames.RAW_SALMON, ItemNames.SALMON, FishingEquipment.FLY_FISHING_ROD, 30, 25);
 	
 	private FishingEquipment requiredEquipment;
 	private ItemIds cookedItem;
