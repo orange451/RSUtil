@@ -170,6 +170,8 @@ public enum Locations {
 	TEMPLE_ALTAR(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR_2ND_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
+	
+	KARAMJA_DOCK(new RSTile(2924, 3180), new RSTile(2925, 3175), 0),
 
 	;
 

@@ -12,7 +12,9 @@ public enum FishType implements ItemWrapper {
 	HERRING(ItemNames.RAW_HERRING, ItemNames.HERRING, FishingEquipment.FISHING_ROD, 10, 5),
 	TROUT(ItemNames.RAW_TROUT, ItemNames.TROUT, FishingEquipment.FLY_FISHING_ROD, 20, 15),
 	PIKE(ItemNames.RAW_PIKE, ItemNames.PIKE, FishingEquipment.FISHING_ROD, 25, 20),
-	SALMON(ItemNames.RAW_SALMON, ItemNames.SALMON, FishingEquipment.FLY_FISHING_ROD, 30, 25);
+	SALMON(ItemNames.RAW_SALMON, ItemNames.SALMON, FishingEquipment.FLY_FISHING_ROD, 30, 25),
+	TUNA(ItemNames.RAW_TUNA, ItemNames.TUNA, FishingEquipment.HARPOON, 35, 30),
+	LOBSTER(ItemNames.RAW_LOBSTER, ItemNames.LOBSTER, FishingEquipment.LOBSTER_POT, 40, 40);
 	
 	private FishingEquipment requiredEquipment;
 	private ItemIds cookedItem;

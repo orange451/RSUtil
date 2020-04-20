@@ -7,7 +7,7 @@ public enum Animations {
 	MINING(new int[] { 629, 628 }), 
 	THIEVING(new int[] { 832 }), 
 	NONE(new int[] { -1 }),
-	FISHING(new int[] { 621, 623, 622 });
+	FISHING(new int[] { 621, 623, 622, 618 });
 
 	private int[] ids;
 

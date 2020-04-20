@@ -3,7 +3,6 @@ package scripts.util.names.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import scripts.util.misc.NPCWrapper;
 import scripts.util.misc.NameFormatter;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
@@ -12,7 +11,9 @@ import scripts.util.names.NPCNames;
 public enum FishingEquipment {
 	SMALL_FISHING_NET(NPCNames.FISHING_SPOT, "Net", "Small Net", ItemNames.SMALL_FISHING_NET),
 	FISHING_ROD(new NPCNames[] {NPCNames.FISHING_SPOT, NPCNames.ROD_FISHING_SPOT}, "Bait", ItemNames.FISHING_ROD, ItemNames.FISHING_BAIT),
-	FLY_FISHING_ROD(NPCNames.ROD_FISHING_SPOT, "Lure", ItemNames.FLY_FISHING_ROD, ItemNames.FEATHER);
+	FLY_FISHING_ROD(NPCNames.ROD_FISHING_SPOT, "Lure", ItemNames.FLY_FISHING_ROD, ItemNames.FEATHER),
+	HARPOON(NPCNames.FISHING_SPOT, "Harpoon", ItemNames.HARPOON),
+	LOBSTER_POT(NPCNames.FISHING_SPOT, "Cage", ItemNames.LOBSTER_POT);
 	
 	private NPCNames[] NPCTypes;
 	private String actionName;
