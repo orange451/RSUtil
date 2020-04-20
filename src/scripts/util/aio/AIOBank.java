@@ -123,4 +123,8 @@ public class AIOBank {
 		
 		return true;
 	}
+	
+	public static boolean walkToNearestBankAndWithdrawMoney(int quantity) {
+		return walkToNearestBankAndWithdrawFirstItem(quantity, ItemNames.COINS);
+	}
 }

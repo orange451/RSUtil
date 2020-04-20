@@ -1,27 +1,13 @@
 package scripts.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.stream.Collectors;
-
 import javax.net.ssl.HttpsURLConnection;
 
-import scripts.dax_api.api_lib.models.ServerResponse;
 import scripts.dax_api.api_lib.utils.IOHelper;
-import scripts.dax_api.shared.Pair;
 
 public class DaxWalkerCrackedServer {
 
