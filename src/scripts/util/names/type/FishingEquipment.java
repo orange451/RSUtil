@@ -9,36 +9,38 @@ import scripts.util.names.ItemNames;
 import scripts.util.names.NPCNames;
 
 public enum FishingEquipment {
-	SMALL_FISHING_NET(NPCNames.FISHING_SPOT, "Net", "Small Net", ItemNames.SMALL_FISHING_NET),
-	FISHING_ROD(new NPCNames[] {NPCNames.FISHING_SPOT, NPCNames.ROD_FISHING_SPOT}, "Bait", ItemNames.FISHING_ROD, ItemNames.FISHING_BAIT),
-	FLY_FISHING_ROD(NPCNames.ROD_FISHING_SPOT, "Lure", ItemNames.FLY_FISHING_ROD, ItemNames.FEATHER),
-	HARPOON(NPCNames.FISHING_SPOT, "Harpoon", ItemNames.HARPOON),
-	LOBSTER_POT(NPCNames.FISHING_SPOT, "Cage", ItemNames.LOBSTER_POT);
+	SMALL_FISHING_NET(NPCNames.FISHING_SPOT, "Net", 1, "Small Net", ItemNames.SMALL_FISHING_NET),
+	FISHING_ROD(new NPCNames[] {NPCNames.FISHING_SPOT, NPCNames.ROD_FISHING_SPOT}, "Bait", 5, ItemNames.FISHING_ROD, ItemNames.FISHING_BAIT),
+	FLY_FISHING_ROD(NPCNames.ROD_FISHING_SPOT, "Lure", 20, ItemNames.FLY_FISHING_ROD, ItemNames.FEATHER),
+	HARPOON(NPCNames.FISHING_SPOT, "Harpoon", 35, ItemNames.HARPOON),
+	LOBSTER_POT(NPCNames.FISHING_SPOT, "Cage", 45, ItemNames.LOBSTER_POT);
 	
 	private NPCNames[] NPCTypes;
 	private String actionName;
 	private ItemIds primaryItem;
 	private ItemIds[] subItems;
 	private String displayName;
+	private int minimumLevel;
 	
-	private FishingEquipment(NPCNames[] npcs, String action, String displayName, ItemIds primaryItem, ItemIds... subItems) {
+	private FishingEquipment(NPCNames[] npcs, String action, int minimumLevel, String displayName, ItemIds primaryItem, ItemIds... subItems) {
 		this.primaryItem = primaryItem;
 		this.subItems = subItems;
 		this.NPCTypes = npcs;
 		this.actionName = action;
 		this.displayName = displayName;
+		this.minimumLevel = minimumLevel;
 	}
 	
-	private FishingEquipment(NPCNames[] npcs, String action, ItemIds primaryItem, ItemIds... subItems) {
-		this(npcs, action, null, primaryItem, subItems);
+	private FishingEquipment(NPCNames[] npcs, String action, int minimumLevel, ItemIds primaryItem, ItemIds... subItems) {
+		this(npcs, action, minimumLevel, null, primaryItem, subItems);
 	}
 	
-	private FishingEquipment(NPCNames npc, String action, String displayName, ItemIds primaryItem, ItemIds... subItems) {
-		this(new NPCNames[] {npc}, action, displayName, primaryItem, subItems);
+	private FishingEquipment(NPCNames npc, String action, int minimumLevel, String displayName, ItemIds primaryItem, ItemIds... subItems) {
+		this(new NPCNames[] {npc}, action, minimumLevel, displayName, primaryItem, subItems);
 	}
 	
-	private FishingEquipment(NPCNames npc, String action, ItemIds primaryItem, ItemIds... subItems) {
-		this(npc, action, null, primaryItem, subItems);
+	private FishingEquipment(NPCNames npc, String action, int minimumLevel, ItemIds primaryItem, ItemIds... subItems) {
+		this(npc, action, minimumLevel, null, primaryItem, subItems);
 	}
 	
 	public String getName() {
@@ -47,6 +49,10 @@ public enum FishingEquipment {
 
 	public NPCNames[] getNPCNames() {
 		return NPCTypes;
+	}
+	
+	public int getMinimumLevelRequired() {
+		return this.minimumLevel;
 	}
 	
 	public String getActionName() {

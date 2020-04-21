@@ -7,7 +7,8 @@ import scripts.util.names.ObjectNames;
 public enum TreeType implements ObjectWrapper {
 	TREE(ObjectNames.TREE, 1),
 	OAK(ObjectNames.OAK, 15),
-	WILLOW(ObjectNames.WILLOW, 30);
+	WILLOW(ObjectNames.WILLOW, 30),
+	YEW(ObjectNames.YEW, 30);
 	
 	private ObjectNames object;
 	private int minLevelRequired;

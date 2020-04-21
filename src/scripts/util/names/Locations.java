@@ -3,7 +3,6 @@ package scripts.util.names;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import org.tribot.api.General;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
@@ -37,6 +36,8 @@ public enum Locations {
 	LUMBRIDGE_GRAVE_YARD(new RSTile(3247, 3195), new RSTile(3252, 3190), 0),
 	LUMBRIDGE_GAY_MANS_ROOM(new RSTile(3209, 3219), new RSTile(3212, 3224), 1),
 	LUMBRIDGE_FISHING_AREA(new RSTile(3246, 3160), new RSTile(3238, 3142), 0),
+	LUMBRIDGE_WILLOWS(new RSTile(3233, 3246), new RSTile(3235, 3235), 0),
+	LUMBRIDGE_MINE(new RSTile(3222, 3149), new RSTile(3231, 3144), 0),
 
 	ALKHARID(new RSTile(3278, 3246), new RSTile(3322, 3177), 0), 
 	ALKHARID_MINE(new RSTile(3296, 3289), new RSTile(3301, 3284), 0), 
