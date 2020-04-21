@@ -32,12 +32,17 @@ public abstract class TaskScript extends Script {
 			if ( this.currentTask == null )
 				continue;
 			
-			if ( this.currentTask.cancelled ) {
+			if ( !this.currentTask.initialized() ) {
+				this.currentTask.initialized = true;
+				this.currentTask.init();
+			}
+			
+			if ( this.currentTask.isCancelled() ) {
 				stopCurrentTask();
 				continue;
 			}
 			
-			if (this.currentTask.isTaskComplete())
+			if (!this.currentTask.isCancelled() && this.currentTask.isTaskComplete())
 				setCurrentTask(this.currentTask.getNextTask());
 		}
 		

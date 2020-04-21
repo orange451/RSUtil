@@ -3,9 +3,10 @@ package scripts.util.task;
 public abstract class BotTask {
 	protected boolean forceComplete;
 	protected boolean cancelled;
+	protected boolean initialized;
 
 	public BotTask() {
-		init();
+		//
 	}
 
 	public void forceComplete() {
@@ -27,7 +28,11 @@ public abstract class BotTask {
 		this.forceComplete = true;
 	}
 
-	public boolean cancelled() {
+	public boolean isCancelled() {
 		return this.cancelled;
+	}
+	
+	public boolean initialized() {
+		return this.initialized;
 	}
 }

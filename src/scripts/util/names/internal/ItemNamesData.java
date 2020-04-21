@@ -1,6 +1,8 @@
 package scripts.util.names.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSItem;
@@ -669,6 +671,22 @@ public class ItemNamesData extends ItemIds {
 		}
 		
 		return ret;
+	}
+	
+	public static ItemIds[] get(Object... objects) {
+		List<ItemIds> list = new ArrayList<>();
+		for (Object object : objects) {
+			if ( object.getClass().isArray() ) {
+				Collections.addAll(list, get((Object[])object));
+			} else if ( object instanceof List ) {
+				Collections.addAll(list, get((List<?>)object));
+			} else if ( object instanceof ItemWrapper ) {
+				list.add(((ItemWrapper)object).getItem());
+			} else {
+				list.add((ItemIds) object);
+			}
+		}
+		return (ItemIds[]) list.toArray(new ItemIds[list.size()]);
 	}
 
 	public static ItemNamesData[] values() {

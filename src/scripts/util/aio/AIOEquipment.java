@@ -48,14 +48,42 @@ public class AIOEquipment {
 	 * @return Whether or not the tool was/is equipped.
 	 */
 	public static boolean equipTool(ToolClass tool, EquipmentMaterial minimumMaterial) {
-		ItemIds[] desiredItems = convertToItems(getToolTypes(tool, minimumMaterial));
-		int[] desiredItemIds = get(desiredItems);
+		return getToolAndEquipIfPossible(tool, minimumMaterial) != null;
+	}
+	
+	/**
+	 * Get a tool type with a minimum material type.<br>
+	 * Instantly returns true if tool is currently equipped.<br>
+	 * If not equipped, first checks inventory to see if it is currently in inventory but not equipped.<br>
+	 * If not in inventory, it checks the bank for the item.<br>
+	 * TODO Make it go to GE and buy item.
+	 * @return Whether or not the tool was/is equipped.
+	 */
+	public static RSItem getToolAndEquipIfPossible(ToolClass tool) {
+		return getToolAndEquipIfPossible(tool, EquipmentMaterial.BRONZE);
+	}
+	
+	/**
+	 * Get a tool type with a minimum material type.<br>
+	 * Instantly returns true if tool is currently equipped.<br>
+	 * If not equipped, first checks inventory to see if it is currently in inventory but not equipped.<br>
+	 * If not in inventory, it checks the bank for the item.<br>
+	 * TODO Make it go to GE and buy item.
+	 * @return Whether or not the tool was/is equipped.
+	 */
+	public static RSItem getToolAndEquipIfPossible(ToolClass tool, EquipmentMaterial minimumMaterial) {
+		ItemIds[] desiredItems = ItemNames.get(ToolType.getToolTypes(tool, minimumMaterial));
+		int[] desiredItemIds = ItemNames.get(desiredItems);
 		
 		// Check if we have it already equipped
 		int count = Equipment.getCount(desiredItemIds);
 		if ( count > 0 ) {
-			General.println("Has equipped: " + tool);
-			return true;
+			for (RSItem item : Equipment.getItems()) {
+				for (Integer id : desiredItemIds) {
+					if ( id == item.getID() )
+						return item;
+				}
+			}
 		}
 		
 		// Try to go get the item
@@ -64,12 +92,15 @@ public class AIOEquipment {
 			if ( item != null ) {
 				AntiBan.sleep(500, 250);
 				item.click("wield");
-				AntiBan.sleep(1000, 500);
-				return equipTool(tool, minimumMaterial);
+				AntiBan.sleep(1250, 500);
+				RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
+				if ( equipped != null )
+					return equipped;
+				return item;
 			}
 		}
 		
-		return false;
+		return null;
 	}
 
 	public static RSItem equipArmor(ArmorClass armor) {
@@ -97,79 +128,5 @@ public class AIOEquipment {
 		// 		CAN RETURN TRUE IF SUCCESS
 		
 		return null;
-	}
-	
-	private static ToolType[] getToolTypes(ToolClass type, EquipmentMaterial minimumMaterial) {
-		
-		// Get Tools that match type, and minimum quality
-		List<ToolType> ret = new ArrayList<>();
-		ToolType[] temp = ToolType.values();
-		for (ToolType tool : temp) {
-			if ( !tool.getType().equals(type) )
-				continue;
-			
-			if ( tool.getMaterial().getQuality() < minimumMaterial.getQuality() )
-				continue;
-			
-			ret.add(tool);
-		}
-		
-		// Sort based on quality
-		Collections.sort(ret, new Comparator<ToolType>() {
-			@Override
-			public int compare(ToolType arg0, ToolType arg1) {
-				return compareQuality(arg0.getMaterial().getQuality(), arg1.getMaterial().getQuality());
-			}
-		});
-		
-		return ret.toArray(new ToolType[ret.size()]);
-	}
-	
-	private static ArmorType[] getArmorClassifications(ArmorClass type, EquipmentMaterial minimumMaterial) {
-		ArmorType[] armorArray = ArmorType.values();
-		
-		// Get armors that match this type
-		List<ArmorType> temp = new ArrayList<>();
-		for (ArmorType armor : armorArray) {
-			if ( armor.getMaterial().getQuality() < minimumMaterial.getQuality() )
-				continue;
-			
-			if ( armor.getType().equals(type) )
-				temp.add(armor);
-		}
-		
-		// Sort on quality
-		Collections.sort(temp, new Comparator<ArmorType>() {
-			@Override
-			public int compare(ArmorType arg0, ArmorType arg1) {
-				return compareQuality(arg0.getMaterial().getQuality(), arg1.getMaterial().getQuality());
-			}
-		});
-		
-		return temp.toArray(new ArmorType[temp.size()]);
-	}
-	
-	private static int compareQuality(int a, int b) {
-		return a-b;
-	}
-	
-	private static ItemIds[] convertToItems(ToolType[] toolTypes) {
-		// Turn into list of ItemIds
-		ItemIds[] ret = new ItemIds[toolTypes.length];
-		for (int i = 0; i < toolTypes.length; i++) {
-			ret[i] = toolTypes[i].getItem();
-		}
-		
-		return ret;
-	}
-	
-	private static ItemIds[] convertToItems(ArmorType[] ArmorClassifications) {
-		// Turn into list of ItemIds
-		ItemIds[] ret = new ItemIds[ArmorClassifications.length];
-		for (int i = 0; i < ArmorClassifications.length; i++) {
-			ret[i] = ArmorClassifications[i].getItem();
-		}
-		
-		return ret;
 	}
 }

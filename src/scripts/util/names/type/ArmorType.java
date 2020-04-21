@@ -1,5 +1,10 @@
 package scripts.util.names.type;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import scripts.util.misc.ItemWrapper;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
@@ -38,5 +43,33 @@ public enum ArmorType implements ItemWrapper {
 	
 	public ItemIds getItem() {
 		return this.item;
+	}
+	
+	public static ArmorType[] getArmorClassifications(ArmorClass type, EquipmentMaterial minimumMaterial) {
+		ArmorType[] armorArray = ArmorType.values();
+		
+		// Get armors that match this type
+		List<ArmorType> temp = new ArrayList<>();
+		for (ArmorType armor : armorArray) {
+			if ( armor.getMaterial().getQuality() < minimumMaterial.getQuality() )
+				continue;
+			
+			if ( armor.getType().equals(type) )
+				temp.add(armor);
+		}
+		
+		// Sort on quality
+		Collections.sort(temp, new Comparator<ArmorType>() {
+			@Override
+			public int compare(ArmorType arg0, ArmorType arg1) {
+				return compareQuality(arg0.getMaterial().getQuality(), arg1.getMaterial().getQuality());
+			}
+		});
+		
+		return temp.toArray(new ArmorType[temp.size()]);
+	}
+	
+	private static int compareQuality(int a, int b) {
+		return a-b;
 	}
 }

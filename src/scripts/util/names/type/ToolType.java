@@ -1,5 +1,10 @@
 package scripts.util.names.type;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import scripts.util.misc.ItemWrapper;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
@@ -76,5 +81,35 @@ public enum ToolType implements ItemWrapper {
 	
 	public ItemIds getItem() {
 		return this.item;
+	}
+	
+	public static ToolType[] getToolTypes(ToolClass type, EquipmentMaterial minimumMaterial) {
+		
+		// Get Tools that match type, and minimum quality
+		List<ToolType> ret = new ArrayList<>();
+		ToolType[] temp = ToolType.values();
+		for (ToolType tool : temp) {
+			if ( !tool.getType().equals(type) )
+				continue;
+			
+			if ( tool.getMaterial().getQuality() < minimumMaterial.getQuality() )
+				continue;
+			
+			ret.add(tool);
+		}
+		
+		// Sort based on quality
+		Collections.sort(ret, new Comparator<ToolType>() {
+			@Override
+			public int compare(ToolType arg0, ToolType arg1) {
+				return compareQuality(arg0.getMaterial().getQuality(), arg1.getMaterial().getQuality());
+			}
+		});
+		
+		return ret.toArray(new ToolType[ret.size()]);
+	}	
+	
+	private static int compareQuality(int a, int b) {
+		return a-b;
 	}
 }
