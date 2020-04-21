@@ -6,6 +6,7 @@ import java.util.Random;
 import com.allatori.annotations.DoNotRename;
 
 import scripts.util.misc.NameFormatter;
+import scripts.util.names.internal.ItemNamesData;
 
 @DoNotRename
 public class NameGenerator {

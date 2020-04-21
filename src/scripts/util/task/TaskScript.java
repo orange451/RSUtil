@@ -29,9 +29,16 @@ public abstract class TaskScript extends Script {
 
 			onStep();
 			
-			if ((this.currentTask != null) && (this.currentTask.isTaskComplete())) {
-				this.currentTask = this.currentTask.getNextTask();
+			if ( this.currentTask == null )
+				continue;
+			
+			if ( this.currentTask.cancelled ) {
+				stopCurrentTask();
+				continue;
 			}
+			
+			if (this.currentTask.isTaskComplete())
+				setCurrentTask(this.currentTask.getNextTask());
 		}
 		
 		stop();
@@ -60,7 +67,9 @@ public abstract class TaskScript extends Script {
 	 * Stops the current task.
 	 */
 	public static void stopCurrentTask() {
-		script.currentTask.forceComplete = true;
+		if ( script.currentTask != null )
+			script.currentTask.forceComplete = true;
+		
 		script.currentTask = null;
 		script.scriptStarted = false;
 	}

@@ -1,6 +1,6 @@
-package scripts.util.names;
+package scripts.util.names.internal;
 
-class ItemNames4 extends ItemNames3 {
+public class ItemNames4 extends ItemNames3 {
 	public static final ItemNamesData UNFINISHED_POTION = new ItemNamesData(3406);
 	public static final ItemNamesData FIYR_REMAINS = new ItemNamesData(3404);
 	public static final ItemNamesData ASYN_REMAINS = new ItemNamesData(3402);

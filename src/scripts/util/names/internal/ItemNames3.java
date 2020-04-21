@@ -1,4 +1,4 @@
-package scripts.util.names;
+package scripts.util.names.internal;
 
 public class ItemNames3 extends ItemNames2 {
 	public static final ItemNamesData BOARD_GAME_PIECE = new ItemNamesData(3870, 3871, 3869, 3880, 3881, 3882, 3872, 3873, 3874, 3875, 3876, 3877, 3878, 3879, 3890, 3891, 3892, 3883, 3884, 3885, 3886, 3887, 3888, 3889);

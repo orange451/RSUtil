@@ -1,5 +1,7 @@
 package scripts.util.aio;
 
+import static scripts.util.names.internal.ItemNamesData.get;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,8 +24,6 @@ import scripts.util.names.type.ArmorType;
 import scripts.util.names.type.EquipmentMaterial;
 import scripts.util.names.type.ToolClass;
 import scripts.util.names.type.ToolType;
-
-import static scripts.util.names.ItemNamesData.get;
 
 public class AIOEquipment {
 	

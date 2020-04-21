@@ -1,6 +1,6 @@
-package scripts.util.names;
+package scripts.util.names.internal;
 
-public class ItemNames2 extends ItemNamesData {
+public class ItemNames2 extends ItemNames1 {
 	public static final ItemNamesData STONE_TABLET = new ItemNamesData(699);
 	public static final ItemNamesData CASKET_MEDIUM = new ItemNamesData(2808, 2806, 2804, 2802, 2812, 2810, 2818, 2816, 2814, 2822, 2820, 2828, 2826, 2824, 2830, 3585, 3583, 3595, 3593, 3591, 3589, 3587, 3597, 3603, 3600);
 	public static final ItemNamesData WARRANT = new ItemNamesData(1503);

@@ -1,6 +1,6 @@
-package scripts.util.names;
+package scripts.util.names.internal;
 
-class ItemNames5 extends ItemNames4 {
+public class ItemNames5 extends ItemNames4 {
 	public static final ItemNamesData SKRACH = new ItemNamesData(7507);
 	public static final ItemNamesData SIR_AMIK_VARZE = new ItemNamesData(7506);
 	public static final ItemNamesData ASGOLDIAN_ALE = new ItemNamesData(7508);

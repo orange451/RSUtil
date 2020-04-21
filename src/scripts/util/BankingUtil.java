@@ -7,7 +7,8 @@ import org.tribot.api2007.types.RSItem;
 
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
-import scripts.util.names.ItemNamesData;
+import scripts.util.names.internal.ItemNamesData;
+import scripts.util.names.type.FoodType;
 
 public class BankingUtil {
 	
@@ -34,17 +35,28 @@ public class BankingUtil {
 	 * @param amount
 	 * @return
 	 */
-	public static boolean withdrawFood(int amount) {
-		if (!Banking.isBankScreenOpen()) {
+	public static boolean withdrawFood(int amount, FoodType... foodType) {
+		if (!Banking.isBankScreenOpen())
 			return false;
-		}
-		ItemNamesData[] names = ItemUtil.getFood();
+		
+		ItemIds[] names = ItemNamesData.get(foodType);
+		if ( names.length == 0 )
+			names = ItemNamesData.get(FoodType.values());
+		
 		for (int i = 0; i < names.length; i++) {
+			if ( amount <= 0 )
+				return true;
+			
 			RSItem[] t = Banking.find(names[i].getIds());
 			if ( t != null && t.length > 0 ) {
-				if (Banking.withdraw(amount, names[i].getIds())) {
+				int amt = PlayerUtil.getAmountItemsInInventory(names[i]);
+				
+				if (Banking.withdraw(amount, names[i].getIds()))
 					return true;
-				}
+				
+				amount -= (PlayerUtil.getAmountItemsInInventory(names[i])-amt);
+				if ( amount <= 0 )
+					return true;
 			}
 		}
 		return false;

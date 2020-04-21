@@ -29,7 +29,7 @@ import org.tribot.api2007.types.RSPlayer;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
-import scripts.util.names.ItemNamesData;
+import scripts.util.names.internal.ItemNamesData;
 
 public class PlayerUtil {
 	private static long DANGER_TIMEOUT;

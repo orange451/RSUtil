@@ -47,6 +47,9 @@ public class ObjectUtil {
 	 * @return
 	 */
 	public static boolean isA(RSObject o, ObjectNames obj) {
+		if ( o == null )
+			return false;
+		
 		int[] ids = obj.getIds();
 		for (int ii = 0; ii < ids.length; ii++) {
 			if (o.getID() == ids[ii]) {
