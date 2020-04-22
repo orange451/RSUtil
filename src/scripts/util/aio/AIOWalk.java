@@ -276,53 +276,34 @@ public class AIOWalk {
 	 * @param location
 	 */
 	@Deprecated
-	public static void walkToLegacy(RSTile location) {
-		walkToLegacyInternal(location);
+	public static boolean walkToLegacy(RSTile location) {
+		return walkToLegacyInternal(location);
 	}
 	
 	protected static void walkToLegacyInternal(Locations location) {
-		int tries = 0;
+		General.println("Attempting to walk to: " + location);
 		
-		while (!Locations.isNear(location.getCenter()) && tries <= 30) {
-			
-			// Wait while we're already moving.
-			if ( Player.isMoving() ) {
-				General.sleep(500);
-				continue;
-			}
-			
-			// Walk with DAX
-			tries++;
-			RSTile startingLoc;
-			startingLoc = location.getRandomizedCenter(4.0F);
-			General.println("Attempting to walk to: " + location);	
-			boolean walked = DaxWalker.walkTo(startingLoc, getWalkingCondition(startingLoc));
-			if ( walked ) {
-				break;
-			}
-			
-			// Didn't work, lets webwalk... Yikes...
-			if (tries > 30) {
-				startingLoc = location.getRandomizedCenter(2.0F);
-				General.println("Failed. Using webwalking as fallback...");
-				try {
-					Navigation.walkTo(startingLoc, getWalkingConditionAlt(startingLoc));
-				} catch(Exception e) {
-					General.println("Default Tribot navigation failed. If you're seeing this error, Tribot is a shit program.");
-				}
-				break;
-			}
-		}
-		new DPathNavigator().traverse(location.getRandomizedPosition());
 
+		if ( !Locations.isNear(location) ) {
+			AIOWalk.walkTo(location);
+		}
+		
+		if ( !Locations.isNear(location.getCenter()) )
+				return;
+		
+		new DPathNavigator().traverse(location.getRandomizedPosition());
 		AntiBan.sleep(700, 250);
 	}
 
-	@SuppressWarnings("deprecation")
-	protected static void walkToLegacyInternal(final RSTile tile) {
+	private static RSTile lastTile;
+	private static int ticksNotMoved = 0;
+	protected static boolean walkToLegacyInternal(final RSTile tile) {
 		if ( tile == null )
-			return;
+			return false;
 		
+		
+		ticksNotMoved = 0;
+		lastTile = Player.getRSPlayer().getPosition();
 		DPathNavigator nav = new DPathNavigator();
 		nav.setStoppingConditionCheckDelay(100L);
 		nav.setStoppingCondition(new Condition() {
@@ -332,6 +313,14 @@ public class AIOWalk {
 				if ( PlayerUtil.isInDanger() )
 					return true;
 				AntiBan.idle(AntiBan.generateAFKTime(4000.0F));
+				
+				RSTile currentTile = Player.getRSPlayer().getPosition();
+				if ( currentTile.equals(lastTile) )
+					ticksNotMoved++;
+				if ( ticksNotMoved > 5 )
+					return true;
+				
+				lastTile = currentTile;
 				return PathFinding.canReach(tile.getPosition(), false) && Player.getPosition().distanceTo(tile)<8;
 			}
 		});
@@ -341,6 +330,9 @@ public class AIOWalk {
 		} else {
 			AccurateMouse.clickMinimap(tile.getPosition());
 		}
+		
+		// Return if we actually made it
+		return PathFinding.canReach(tile.getPosition(), false);
 	}
 	
 	protected static WalkingCondition getWalkingCondition(final RSTile tile) {

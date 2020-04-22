@@ -84,7 +84,8 @@ public class AIOAttack {
 		// Walk to enemy
 		if ( !PathFinding.canReach(npc.getPosition(), false) ) {
 			status.setStatus("Walking to npc");
-			AIOWalk.walkToLegacy(npc.getPosition());
+			if (!AIOWalk.walkToLegacy(npc.getPosition()))
+				return null;
 			AntiBan.sleep(1000, 250);
 		}
 		

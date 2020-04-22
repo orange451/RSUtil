@@ -6,7 +6,7 @@ import scripts.util.misc.NameFormatter;
 
 @DoNotRename
 public enum NPCNames {
-	ACCOUNT_GUIDE(false, "Account Guide"),
+	ACCOUNT_GUIDE(false, "Account Guide", 3),
 	AUBURY(false),
 	AGGIE(false),
 	ALKHARID_WARRIOR(true),
@@ -76,31 +76,44 @@ public enum NPCNames {
 	private boolean attackable;
 	private String name;
 	private int[] ids = new int[0];
+	private int combatLevel;
 	
 	private NPCNames(boolean attackable) {
+		this(attackable, 3);
+	}
+
+	private NPCNames(boolean attackable, int combatLevel) {
 		this.attackable = attackable;
 		this.name = NameFormatter.get(toString());
+		this.combatLevel = combatLevel;
 	}
 	
-	private NPCNames(boolean attackable, int...ids) {
+	private NPCNames(boolean attackable, int combatLevel, int...ids) {
 		this.attackable = attackable;
 		this.ids = ids;
 		this.name = NameFormatter.get(toString());
+		this.combatLevel = combatLevel;
 	}
 	
-	private NPCNames(boolean attackable, String name, int...ids) {
+	private NPCNames(boolean attackable, String name, int combatLevel, int...ids) {
 		this.attackable = attackable;
 		this.ids = ids;
 		this.name = name;
+		this.combatLevel = combatLevel;
 	}
 	
-	private NPCNames(boolean attackable, String name) {
+	private NPCNames(boolean attackable, String name, int combatLevel) {
 		this.attackable = attackable;
 		this.name = name;
+		this.combatLevel = combatLevel;
 	}
 
 	public boolean isAttackable() {
 		return this.attackable;
+	}
+	
+	public int getCombatLevel() {
+		return this.combatLevel;
 	}
 	
 	public String getName() {

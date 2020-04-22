@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.tribot.api.General;
 import org.tribot.api.interfaces.Positionable;
+import org.tribot.api2007.Banking;
 import org.tribot.api2007.Combat;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.GameTab;
@@ -16,10 +17,8 @@ import org.tribot.api2007.Options;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Players;
 import org.tribot.api2007.Skills;
-import org.tribot.api2007.GameTab.TABS;
 import org.tribot.api2007.types.RSCharacter;
 import org.tribot.api2007.types.RSGroundItem;
-import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSInterfaceMaster;
 import org.tribot.api2007.types.RSItem;
@@ -30,6 +29,7 @@ import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 import scripts.util.names.internal.ItemNamesData;
+import scripts.util.names.type.TrainMethod;
 
 public class PlayerUtil {
 	private static long DANGER_TIMEOUT;
@@ -262,8 +262,51 @@ public class PlayerUtil {
 			General.sleep(400, 700);
 		}
 
-
 		returnTab.open();
+	}
+
+	/**
+	 * Sets the desired users train method
+	 */
+	public static void setTrainMethod(TrainMethod trainMethod) {
+		while (Banking.isBankScreenOpen()) {
+			Banking.close();
+			General.sleep(1000);
+		}
+
+		if (!GameTab.TABS.COMBAT.isOpen()) {
+			GameTab.TABS.COMBAT.open();
+			General.sleep(300, 600);
+		}
+		
+		RSInterfaceChild[] trainInterface = {
+				Interfaces.get(593, 4), // Attack
+				Interfaces.get(593, 8), // Str
+				Interfaces.get(593, 12), // Str
+				Interfaces.get(593, 16), // Def
+		};
+		
+		int lastIndex = 0;
+		for (int i = 0; i < trainInterface.length; i++)
+			if ( !trainInterface[i].isHidden() )
+				lastIndex = i;
+		
+		switch(trainMethod) {
+			case ATTACK_XP: {
+				trainInterface[0].click("");
+				break;
+			}
+			case STRENGTH_XP: {
+				trainInterface[lastIndex-1].click("");
+				break;
+			}
+			case DEFENSE_XP: {
+				trainInterface[lastIndex].click("");
+				break;
+			}
+		}
+
+		General.sleep(300, 600);
 	}
 
 	/**
