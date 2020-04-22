@@ -20,6 +20,7 @@ import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 import scripts.util.names.Locations;
 import scripts.util.names.NPCNames;
+import scripts.util.names.internal.ItemNamesData;
 
 public class AIOItem {
 	
@@ -33,6 +34,12 @@ public class AIOItem {
 	 * A higher number will result in more GP spent, but a higher likelyhood of getting the item.
 	 */
 	public static double GE_BUY_MARKUP_MULTIPLIER = 1.20;
+	
+	/**
+	 * The GP multiplier the AIO will markdown the item when attempting to sell it.
+	 * A lower number will result in less GP earned, but a higher likelyhood of getting the item.
+	 */
+	public static double GE_BUY_MARKDOWN_MULTIPLIER = 0.9;
 	
 	/**
 	 * Attempts to find a specific item in the players inventory.
@@ -98,7 +105,7 @@ public class AIOItem {
 			return getItem(desiredItem, quantity, buyQuantity);
 
 		// Not in bank, lets go to GE and buy it!
-		if ( CAN_USE_GE_TO_BUY_ITEMS ) {
+		if ( CAN_USE_GE_TO_BUY_ITEMS && buyQuantity > 0 ) {
 			General.println("Attempting to buy item from GE");
 			if ( buyAtGE(desiredItem, buyQuantity) )
 				return getItem(desiredItem, quantity, buyQuantity);
@@ -170,6 +177,62 @@ public class AIOItem {
 		GrandExchange.close();
 		
 		// Mark that we found the item
+		return true;
+	}
+
+	public static boolean sellItem(ItemIds item, int quantity) {
+		GEItem ge = GrandExchangeUtil.getItemData(item);
+		if ( ge == null )
+			return false;
+		
+		int sellPrice = (int) Math.ceil(Math.max(ge.getSellAverage(), ge.getBuyAverage()) * GE_BUY_MARKDOWN_MULTIPLIER);
+		
+		// Walk to GE
+		if ( !AIOWalk.walkTo(Locations.GRAND_EXCHANGE))
+			return false;
+		
+		// Get item to sell
+		RSItem sellItem = AIOItem.getItem(item, quantity, 0);
+		if ( sellItem == null )
+			return false;
+		
+		// Close bank
+		while ( Banking.isBankScreenOpen() ) {
+			Banking.close();
+			General.sleep(500);
+		}
+		
+		// Open GE
+		while(!NPCUtil.interactWithFirstNPC("Exchange G", NPCNames.GRAND_EXCHANGE_CLERK) )
+			General.sleep(1000);
+		General.sleep(2000, 2400);
+		while(Player.isMoving())
+			General.sleep(1000);
+		General.sleep(250);
+		
+		General.println("Attempting to sell " + quantity + " " + ge.getName() + " for " + sellPrice + " gp ea");
+		
+		// Collect anything we can collect
+		GrandExchangeUtil.collectAll();
+		
+		// Sell!
+		if ( !GrandExchangeUtil.offerSell(sellItem, sellPrice, quantity) ) {
+			General.println("COULD NOT SELL!");
+			return false;
+		}
+
+		// Wait for offer to conclude
+		while(GrandExchangeUtil.getCollectItems().length == 0) {
+			General.println("Waiting for offers to collect...");
+			General.sleep(1000);
+		}
+
+		// Collect the offer
+		General.sleep(800,1400);
+		GrandExchangeUtil.collectAll();
+		General.sleep(800,1400);
+		GrandExchange.close();
+		
 		return true;
 	}
 }

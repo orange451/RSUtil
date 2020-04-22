@@ -1,6 +1,5 @@
 package scripts.util;
 
-import java.util.ArrayList;
 import org.tribot.api2007.types.RSItem;
 
 import scripts.util.ge.GEItem;

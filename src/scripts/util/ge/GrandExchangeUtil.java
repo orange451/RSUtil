@@ -10,9 +10,7 @@ import java.util.List;
 
 import org.tribot.api.General;
 import org.tribot.api.input.Keyboard;
-import org.tribot.api2007.GrandExchange;
 import org.tribot.api2007.Interfaces;
-import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSInterfaceComponent;
 import org.tribot.api2007.types.RSItem;
@@ -136,13 +134,16 @@ public class GrandExchangeUtil {
 		if (!isGrandExchangeOpen())
 			return false;
 		
+		if ( getCollectItems().length == 0 )
+			return true;
+		
 		GEInterfaces.COLLECT_ALL.click();
 		General.sleep(1000, 2000);
 		
 		return true;
 	}
 	
-	public static boolean offerBuy(String itemName, int price, int quantity) {
+	private static boolean clickOffer(RSInterfaceChild offerBox, int offset) {
 		// GE must be open.
 		if (!isGrandExchangeOpen()) {
 			General.println("GE NOT OPEN");
@@ -150,15 +151,62 @@ public class GrandExchangeUtil {
 		}
 		
 		// Find free offer box
-		RSInterfaceChild offerBox = getFirstFreeOfferBox();
 		if ( offerBox == null ) {
 			General.println("NO OFFERS");
 			return false;
 		}
 		
-		// Search for item
-		offerBox.getChild(0).click("");
+		// Click
+		if ( !offerBox.getChild(offset).click("") )
+			return false;
+		
 		General.sleep(1000, 2000);
+		return true;
+	}
+	
+	public static boolean offerSell(RSItem item, int price, int quantity) {
+		// Click offer
+		if ( !clickOffer(getFirstFreeOfferBox(), 1) ) {
+			General.println("No free offers!");
+			return false;
+		}
+		
+		// Check if restricted
+		if ( GEInterfaces.RESTRICTED_INTERFACE.isVisible() && GEInterfaces.RESTRICTED_INTERFACE.get().getText().contains("restricted") ) {
+			General.println("Client is restricted from trading!");
+			return false;
+		}
+		
+		if ( !item.click("offer") ) {
+			General.println("Could not click offer on item");
+			return false;
+		}
+		General.sleep(1000,2000);
+		
+		// Set quantity
+		if ( item.getStack() > quantity ) {
+			GEInterfaces.QUANTITY_MANUAL.click("");
+			General.sleep(1000, 2000);
+			userInputText(Integer.toString(quantity));
+		} else {
+			GEInterfaces.QUANTITY_ALL.click("");
+			General.sleep(1000, 2000);
+		}
+		
+		// Confirm
+		GEInterfaces.CONFIRM_OFFER.click("");
+		General.sleep(1000, 2000);
+		
+		// We done clicked it!
+		return true;
+	}
+	
+	public static boolean offerBuy(String itemName, int price, int quantity) {
+		// Click offer
+		if ( !clickOffer(getFirstFreeOfferBox(), 0) )
+			return false;
+		
+		// Write item we want to buy
 		userInputText(itemName);
 		
 		// Set quantity

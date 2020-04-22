@@ -26,6 +26,7 @@ import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSPlayer;
 
 import scripts.util.misc.AntiBan;
+import scripts.util.misc.NameFormatter;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 import scripts.util.names.internal.ItemNamesData;
@@ -349,7 +350,16 @@ public class PlayerUtil {
 		RSItem[] items = Inventory.getAll();
 		for (int i = 0; i < items.length; i++) {
 			RSItem item = items[i];
-			if (ItemNames.is(item, check)) {
+			
+			boolean notedMatch = false;
+			for (ItemIds temp : check) {
+				RSItem temp2 = new RSItem(0, temp.getIds()[0], 1, RSItem.TYPE.OTHER);
+				if ( item.getDefinition().getName().equalsIgnoreCase(temp2.getDefinition().getName())) {
+					notedMatch = true;
+				}
+			}
+			
+			if (ItemNames.is(item, check) || notedMatch) {
 				amt += countStacks?item.getStack():1;
 			}
 		}
@@ -375,7 +385,15 @@ public class PlayerUtil {
 		RSItem[] items = Inventory.getAll();
 		for (int i = 0; i < items.length; i++) {
 			RSItem item = items[i];
-			if (ItemNames.is(item, check)) {
+			boolean notedMatch = false;
+			for (ItemIds temp : check) {
+				RSItem temp2 = new RSItem(0, temp.getIds()[0], 1, RSItem.TYPE.OTHER);
+				if ( item.getDefinition().getName().equalsIgnoreCase(temp2.getDefinition().getName())) {
+					notedMatch = true;
+				}
+			}
+			
+			if (ItemNames.is(item, check) || notedMatch) {
 				return item;
 			}
 		}

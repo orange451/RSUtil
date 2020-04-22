@@ -1,7 +1,9 @@
 package scripts.util;
 
 import org.tribot.api2007.Banking;
+import org.tribot.api2007.Game;
 import org.tribot.api2007.Interfaces;
+import org.tribot.api2007.Inventory;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSItem;
 
@@ -17,7 +19,7 @@ public class BankingUtil {
 	 * @param item
 	 * @return
 	 */
-	public static int getAmountOfItems(ItemNamesData item) {
+	public static int getAmountOfItems(ItemIds item) {
 		RSItem[] is = Banking.find(item.getIds());
 		if (is == null) {
 			return 0;
@@ -83,9 +85,26 @@ public class BankingUtil {
 			if ( t == null || t.length == 0 )
 				continue;
 			
-			if ( Banking.withdraw(quantity, item.getIds()) ) {
-					AntiBan.sleep(800, 250);
-					return true;
+			int requiredSpace = 1;
+			NotedItem note = new NotedItem(item);
+			if ( !note.isValid() )
+				requiredSpace = t[0].getStack();
+			
+			int freeSpace = 28 - Inventory.getAll().length;
+			
+			if ( freeSpace < requiredSpace ) {
+				return false;
+			} else {
+				if ( quantity > freeSpace ) {
+					BankingUtil.setNote(true);
+				} else {
+					BankingUtil.setNote(false);
+				}
+			}
+			
+			if ( Banking.withdraw(quantity, t[0].getID()) ) {
+				AntiBan.sleep(800, 250);
+				return true;
 			}
 		}
 		
@@ -97,7 +116,11 @@ public class BankingUtil {
 	 * @param b
 	 */
 	public static boolean setNote(boolean note) {
-		RSInterfaceChild u = Interfaces.get(12, note?24:22);
+		boolean isNoted = Game.getSetting(115) == 1;
+		if ( isNoted == note )
+			return true;
+		
+		RSInterfaceChild u = Interfaces.get(12, note?22:20);
 		if ( u != null ) {
 			return u.click("");
 		}

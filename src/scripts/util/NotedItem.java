@@ -1,17 +1,27 @@
 package scripts.util;
 
+import org.tribot.api2007.types.RSItem;
+
 import scripts.util.names.ItemIds;
 import scripts.util.names.internal.ItemNamesData;
 
 public class NotedItem extends ItemIds {
 	private int[] ids;
 	
-	public NotedItem(ItemNamesData item) {
+	public NotedItem(ItemIds item) {
 		this.ids = item.getIds();
 	}
 	
+	public NotedItem(RSItem item) {
+		this.ids = new int[] {item.getID()};
+	}
+	
 	public boolean is(ItemNamesData item) {
-		return item.getIds() == this.ids;
+		for (int id2 : item.getIds())
+			for (int id1 : ids )
+				if ( id2 == id1 )
+					return true;
+		return false;
 	}
 	
 	public int[] getIds() {
@@ -21,5 +31,9 @@ public class NotedItem extends ItemIds {
 		}
 		
 		return nid;
+	}
+	
+	public boolean isValid() {
+		return ItemNamesData.get(getIds()[0]) == null;
 	}
 }

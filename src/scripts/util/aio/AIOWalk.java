@@ -15,7 +15,6 @@ import org.tribot.api2007.types.RSTile;
 import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.aio.f2pquester.F2PQuester;
-import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.dax_api.walker_engine.WalkingCondition;
 import scripts.util.NPCUtil;
@@ -26,7 +25,6 @@ import scripts.util.names.ItemIds;
 import scripts.util.names.Locations;
 import scripts.util.names.NPCNames;
 import scripts.util.names.ObjectNames;
-import scripts.util.player.Navigation;
 import scripts.util.task.BotTask;
 import scripts.util.task.BotTaskWalk;
 import scripts.util.task.BotTaskWalkToBank;
