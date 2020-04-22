@@ -12,6 +12,7 @@ import org.tribot.api.General;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Inventory;
+import org.tribot.api2007.Skills.SKILLS;
 import org.tribot.api2007.types.RSItem;
 
 import scripts.util.BankingUtil;
@@ -79,10 +80,24 @@ public class AIOEquipment {
 		int count = Equipment.getCount(desiredItemIds);
 		if ( count > 0 ) {
 			for (RSItem item : Equipment.getItems()) {
-				for (Integer id : desiredItemIds) {
+				for (int id : desiredItemIds) {
 					if ( id == item.getID() )
 						return item;
 				}
+			}
+		}
+		
+		// Check for item in inventory
+		RSItem inventoryItem = PlayerUtil.getFirstItemInInventory(desiredItems);
+		if ( inventoryItem != null ) {
+			if ( SKILLS.ATTACK.getActualLevel() >= ToolType.match(ItemNames.get(inventoryItem.getID())).getMaterial().getMinimumEquipLevel()) {
+				AntiBan.sleep(500, 250);
+				inventoryItem.click("wield");
+				AntiBan.sleep(1250, 500);
+				RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
+				if ( equipped != null )
+					return equipped;
+				return inventoryItem;
 			}
 		}
 		
@@ -90,13 +105,15 @@ public class AIOEquipment {
 		for (int i = 0; i < desiredItems.length; i++) {
 			RSItem item = AIOItem.getItem(desiredItems[i]);
 			if ( item != null ) {
-				AntiBan.sleep(500, 250);
-				item.click("wield");
-				AntiBan.sleep(1250, 500);
-				RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
-				if ( equipped != null )
-					return equipped;
-				return item;
+				if ( SKILLS.ATTACK.getActualLevel() >= ToolType.match(ItemNames.get(item.getID())).getMaterial().getMinimumEquipLevel()) {
+					AntiBan.sleep(500, 250);
+					item.click("wield");
+					AntiBan.sleep(1250, 500);
+					RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
+					if ( equipped != null )
+						return equipped;
+					return item;
+				}
 			}
 		}
 		
