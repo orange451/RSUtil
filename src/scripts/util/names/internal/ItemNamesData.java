@@ -574,11 +574,21 @@ public class ItemNamesData extends ItemIds {
 	 * @return
 	 */
 	public static boolean is(RSItem check, ItemIds... types) {
+		return is(check.getID(), types);
+	}
+
+	/**
+	 * Returns if an RSItem matches a set of ItemNames.
+	 * @param check
+	 * @param types
+	 * @return
+	 */
+	public static boolean is(int itemId, ItemIds... types) {
 		for (int i = 0; i < types.length; i++) {
 			ItemIds itemData = types[i];
 			int[] ids = itemData.getIds();
 			for (int j = 0; j < ids.length; j++) {
-				if (ids[j] == check.getID()) {
+				if (ids[j] == itemId) {
 					return true;
 				}
 			}
@@ -593,16 +603,7 @@ public class ItemNamesData extends ItemIds {
 	 * @return
 	 */
 	public static boolean is(RSGroundItem check, ItemIds... types) {
-		for (int i = 0; i < types.length; i++) {
-			ItemIds itemData = types[i];
-			int[] ids = itemData.getIds();
-			for (int j = 0; j < ids.length; j++) {
-				if (ids[j] == check.getID()) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return is(check.getID(), types);
 	}
 
 	/**

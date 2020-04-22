@@ -8,7 +8,7 @@ public enum TreeType implements ObjectWrapper {
 	TREE(ObjectNames.TREE, 1),
 	OAK(ObjectNames.OAK, 15),
 	WILLOW(ObjectNames.WILLOW, 30),
-	YEW(ObjectNames.YEW, 30);
+	YEW(ObjectNames.YEW, 60);
 	
 	private ObjectNames object;
 	private int minLevelRequired;
