@@ -1,5 +1,8 @@
 package scripts.util.names.type;
 
+import org.tribot.api2007.Skills.SKILLS;
+
+import scripts.util.PlayerUtil;
 import scripts.util.misc.ItemWrapper;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
@@ -13,6 +16,7 @@ public enum FoodType implements ItemWrapper {
 	MANTA_RAY(ItemNames.MANTA_RAY, 22, true),
 	SEA_TURTLE(ItemNames.SEA_TURTLE, 21, true),
 	MACKEREL(ItemNames.MACKEREL, 6, true),
+	MONKFISH(ItemNames.MONKFISH, 16, true),
 	PIKE(ItemNames.PIKE, 8),
 	HERRING(ItemNames.HERRING, 5),
 	COD(ItemNames.COD, 7),
@@ -49,5 +53,37 @@ public enum FoodType implements ItemWrapper {
 	
 	public int getHealth() {
 		return this.health;
+	}
+	
+	public static FoodType getSuggestedFoodType() {
+		int HP = SKILLS.HITPOINTS.getActualLevel();
+		
+		if ( PlayerUtil.isP2P() ) {
+			if ( HP < 15 )
+				return FoodType.HERRING;
+			else if (HP < 20 )
+				return FoodType.TROUT;
+			else if (HP < 25 )
+				return FoodType.TUNA;
+			else if (HP < 50 )
+				return FoodType.LOBSTER;
+			else if (HP < 60 )
+				return FoodType.SWORDFISH;
+			else if (HP < 90 )
+				return FoodType.MONKFISH;
+			else
+				return FoodType.SHARK;
+		} else {
+			if ( HP < 15 )
+				return FoodType.HERRING;
+			else if (HP < 20 )
+				return FoodType.TROUT;
+			else if (HP < 25 )
+				return FoodType.TUNA;
+			else if (HP < 60 )
+				return FoodType.LOBSTER;
+			else
+				return FoodType.SWORDFISH;				
+		}
 	}
 }
