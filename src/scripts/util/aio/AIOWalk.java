@@ -15,6 +15,7 @@ import org.tribot.api2007.types.RSTile;
 import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.aio.f2pquester.F2PQuester;
+import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.dax_api.walker_engine.WalkingCondition;
 import scripts.util.NPCUtil;
@@ -166,6 +167,14 @@ public class AIOWalk {
 		if ( !PathFinding.canReach(npc.getPosition(), false) || npc.getPosition().distanceTo(Player.getPosition()) > 2 )
 			AIOWalk.walkToLegacy(npc.getPosition());
 		Camera.turnToTile(npc);
+		
+		// If we still cant do it, use dax!
+		if ( !PathFinding.canReach(npc.getPosition(), false) )
+			DaxWalker.walkTo(npc);
+		
+		// If we STILL cant reach.. fuck
+		if ( !PathFinding.canReach(npc.getPosition(), false) )
+			return false;
 		
 		// Wait a sec
 		AntiBan.sleep(1000, 200);
@@ -321,7 +330,7 @@ public class AIOWalk {
 				RSTile currentTile = Player.getRSPlayer().getPosition();
 				if ( currentTile.equals(lastTile) )
 					ticksNotMoved++;
-				if ( ticksNotMoved > 5 )
+				if ( ticksNotMoved > 8 )
 					return true;
 				
 				lastTile = currentTile;

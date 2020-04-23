@@ -1,5 +1,6 @@
 package scripts.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,7 +11,10 @@ import org.tribot.api2007.Objects;
 import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Players;
+import org.tribot.api2007.types.RSNPC;
+import org.tribot.api2007.types.RSNPCDefinition;
 import org.tribot.api2007.types.RSObject;
+import org.tribot.api2007.types.RSObjectDefinition;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
 
@@ -36,7 +40,20 @@ public class ObjectUtil {
 	 */
 	public static List<RSObject> getAll(ObjectNames obj, int distance) {
 		RSObject[] objects = Objects.findNearest(distance, obj.getIds());
-		return Arrays.asList(objects);
+		
+		List<RSObject> list = new ArrayList<>();
+		for (RSObject object : objects) {
+			list.add(object);
+		}
+		
+		objects = Objects.findNearest(distance, obj.getName());
+		for (RSObject object : objects) {
+			if ( list.contains(object) )
+				continue;
+			list.add(object);
+		}
+		
+		return list;
 	}
 
 	/**
@@ -169,6 +186,27 @@ public class ObjectUtil {
 			General.sleep(86, 173);
 		}
 		General.sleep(1000L);
+	}
+	
+	/**
+	 * Returns whether an npc has a specific right-click action
+	 * @param npc
+	 * @param option
+	 * @return
+	 */
+	public static boolean hasAction(RSObject object, String option) {
+		RSObjectDefinition definition = object.getDefinition();
+		if ( definition == null )
+			return false;
+		
+		String[] actions = definition.getActions();
+		for (int i = 0; i < actions.length; i++) {
+			String a = actions[i];
+			if ( a.equalsIgnoreCase(option) )
+				return true;
+		}
+		
+		return false;
 	}
 	
 	/**

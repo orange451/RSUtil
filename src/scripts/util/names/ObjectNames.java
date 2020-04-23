@@ -9,7 +9,7 @@ public enum ObjectNames {
 	ANVIL(2097),
 	BANK_BOOTH(10083, 7409),
 	DOOR(131, 137, 138, 139, 140, 141, 142, 143, 144, 145, 9710),
-	FURNACE(24009, 10082),
+	FURNACE("Furnace", 24009, 10082, 24012),
 	COMPOSITE_HEAP(152),
 	FOUNTAIN(153),
 	FIRE(26185),
@@ -29,7 +29,7 @@ public enum ObjectNames {
 	ONION(3366),
 	CABBAGE(1161),
 	CAULDRON(2024),
-	RANGE(26181, 9736),
+	RANGE("Range", 26181, 9736),
 	TREE(9730, 1278, 1276),
 	OAK(10820),
 	WILLOW(10833, 10829, 10819, 10831),
@@ -48,15 +48,27 @@ public enum ObjectNames {
 	COFFIN_OPENED(15061);
 
 	private int[] id;
+	private String name;
+	
+	private ObjectNames(String name, int...id) {
+		this.name = name;
+		this.id = id;
+	}
+	
+	private ObjectNames(String name) {
+		this(name, null);
+	}
 
-	private ObjectNames(int... id) { this.id = id; }
+	private ObjectNames(int... id) {
+		this(null, id);
+	}
 
 	public int[] getIds() {
 		return this.id;
 	}
 
 	public String getName() {
-		return NameFormatter.get(toString());
+		return name == null ? NameFormatter.get(toString()) : name;
 	}
 
 	public static ObjectNames find(String formattedName) {
