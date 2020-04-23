@@ -13,7 +13,8 @@ public enum Locations {
 	LUMBRIDGE(new RSTile(3201, 3233), new RSTile(3226, 3205), 0), 
 	LUMBRIDGE_CHURCH(new RSTile(3240, 3215), new RSTile(3247, 3204), 0), 
 	LUMBRIDGE_SHOP_AXE(new RSTile(3228, 3205), new RSTile(3233, 3201), 0), 
-	LUMBRIDGE_KITCHEN(new RSTile(3205, 3217), new RSTile(3211, 3212), 0), 
+	LUMBRIDGE_KITCHEN(new RSTile(3205, 3217), new RSTile(3211, 3212), 0),
+	LUMBRIDGE_RANGE(new RSTile(3209, 3217), new RSTile(3212, 3212), 0),
 	LUMBRIDGE_SPINNING(new RSTile(3208, 3217), new RSTile(3212, 3212), 1), 
 	LUMBRIDGE_BANK(new RSTile(3207, 3220), new RSTile(3210, 3217), 2), 
 	LUMBRIDGE_SWAMP(new RSTile(3194, 3185), new RSTile(3204, 3171), 0),
@@ -47,6 +48,7 @@ public enum Locations {
 	ALKHARID_BANK(new RSTile(3269, 3169), new RSTile(3271, 3164), 0), 
 	ALKHARID_TANNER(new RSTile(3271, 3189), new RSTile(3277, 3193), 0), 
 	ALKHARID_PALACE(new RSTile(3287, 3171), new RSTile(3298, 3167), 0), 
+	ALKHARID_RANGE(new RSTile(3271, 3183), new RSTile(3275, 3179), 0),
 
 	VARROK(new RSTile(3182, 3450), new RSTile(3257, 3400), 0), 
 	VARROK_BANK_EAST(new RSTile(3250, 3423), new RSTile(3257, 3420), 0), 
@@ -79,7 +81,9 @@ public enum Locations {
 	VARROK_WIZARD(new RSTile(3219, 3376), new RSTile(3234, 3362), 0), 
 	VARROK_WOODS_EAST(new RSTile(3275, 3432), new RSTile(3285, 3414), 0),
 	VARROK_WOODS_YEWS(new RSTile(3265, 3495), new RSTile(3271, 3469), 0),
-
+	VARROK_RANGE_WEST(new RSTile(3156, 3431), new RSTile(3164, 3427), 0),
+	VARROK_RANGE_EAST(new RSTile(3240, 3409), new RSTile(3236, 3415), 0),
+	
 	DRAYNOR(new RSTile(3083, 3279), new RSTile(3105, 3249), 0), 
 	DRAYNOR_BANK(new RSTile(3092, 3246), new RSTile(3095, 3241), 0), 
 	DRAYNOR_SEWER(new RSTile(3088, 9674), new RSTile(3120, 9670), 0), 
@@ -128,6 +132,7 @@ public enum Locations {
 	FALADOR_GARDEN_SHED(new RSTile(3027, 3380), new RSTile(3028, 3378), 0),
 	FALADOR_CHICKENS(new RSTile(3015, 3287), new RSTile(3019, 3293), 0),
 	FALDOR_YEWS(new RSTile(3044, 3321), new RSTile(3001, 3315), 0),
+	FALDOR_RANGE(new RSTile(2991, 3367), new RSTile(2988, 3365), 0),
 	
 	THURGOS_HOUSE(new RSTile(3001, 3145), new RSTile(2999, 3143), 0),
 
@@ -159,6 +164,7 @@ public enum Locations {
 	EDGEVILLE_HILL_GIANT_PIT(new RSTile(3098, 9828), new RSTile(3119, 9844), 0),
 	EDGEVILLE_KEY_AREA(new RSTile(3124, 9861), new RSTile(3132, 9863), 0),
 	EDGEVILLE_CHAOS_DRUIDS(new RSTile(3108, 9934), new RSTile(3114, 9930), 0),
+	EDGEVILLE_RANGE(new RSTile(3077, 3492), new RSTile(3081, 3496), 0),
 	
 	GRAND_EXCHANGE(new RSTile(3161, 3487), new RSTile(3168, 3483), 0),
 
