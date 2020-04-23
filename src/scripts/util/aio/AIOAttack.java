@@ -25,6 +25,17 @@ public class AIOAttack {
 	/**
 	 * Will attempt to search-for and attack specific NPCs. <br>
 	 * Returns (THE NPC) when the npc is found, attacked, and killed.<br>
+	 * Returns (NULL) if any of the above did not complete.
+	 * @param npc
+	 * @return
+	 */
+	public static RSNPC attackNPC(NPCNames... types) {
+		return attackNPC(new AIOStatus(), types);
+	}
+	
+	/**
+	 * Will attempt to search-for and attack specific NPCs. <br>
+	 * Returns (THE NPC) when the npc is found, attacked, and killed.<br>
 	 * Returns (NULL) if any of the above did not complete.<br>
 	 * You can query the status of the AIOStatus object to see the current status of the AIO.
 	 * @param status
@@ -80,7 +91,32 @@ public class AIOAttack {
 		
 		// Use ABC to find next target
 		RSNPC npc = (RSNPC) AntiBan.getABC().selectNextTarget(npcs);
-		
+		return attackNPC(status, npc);
+	}
+
+	/**
+	 * Will attempt to search-for and attack specific NPCs. <br>
+	 * Returns (THE NPC) when the npc is found, attacked, and killed.<br>
+	 * Returns (NULL) if any of the above did not complete.<br>
+	 * You can query the status of the AIOStatus object to see the current status of the AIO.
+	 * @param status
+	 * @param types
+	 * @return
+	 */
+	public static RSNPC attackNPC(RSNPC npc) {
+		return attackNPC(new AIOStatus(), npc);
+	}
+	
+	/**
+	 * Will attempt to search-for and attack specific NPCs. <br>
+	 * Returns (THE NPC) when the npc is found, attacked, and killed.<br>
+	 * Returns (NULL) if any of the above did not complete.<br>
+	 * You can query the status of the AIOStatus object to see the current status of the AIO.
+	 * @param status
+	 * @param types
+	 * @return
+	 */
+	public static RSNPC attackNPC(AIOStatus status, RSNPC npc) {
 		// Walk to enemy
 		if ( !PathFinding.canReach(npc.getPosition(), false) ) {
 			status.setStatus("Walking to npc");
@@ -96,6 +132,12 @@ public class AIOAttack {
 				return null;
 			}
 			AntiBan.idle(250);
+		}
+		
+		// IF we still cant reach you, exit out.
+		if ( !PathFinding.canReach(npc.getPosition(), false) ) {
+			status.setType(StatusType.FAILED);
+			return null;
 		}
 			
 		// Try to click
@@ -119,12 +161,13 @@ public class AIOAttack {
 			}
 			
 			// Maybe we're already under attack...
-			alreadyAttacking = fixAlreadyAttack(status);
+			RSNPC alreadyAttacking = fixAlreadyAttack(status);
 			if (alreadyAttacking != null) {
 				if ( sucessfullyTargeted(status, npc) ) {
 					return waitForAttackResult(status, alreadyAttacking);
 				} else {
-					return attackNPC(status, types); // Try again.
+					status.setType(StatusType.FAILED);
+					return null;
 				}
 			}
 			
@@ -139,7 +182,8 @@ public class AIOAttack {
 				if ( sucessfullyTargeted(status, npc) ) {
 					return waitForAttackResult(status, npc);
 				} else {
-					return attackNPC(status, types); // Try again.
+					status.setType(StatusType.FAILED);
+					return null;
 				}
 			} else {
 				// Maybe we need to rotate?
@@ -152,17 +196,6 @@ public class AIOAttack {
 		// We didn't click on anyone :(
 		status.setType(StatusType.FAILED);
 		return null;
-	}
-	
-	/**
-	 * Will attempt to search-for and attack specific NPCs. <br>
-	 * Returns (THE NPC) when the npc is found, attacked, and killed.<br>
-	 * Returns (NULL) if any of the above did not complete.
-	 * @param npc
-	 * @return
-	 */
-	public static RSNPC attackNPC(NPCNames... types) {
-		return attackNPC(new AIOStatus(), types);
 	}
 	
 	/**

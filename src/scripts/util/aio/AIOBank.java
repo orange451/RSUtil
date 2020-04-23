@@ -1,5 +1,6 @@
 package scripts.util.aio;
 
+import org.tribot.api.General;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.Inventory;
 
@@ -114,12 +115,16 @@ public class AIOBank {
 
 	public static boolean walkToNearestBankAndWithdrawFirstItem(int quantity, ItemIds desiredItem) {
 		// Go to bank
-		if ( !walkToNearestBankAndOpen() )
+		if ( !walkToNearestBankAndOpen() ) {
+			General.println("Couldnt open bank");
 			return false;
+		}
 		
 		// Withdraw
-		if ( !BankingUtil.withdrawFirstItem(quantity, desiredItem) )
+		if ( !BankingUtil.withdrawFirstItem(quantity, desiredItem) ) {
+			General.println("Couldn't withdraw " + quantity + " / " + desiredItem.toString());
 			return false;
+		}
 		
 		return true;
 	}

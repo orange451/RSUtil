@@ -37,12 +37,20 @@ public enum TrainMethod {
 	 */
 	public static TrainMethod getLowestSkill() {
 		List<TrainMethod> temp = new ArrayList<>();
-		int min = Integer.MAX_VALUE;
+		int min = values()[0].getSkill().getActualLevel();
 		
+		// Find lowest one
 		for (TrainMethod method : values()) {
 			SKILLS skill = method.getSkill();
-			if ( skill.getActualLevel() <= min ) {
+			if ( skill.getActualLevel() < min ) {
 				min = skill.getActualLevel();
+			}
+		}
+		
+		// Find duplicates
+		for (TrainMethod method : values()) {
+			SKILLS skill = method.getSkill();
+			if ( skill.getActualLevel() == min ) {
 				temp.add(method);
 			}
 		}

@@ -1,5 +1,6 @@
 package scripts.util;
 
+import org.tribot.api.General;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.Interfaces;
@@ -9,6 +10,7 @@ import org.tribot.api2007.types.RSItem;
 
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
+import scripts.util.names.ItemNames;
 import scripts.util.names.internal.ItemNamesData;
 import scripts.util.names.type.FoodType;
 
@@ -87,12 +89,13 @@ public class BankingUtil {
 			
 			int requiredSpace = 1;
 			NotedItem note = new NotedItem(item);
-			if ( !note.isValid() )
+			if ( !note.isValid() && !t[0].getDefinition().isStackable() )
 				requiredSpace = t[0].getStack();
 			
 			int freeSpace = 28 - Inventory.getAll().length;
 			
 			if ( freeSpace < requiredSpace ) {
+				General.println("Not enough space");
 				return false;
 			} else {
 				if ( quantity > freeSpace ) {
@@ -103,7 +106,7 @@ public class BankingUtil {
 			}
 			
 			if ( Banking.withdraw(quantity, t[0].getID()) ) {
-				AntiBan.sleep(800, 250);
+				AntiBan.sleep(2000, 250);
 				return true;
 			}
 		}

@@ -1,27 +1,14 @@
 package scripts.util.aio;
 
-import static scripts.util.names.internal.ItemNamesData.get;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.tribot.api.General;
-import org.tribot.api2007.Banking;
 import org.tribot.api2007.Equipment;
-import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Skills.SKILLS;
 import org.tribot.api2007.types.RSItem;
 
-import scripts.util.BankingUtil;
 import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 import scripts.util.names.type.ArmorClass;
-import scripts.util.names.type.ArmorType;
 import scripts.util.names.type.EquipmentMaterial;
 import scripts.util.names.type.ToolClass;
 import scripts.util.names.type.ToolType;
@@ -74,6 +61,33 @@ public class AIOEquipment {
 	 */
 	public static RSItem getToolAndEquipIfPossible(ToolClass tool, EquipmentMaterial minimumMaterial) {
 		ItemIds[] desiredItems = ItemNames.get(ToolType.getToolTypes(tool, minimumMaterial));
+		
+		// Check if item is in inventory or equipment
+		RSItem inventoryItem = getFirstTool(tool, minimumMaterial);
+		if ( inventoryItem != null )
+			return inventoryItem;
+		
+		// Try to go get the item
+		for (int i = 0; i < desiredItems.length; i++) {
+			RSItem item = AIOItem.getItem(desiredItems[i]);
+			if ( item != null ) {
+				if ( SKILLS.ATTACK.getActualLevel() >= ToolType.match(ItemNames.get(item.getID())).getMaterial().getMinimumEquipLevel()) {
+					AntiBan.sleep(500, 250);
+					item.click("wield");
+					AntiBan.sleep(1250, 500);
+					RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
+					if ( equipped != null )
+						return equipped;
+					return item;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public static RSItem getFirstTool(ToolClass tool, EquipmentMaterial minimumMaterial) {
+		ItemIds[] desiredItems = ItemNames.get(ToolType.getToolTypes(tool, minimumMaterial));
 		int[] desiredItemIds = ItemNames.get(desiredItems);
 		
 		// Check if we have it already equipped
@@ -94,26 +108,10 @@ public class AIOEquipment {
 				AntiBan.sleep(500, 250);
 				inventoryItem.click("wield");
 				AntiBan.sleep(1250, 500);
-				RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
+				RSItem equipped = getFirstTool(tool, minimumMaterial);
 				if ( equipped != null )
 					return equipped;
 				return inventoryItem;
-			}
-		}
-		
-		// Try to go get the item
-		for (int i = 0; i < desiredItems.length; i++) {
-			RSItem item = AIOItem.getItem(desiredItems[i]);
-			if ( item != null ) {
-				if ( SKILLS.ATTACK.getActualLevel() >= ToolType.match(ItemNames.get(item.getID())).getMaterial().getMinimumEquipLevel()) {
-					AntiBan.sleep(500, 250);
-					item.click("wield");
-					AntiBan.sleep(1250, 500);
-					RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
-					if ( equipped != null )
-						return equipped;
-					return item;
-				}
 			}
 		}
 		

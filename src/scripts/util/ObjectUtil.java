@@ -104,7 +104,7 @@ public class ObjectUtil {
 		return mine;
 	}
 
-	private static boolean hasAdjacentPlayer(RSObject object) {
+	public static boolean hasAdjacentPlayer(RSObject object) {
 		RSTile center = object.getPosition();
 		RSTile[] adjacentTiles = new RSTile[] {
 				new RSTile(center.getX() + 1, center.getY(), center.getPlane()),
