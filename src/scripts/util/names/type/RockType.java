@@ -9,7 +9,10 @@ public enum RockType implements ObjectWrapper {
 	TIN(ObjectNames.ORE_TIN, 1, 1),
 	COAL(ObjectNames.ORE_COAL, 2, 30),
 	GOLD(ObjectNames.ORE_GOLD, 16, 40),
-	IRON(ObjectNames.ORE_IRON, 3, 15);
+	IRON(ObjectNames.ORE_IRON, 3, 15),
+	MITHRIL(ObjectNames.ORE_MITHRIL, 16, 40),
+	ADAMANT(ObjectNames.ORE_ADAMANT, 16, 40), 
+	CLAY(ObjectNames.ORE_CLAY, 1, 4);
 	
 	private ObjectNames objectType;
 	private int minTravelDistance;

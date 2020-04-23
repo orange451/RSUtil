@@ -38,6 +38,7 @@ public enum Locations {
 	LUMBRIDGE_FISHING_AREA(new RSTile(3246, 3160), new RSTile(3238, 3142), 0),
 	LUMBRIDGE_WILLOWS(new RSTile(3233, 3246), new RSTile(3235, 3235), 0),
 	LUMBRIDGE_MINE(new RSTile(3222, 3149), new RSTile(3231, 3144), 0),
+	LUMBRIDGE_WOODS_YEWS(new RSTile(3151, 3231), new RSTile(3186, 3219), 0),
 
 	ALKHARID(new RSTile(3278, 3246), new RSTile(3322, 3177), 0), 
 	ALKHARID_MINE(new RSTile(3296, 3289), new RSTile(3301, 3284), 0), 
@@ -56,17 +57,20 @@ public enum Locations {
 	VARROK_SMITH_WEST(new RSTile(3246, 3409), new RSTile(3251, 3403), 0), 
 	VARROK_TAVERN(new RSTile(3218, 3402), new RSTile(3226, 3393), 0), 
 	VARROK_TAVERN_CHEST(new RSTile(3218, 3396), new RSTile(3222, 3394), 1), 
+	VARROK_OAKS(new RSTile(3159, 3398), new RSTile(3173, 3422), 0),
 	VARROK_SHOP_SWORD(new RSTile(3202, 3403), new RSTile(3208, 3395), 0), 
 	VARROK_SHOP_GENERAL(new RSTile(3214, 3419), new RSTile(3220, 3411), 0), 
 	VARROK_SHOP_ARMOR(new RSTile(3227, 3441), new RSTile(3232, 3433), 0), 
 	VARROK_SHOP_ARROWS(new RSTile(3230, 3426), new RSTile(3235, 3421), 0), 
 	VARROK_SHOP_STAFF(new RSTile(3201, 3436), new RSTile(3204, 3431), 0), 
 	VARROK_SHOP_RUNES(new RSTile(3252, 3399), new RSTile(3254, 3403), 0),
-	VARROK_CHURCH(new RSTile(3252, 3487), new RSTile(3259, 3476), 0), 
+	VARROK_CHURCH(new RSTile(3252, 3487), new RSTile(3259, 3476), 0),
+	VARROK_CHURCH_YEW(new RSTile(3247, 3474), new RSTile(3251, 3471), 0),
 	VARROK_CASTLE_KINGS_ROOM(new RSTile(3219, 3474), new RSTile(3225, 3471), 0),
 	VARROK_CASTLE_LOWER(new RSTile(3201, 3498), new RSTile(3224, 3471), 0), 
 	VARROK_CASTLE_NW_STAIR(new RSTile(3200, 3500), new RSTile(3206, 3494), 2), 
-	VARROK_CASTLE_LIBRARY(new RSTile(3207, 3497), new RSTile(3214, 3490), 0), 
+	VARROK_CASTLE_LIBRARY(new RSTile(3207, 3497), new RSTile(3214, 3490), 0),
+	VARROK_CASTLE_YEWS(new RSTile(3203, 3505), new RSTile(3224, 3501), 0),
 	VARROK_SQUARE(new RSTile(3206, 3437), new RSTile(3221, 3422), 0), 
 	VARROK_WILDERNESS(new RSTile(3238, 3520), new RSTile(3254, 3514), 0), 
 	VARROK_SEWER(new RSTile(3230, 9869), new RSTile(3249, 9864), 0), 
@@ -74,6 +78,7 @@ public enum Locations {
 	VARROK_ENTRANCE_WEST(new RSTile(3172, 3432), new RSTile(3179, 3424), 0), 
 	VARROK_WIZARD(new RSTile(3219, 3376), new RSTile(3234, 3362), 0), 
 	VARROK_WOODS_EAST(new RSTile(3275, 3432), new RSTile(3285, 3414), 0),
+	VARROK_WOODS_YEWS(new RSTile(3265, 3495), new RSTile(3271, 3469), 0),
 
 	DRAYNOR(new RSTile(3083, 3279), new RSTile(3105, 3249), 0), 
 	DRAYNOR_BANK(new RSTile(3092, 3246), new RSTile(3095, 3241), 0), 
@@ -122,6 +127,7 @@ public enum Locations {
 	FALADOR_GARDEN(new RSTile(3007, 3387), new RSTile(3012, 3375), 0), 
 	FALADOR_GARDEN_SHED(new RSTile(3027, 3380), new RSTile(3028, 3378), 0),
 	FALADOR_CHICKENS(new RSTile(3015, 3287), new RSTile(3019, 3293), 0),
+	FALDOR_YEWS(new RSTile(3044, 3321), new RSTile(3001, 3315), 0),
 	
 	THURGOS_HOUSE(new RSTile(3001, 3145), new RSTile(2999, 3143), 0),
 
@@ -135,9 +141,12 @@ public enum Locations {
 	RIMMINGTON_RATS(new RSTile(2953, 3205), new RSTile(2960, 3202), 0), 
 	RIMMINGTON_CHEMIST(new RSTile(2930, 3212), new RSTile(2935, 3208), 0), 
 	RIMMINGTON_FARM(new RSTile(2945, 3260), new RSTile(2955, 3247), 0), 
-	RIMMINGTON_SHOP_GENERAL(new RSTile(2947, 3217), new RSTile(2949, 3212), 0), 
+	RIMMINGTON_SHOP_GENERAL(new RSTile(2947, 3217), new RSTile(2949, 3212), 0),
+	RIMMINGTON_MINE(new RSTile(2970, 3248), new RSTile(2987, 3232), 0),
 
-	DWARVEN_MINE(new RSTile(3011, 3451), new RSTile(3019, 3446), 0), 
+	DWARVEN_MINE(new RSTile(3011, 3451), new RSTile(3019, 3446), 0),
+	DWARVEN_MINE_NORTH(new RSTile(3033, 9830), new RSTile(3030, 9821), 0),
+	DWARVEN_MINE_SOUTH(new RSTile(3035, 9782), new RSTile(3056, 9762), 0),
 
 	BLACK_KNIGHT_FORTRESS(new RSTile(3024, 3503), new RSTile(3030, 3498), 0), 
 
@@ -172,7 +181,7 @@ public enum Locations {
 	TEMPLE_ALTAR_2ND_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
 	
-	KARAMJA_DOCK(new RSTile(2924, 3180), new RSTile(2925, 3175), 0),
+	KARAMJA_DOCK(new RSTile(2924, 3180), new RSTile(2925, 3175), 0),  
 
 	;
 
