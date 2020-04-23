@@ -26,7 +26,6 @@ import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSPlayer;
 
 import scripts.util.misc.AntiBan;
-import scripts.util.misc.NameFormatter;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 import scripts.util.names.internal.ItemNamesData;

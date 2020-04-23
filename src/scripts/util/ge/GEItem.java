@@ -1,5 +1,7 @@
 package scripts.util.ge;
 
+import java.util.Map;
+
 import scripts.dax_api.shared.jsonSimple.JSONObject;
 import scripts.util.misc.ItemWrapper;
 import scripts.util.names.ItemIds;
@@ -7,37 +9,47 @@ import scripts.util.names.ItemNames;
 
 public class GEItem implements ItemWrapper {
 	
+	/** ID of the item */
 	private int id;
 	
+	/** Display name of the item */
 	private String name;
 	
+	/** Is item Members only */
 	private boolean members;
 	
+	/** Average price bought */
 	private int buyAverage;
 	
+	/** Average quantity bought */
 	private int buyQuantity;
 	
+	/** Average price sold */
 	private int sellAverage;
 	
+	/** Average quantity sold */
 	private int sellQuantity;
 	
+	/** Overall average price */ 
 	private int overallAverage;
 	
+	/** Overall average quantity */
 	private int overallQuantity;
 	
+	/** sp */
 	private int sp;
 	
-	public GEItem(JSONObject data) {
-		this.id = get(data.get("id"));
-		this.name = data.get("name").toString();
-		this.members = ((Boolean)data.get("members")).booleanValue();
-		this.buyAverage = get(data.get("buy_average"));
-		this.buyQuantity = get(data.get("buy_quantity"));
-		this.sellAverage = get(data.get("sell_average"));
-		this.sellQuantity = get(data.get("sell_quantity"));
-		this.overallAverage = get(data.get("overall_average"));
-		this.overallQuantity = get(data.get("overall_quantity"));
-		this.sp = get(data.get("sp"));
+	public GEItem(Map<String,Object> data) {
+		this.id = toIntegerSafe(data.get("id"));
+		this.name = toStringSafe(data.get("name"));
+		this.members = toBooleanSafe(data.get("members"));
+		this.buyAverage = toIntegerSafe(data.get("buy_average"));
+		this.buyQuantity = toIntegerSafe(data.get("buy_quantity"));
+		this.sellAverage = toIntegerSafe(data.get("sell_average"));
+		this.sellQuantity = toIntegerSafe(data.get("sell_quantity"));
+		this.overallAverage = toIntegerSafe(data.get("overall_average"));
+		this.overallQuantity = toIntegerSafe(data.get("overall_quantity"));
+		this.sp = toIntegerSafe(data.get("sp"));
 	}
 	
 	@Override
@@ -121,7 +133,7 @@ public class GEItem implements ItemWrapper {
 		return this.sp;
 	}
 
-	private int get(Object object) {
+	private int toIntegerSafe(Object object) {
 		if ( object instanceof String ) {
 			try {
 				return (int)Double.parseDouble(object.toString());
@@ -134,6 +146,23 @@ public class GEItem implements ItemWrapper {
 			return ((Number)object).intValue();
 		
 		return 0;
+	}
+	
+	private String toStringSafe(Object object) {
+		if ( object == null )
+			return "";
+		
+		return object.toString();
+	}
+	
+	private boolean toBooleanSafe(Object object) {
+		if ( object == null )
+			return false;
+		
+		if ( !(object instanceof Boolean) )
+			return false;
+		
+		return ((Boolean)object).booleanValue();
 	}
 	
 	@SuppressWarnings("unchecked")

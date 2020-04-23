@@ -11,6 +11,7 @@ import java.util.List;
 import org.tribot.api.General;
 import org.tribot.api.input.Keyboard;
 import org.tribot.api2007.Interfaces;
+import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSInterfaceComponent;
 import org.tribot.api2007.types.RSItem;
@@ -20,8 +21,15 @@ import scripts.dax_api.shared.jsonSimple.parser.JSONParser;
 import scripts.util.names.ItemIds;
 
 public class GrandExchangeUtil {
+	
+	/** Internal GE data */
 	private static JSONObject priceData;
+	
+	/** Last timestamp GE data was downloaded */
 	private static long lastUpdateTime;
+	
+	/** Rate at which we refresh internally stored GE data */
+	public static long REFRESH_GE_TIME = 1000 * 60;
 	
 	/**
 	 * Force fetches all the price data for GE Items.
@@ -47,7 +55,7 @@ public class GrandExchangeUtil {
 	}
 	
 	private static void updateGEPriceData() {
-		if ( priceData == null || System.currentTimeMillis()-lastUpdateTime > 1000*60 )
+		if ( priceData == null || System.currentTimeMillis()-lastUpdateTime > REFRESH_GE_TIME )
 			forceUpdateGEPriceData();
 	}
 	
@@ -64,6 +72,15 @@ public class GrandExchangeUtil {
 			return null;
 		
 		return new GEItem(data);
+	}
+	
+	/**
+	 * Get GEItem from RSItem
+	 * @param id
+	 * @return
+	 */
+	public static GEItem getItemData(RSItem item) {
+		return getItemData(item.getID());
 	}
 
 	
@@ -230,9 +247,25 @@ public class GrandExchangeUtil {
 	}
 	
 	private static void userInputText(String text) {
+		// Type name of item
 		Keyboard.typeString(text);
 		General.sleep(1000, 2000);
+		
+		// Find search result
+		GEInterfaces[] results = GEInterfaces.SEARCH_RESULTS;
+		for (int i = 0; i < results.length; i++) {
+			RSInterface interf = results[i].get();
+			if ( interf == null )
+				continue;
+			
+			if ( interf.getText().equalsIgnoreCase(text) && interf.click("") ) {
+				General.sleep(500, 1000);
+				return;
+			}
+		}
+		
 		Keyboard.pressEnter();
+		General.sleep(500, 1000);
 	}
 
 	private static RSInterfaceChild getFirstFreeOfferBox() {

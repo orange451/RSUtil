@@ -60,6 +60,11 @@ public class AIOWalk {
 		if ( location == null )
 			return true;
 		
+		while(Banking.isBankScreenOpen()) {
+			Banking.close();
+			General.sleep(2000,3000);
+		}
+		
 		BotTaskWalk task = new BotTaskWalk(location, shouldRunTo) {
 
 			@Override

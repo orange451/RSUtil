@@ -12,6 +12,7 @@ import org.tribot.api2007.GrandExchange;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSItem;
 
+import scripts.util.ItemUtil;
 import scripts.util.NPCUtil;
 import scripts.util.PlayerUtil;
 import scripts.util.ge.GEItem;
@@ -90,9 +91,10 @@ public class AIOItem {
 	 */
 	public static RSItem getItem(ItemIds desiredItem, int quantity, int buyQuantity) {
 		int[] desiredItemIds = get(desiredItem);
+		String itemName = ItemUtil.fromId(desiredItemIds[0]).getDefinition().getName();
 		
 		// Check if it is in inventory, and equip if not.
-		General.println("Checking inventory for: " + desiredItem + " (" + Arrays.toString(desiredItemIds) + ")");
+		General.println("Checking inventory for: " + itemName + " (" + Arrays.toString(desiredItemIds) + ")");
 		int count = PlayerUtil.getAmountItemsInInventory(desiredItem);
 		if ( count >= quantity ) {
 			RSItem item = PlayerUtil.getFirstItemInInventory(desiredItem);
@@ -100,7 +102,7 @@ public class AIOItem {
 		}
 		
 		// Go to bank to get item
-		General.println("Checking bank for: " + desiredItem + " (" + Arrays.toString(desiredItemIds) + ")");
+		General.println("Checking bank for: " + itemName + " (" + Arrays.toString(desiredItemIds) + ")");
 		if ( AIOBank.walkToNearestBankAndWithdrawFirstItem(quantity, desiredItem) )
 			return getItem(desiredItem, quantity, buyQuantity);
 
@@ -173,7 +175,7 @@ public class AIOItem {
 		// Collect the offer
 		General.sleep(800,1400);
 		GrandExchangeUtil.collectAll();
-		General.sleep(800,1400);
+		General.sleep(1500,2200);
 		GrandExchange.close();
 		
 		// Mark that we found the item

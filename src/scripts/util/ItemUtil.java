@@ -47,4 +47,13 @@ public class ItemUtil {
 		
 		return item.getSellAverage();
 	}
+	
+	/**
+	 * Returns generic RSItem from id.
+	 * @param id
+	 * @return
+	 */
+	public static RSItem fromId(int id) {
+		return new RSItem(0, id, 1, RSItem.TYPE.OTHER);
+	}
 }

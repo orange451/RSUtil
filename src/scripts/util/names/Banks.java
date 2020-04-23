@@ -12,7 +12,6 @@ import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.api_lib.WebWalkerServerApi;
 import scripts.dax_api.api_lib.models.PlayerDetails;
 import scripts.dax_api.api_lib.models.Point3D;
-import scripts.util.misc.AntiBan;
 
 @DoNotRename
 public enum Banks {
