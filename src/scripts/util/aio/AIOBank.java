@@ -113,7 +113,7 @@ public class AIOBank {
 		return true;
 	}
 
-	public static boolean walkToNearestBankAndWithdrawFirstItem(int quantity, ItemIds desiredItem) {
+	public static boolean walkToNearestBankAndWithdrawFirstItem(int quantity, ItemIds... desiredItem) {
 		// Go to bank
 		if ( !walkToNearestBankAndOpen() ) {
 			General.println("Couldnt open bank");

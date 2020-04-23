@@ -22,7 +22,7 @@ public enum NPCNames {
 	COOK(false),
 	COMBAT_INSTRUCTOR(false),
 	CHAOS_DRUID(true),
-	DAIRY_COW(false, 1172),
+	DAIRY_COW(false, "Dairy Cow", 0, 1172),
 	DARK_WIZARD(true),
 	DREZEL(false),
 	DUKE_HORACIO(false),
@@ -77,24 +77,7 @@ public enum NPCNames {
 	private String name;
 	private int[] ids = new int[0];
 	private int combatLevel;
-	
-	private NPCNames(boolean attackable) {
-		this(attackable, 3);
-	}
 
-	private NPCNames(boolean attackable, int combatLevel) {
-		this.attackable = attackable;
-		this.name = NameFormatter.get(toString());
-		this.combatLevel = combatLevel;
-	}
-	
-	private NPCNames(boolean attackable, int combatLevel, int...ids) {
-		this.attackable = attackable;
-		this.ids = ids;
-		this.name = NameFormatter.get(toString());
-		this.combatLevel = combatLevel;
-	}
-	
 	private NPCNames(boolean attackable, String name, int combatLevel, int...ids) {
 		this.attackable = attackable;
 		this.ids = ids;
@@ -102,10 +85,26 @@ public enum NPCNames {
 		this.combatLevel = combatLevel;
 	}
 	
+	private NPCNames(boolean attackable) {
+		this(attackable, 3);
+	}
+
+	private NPCNames(boolean attackable, int combatLevel) {
+		this(attackable, combatLevel, null);
+	}
+	
+	private NPCNames(boolean attackable, int combatLevel, int...ids) {
+		this(attackable, null, combatLevel, ids);
+		
+		this.name = NameFormatter.get(toString());
+	}
+	
 	private NPCNames(boolean attackable, String name, int combatLevel) {
-		this.attackable = attackable;
-		this.name = name;
-		this.combatLevel = combatLevel;
+		this(attackable, name, combatLevel, null);
+	}
+	
+	private NPCNames(boolean attackable, String name) {
+		this(attackable, name, 3);
 	}
 
 	public boolean isAttackable() {
@@ -121,6 +120,9 @@ public enum NPCNames {
 	}
 	
 	public boolean hasId(int id) {
+		if ( ids == null || ids.length == 0 )
+			return false;
+		
 		for (int i = 0; i < ids.length; i++) {
 			if ( ids[i] == id ) {
 				return true;

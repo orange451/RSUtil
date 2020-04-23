@@ -6,6 +6,8 @@ import org.tribot.api.util.abc.ABCUtil;
 import org.tribot.api2007.Camera;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSTile;
+
+import scripts.util.NPCDialogue;
 import scripts.util.PlayerUtil;
 
 @SuppressWarnings("deprecation")
@@ -45,7 +47,7 @@ public final class AntiBan {
 		if (abc.shouldRotateCamera()) {
 			abc.rotateCamera();
 		}
-		if (abc.shouldLeaveGame() && randomChance(32))
+		if (abc.shouldLeaveGame() && randomChance(NPCDialogue.isInConversation() ? 128 : 32))
 			abc.leaveGame();
 	}
 

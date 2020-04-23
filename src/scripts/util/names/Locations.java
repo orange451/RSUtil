@@ -59,7 +59,7 @@ public enum Locations {
 	VARROK_SMITH_WEST(new RSTile(3246, 3409), new RSTile(3251, 3403), 0), 
 	VARROK_TAVERN(new RSTile(3218, 3402), new RSTile(3226, 3393), 0), 
 	VARROK_TAVERN_CHEST(new RSTile(3218, 3396), new RSTile(3222, 3394), 1), 
-	VARROK_OAKS(new RSTile(3159, 3398), new RSTile(3173, 3422), 0),
+	VARROK_WOODS_WEST(new RSTile(3160, 3425), new RSTile(3169, 3411), 0),
 	VARROK_SHOP_SWORD(new RSTile(3202, 3403), new RSTile(3208, 3395), 0), 
 	VARROK_SHOP_GENERAL(new RSTile(3214, 3419), new RSTile(3220, 3411), 0), 
 	VARROK_SHOP_ARMOR(new RSTile(3227, 3441), new RSTile(3232, 3433), 0), 

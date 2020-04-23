@@ -286,14 +286,15 @@ public class AIOWalk {
 	protected static void walkToLegacyInternal(Locations location) {
 		General.println("Attempting to walk to: " + location);
 		
-
-		if ( !Locations.isNear(location) ) {
+		// AIO Walk to location
+		if ( !Locations.isNear(location) )
 			AIOWalk.walkTo(location);
-		}
 		
+		// If still not near, break out
 		if ( !Locations.isNear(location.getCenter()) )
 				return;
 		
+		// DPath Nav the way there
 		new DPathNavigator().traverse(location.getRandomizedPosition());
 		AntiBan.sleep(700, 250);
 	}

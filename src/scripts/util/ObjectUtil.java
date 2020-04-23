@@ -90,6 +90,11 @@ public class ObjectUtil {
 			
 			if ( hasAdjacent ) 
 				tdist += 10;
+
+			// Farther away the object is, the more uncertain we are of exact distance
+			for (int j = 0; j < (int)(tdist / 3); j++) {
+				tdist += General.random(-1, 1);
+			}
 			
 			if ( !PathFinding.canReach(Player.getPosition(), o.getPosition(), true) )
 				tdist = Integer.MAX_VALUE;

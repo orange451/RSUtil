@@ -16,7 +16,7 @@ import scripts.util.player.Navigation;
 
 @SuppressWarnings("deprecation")
 public abstract class BotTaskWalk extends BotTask {
-	protected static float radius = 6.0F;
+	protected static float radius = 9.0F;
 
 	// Walking variables
 	protected RSTile walkTo;
