@@ -9,7 +9,8 @@ import scripts.util.names.ItemNames;
 import scripts.util.names.NPCNames;
 
 public enum FishingEquipment {
-	SMALL_FISHING_NET(NPCNames.FISHING_SPOT, "Net", 1, "Small Net", ItemNames.SMALL_FISHING_NET),
+	BIG_FISHING_NET(NPCNames.FISHING_SPOT, "Big Net", 16, "Big Fishing Net", ItemNames.BIG_FISHING_NET),
+	SMALL_FISHING_NET(NPCNames.FISHING_SPOT, "Small Net", 1, "Small Net", ItemNames.SMALL_FISHING_NET),
 	FISHING_ROD(new NPCNames[] {NPCNames.FISHING_SPOT, NPCNames.ROD_FISHING_SPOT}, "Bait", 5, ItemNames.FISHING_ROD, ItemNames.FISHING_BAIT),
 	FLY_FISHING_ROD(NPCNames.ROD_FISHING_SPOT, "Lure", 20, ItemNames.FLY_FISHING_ROD, ItemNames.FEATHER),
 	HARPOON(NPCNames.FISHING_SPOT, "Harpoon", 35, ItemNames.HARPOON),

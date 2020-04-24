@@ -50,6 +50,7 @@ public enum Locations {
 	ALKHARID_TANNER(new RSTile(3271, 3189), new RSTile(3277, 3193), 0), 
 	ALKHARID_PALACE(new RSTile(3287, 3171), new RSTile(3298, 3167), 0), 
 	ALKHARID_RANGE(new RSTile(3271, 3183), new RSTile(3275, 3179), 0),
+	ALKARID_FISHING_AREA(new RSTile(3266, 3149), new RSTile(3269, 3147), 0),
 
 	VARROK(new RSTile(3182, 3450), new RSTile(3257, 3400), 0), 
 	VARROK_BANK_EAST(new RSTile(3250, 3423), new RSTile(3257, 3420), 0), 
@@ -196,9 +197,24 @@ public enum Locations {
 	TEMPLE_ALTAR_2ND_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
 	
-	KARAMJA_DOCK(new RSTile(2924, 3180), new RSTile(2925, 3175), 0),  
-
-	;
+	KARAMJA_DOCK(new RSTile(2924, 3180), new RSTile(2925, 3175), 0), 
+	
+	CATHERBY_BANK(new RSTile(2806, 3441), new RSTile(2812, 3438), 0),
+	CATHERBY_FARMING_AREA(new RSTile(2814, 3459), new RSTile(2805, 3468), 0),
+	CATHERBY_FISHING_SHOP(new RSTile(2837, 3440), new RSTile(2830, 3446), 0),
+	CATHERBY_FISHING_AREA(new RSTile(2835, 3432), new RSTile(2864, 3428), 0),
+	CATHERBY_RANGE(new RSTile(2818, 3439), new RSTile(2815, 3444), 0),
+	
+	SEERS_VILLAGE(new RSTile(2712, 3489), new RSTile(2739, 3483), 0),
+	SEERS_VILLAGE_MAPLE_TREES(new RSTile(2734, 3498), new RSTile(2719, 3504), 0),
+	
+	FISHING_GUILD_SOUTH_DOCK(new RSTile(2611, 3411), new RSTile(2602, 3416), 0),
+	FISHING_GUILD_NORTH_DOCK(new RSTile(2604, 3420), new RSTile(2595, 3425), 0),
+	FISHING_GUILD_MINNOW_DOCK(new RSTile(2622, 3441), new RSTile(2607, 3446), 0),
+	
+	OTTOS_FISHING_GROTTO(new RSTile(2505, 3493), new RSTile(2499, 3518), 0),
+	
+	; 
 
 	public static int BASEMENT_OFFSET = 6400;
 	private static ArrayList<Locations> locs = new ArrayList<Locations>();
