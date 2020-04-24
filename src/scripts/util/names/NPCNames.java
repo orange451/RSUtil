@@ -35,7 +35,7 @@ public enum NPCNames {
 	ROD_FISHING_SPOT(false),
 	FROG(true),
 	FRED_THE_FARMER(false),
-	GIANT_RAT(true),
+	GIANT_RAT(true, "Giant rat", 3),
 	GIANT_FROG(true),
 	GOBLIN(true),
 	GUARD(true),

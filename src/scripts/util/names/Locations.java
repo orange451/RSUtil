@@ -3,6 +3,7 @@ package scripts.util.names;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import org.tribot.api.interfaces.Positionable;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
@@ -249,21 +250,12 @@ public enum Locations {
 	}
 
 	/**
-	 * Returns whether or not an RSPlayer object is currently inside this location.
-	 * @param player
-	 * @return
-	 */
-	public boolean contains(RSPlayer player) {
-		return contains( player.getPosition() );
-	}
-
-	/**
 	 * Returns whether or not a specific tile is located within this location.
 	 * @param tile
 	 * @return
 	 */
-	public boolean contains(RSTile tile) {
-		return this.location.contains(tile.getX(), tile.getY()) && tile.getPlane() == this.floor;
+	public boolean contains(Positionable tile) {
+		return this.location.contains(tile.getPosition().getX(), tile.getPosition().getY()) && tile.getPosition().getPlane() == this.floor;
 	}
 
 	/**

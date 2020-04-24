@@ -1,5 +1,8 @@
 package scripts.util.aio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Banking;
@@ -16,6 +19,9 @@ import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.aio.f2pquester.F2PQuester;
 import scripts.dax_api.api_lib.DaxWalker;
+import scripts.dax_api.api_lib.models.PathResult;
+import scripts.dax_api.api_lib.models.PathStatus;
+import scripts.dax_api.api_lib.models.Point3D;
 import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.dax_api.walker_engine.WalkingCondition;
 import scripts.util.NPCUtil;
@@ -176,6 +182,8 @@ public class AIOWalk {
 		if ( !PathFinding.canReach(npc.getPosition(), false) )
 			return false;
 		
+		
+		
 		// Wait a sec
 		AntiBan.sleep(1000, 200);
 
@@ -317,7 +325,7 @@ public class AIOWalk {
 		
 		ticksNotMoved = 0;
 		lastTile = Player.getRSPlayer().getPosition();
-		DPathNavigator nav = new DPathNavigator();
+		/*DPathNavigator nav = new DPathNavigator();
 		nav.setStoppingConditionCheckDelay(100L);
 		nav.setStoppingCondition(new Condition() {
 
@@ -342,6 +350,33 @@ public class AIOWalk {
 			Walking.blindWalkTo(tile);
 		} else {
 			AccurateMouse.clickMinimap(tile.getPosition());
+		}*/
+		
+		RSTile[] path = PathFinding.generatePath(Player.getPosition(), tile.getPosition(), false);
+		if ( path != null ) {
+			List<Point3D> points = new ArrayList<>();
+			for (RSTile t : path)
+				points.add(Point3D.fromPositionable(t));
+			DaxWalker.walkPathResult(new PathResult(PathStatus.SUCCESS, points, 0), new WalkingCondition() {
+				@Override
+				public State action() {
+					if ( PlayerUtil.isInDanger() )
+						return State.EXIT_OUT_WALKER_FAIL;
+					
+					if ( PathFinding.canReach(tile.getPosition(), false) && Player.getPosition().distanceTo(tile)<=6)
+						return State.EXIT_OUT_WALKER_SUCCESS;
+					
+					AntiBan.idle(AntiBan.generateAFKTime(4000.0F));
+					
+					RSTile currentTile = Player.getRSPlayer().getPosition();
+					if ( currentTile.equals(lastTile) )
+						ticksNotMoved++;
+					if ( ticksNotMoved > 8 )
+						return State.EXIT_OUT_WALKER_FAIL;
+					
+					return State.CONTINUE_WALKER;
+				}
+			});
 		}
 		
 		// Return if we actually made it
