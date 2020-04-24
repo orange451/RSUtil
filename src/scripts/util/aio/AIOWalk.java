@@ -1,6 +1,7 @@
 package scripts.util.aio;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.tribot.api.General;
@@ -23,6 +24,7 @@ import scripts.dax_api.api_lib.models.PathResult;
 import scripts.dax_api.api_lib.models.PathStatus;
 import scripts.dax_api.api_lib.models.Point3D;
 import scripts.dax_api.walker.utils.AccurateMouse;
+import scripts.dax_api.walker_engine.WalkerEngine;
 import scripts.dax_api.walker_engine.WalkingCondition;
 import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
@@ -219,7 +221,7 @@ public class AIOWalk {
 		
 		if ( location != null ) {
 			if ( Player.getPosition().distanceTo(location.getCenter()) > 3 )
-				new DPathNavigator().traverse(location.getCenter());
+				AIOWalk.walkToLegacy(location.getCenter());
 		}
 
 		RSGroundItem[] bs = GroundItems.findNearest(item.getIds());
@@ -352,31 +354,53 @@ public class AIOWalk {
 			AccurateMouse.clickMinimap(tile.getPosition());
 		}*/
 		
-		RSTile[] path = PathFinding.generatePath(Player.getPosition(), tile.getPosition(), false);
+		RSTile[] path = PathFinding.generatePath(Player.getPosition(), tile.getPosition(), true);
 		if ( path != null ) {
-			List<Point3D> points = new ArrayList<>();
-			for (RSTile t : path)
-				points.add(Point3D.fromPositionable(t));
-			DaxWalker.walkPathResult(new PathResult(PathStatus.SUCCESS, points, 0), new WalkingCondition() {
+			General.println("Walking local path (" + path.length + ") tile(s)");
+			
+			// Walk result
+			WalkerEngine.getInstance().walkPath(new ArrayList<>(Arrays.asList(path)), new WalkingCondition() {
 				@Override
 				public State action() {
-					if ( PlayerUtil.isInDanger() )
+					if ( PlayerUtil.isInDanger() ) {
+						General.println("In danger. Exiting pathing");
 						return State.EXIT_OUT_WALKER_FAIL;
+					}
 					
-					if ( PathFinding.canReach(tile.getPosition(), false) && Player.getPosition().distanceTo(tile)<=6)
+					if ( PathFinding.canReach(tile.getPosition(), false) && Player.getPosition().distanceTo(tile)<=3) {
+						General.println("Success");
 						return State.EXIT_OUT_WALKER_SUCCESS;
+					}
 					
 					AntiBan.idle(AntiBan.generateAFKTime(4000.0F));
 					
 					RSTile currentTile = Player.getRSPlayer().getPosition();
+					General.println(currentTile + " / " + lastTile);
 					if ( currentTile.equals(lastTile) )
 						ticksNotMoved++;
-					if ( ticksNotMoved > 8 )
+					if ( ticksNotMoved > 8 ) {
+						General.println("Not moving...");
 						return State.EXIT_OUT_WALKER_FAIL;
+					}
 					
 					return State.CONTINUE_WALKER;
 				}
 			});
+			
+			// Look at tile
+			if (!tile.isOnScreen())
+				Camera.turnToTile(tile);
+			
+			// Click minimap if we're close
+			if ( PathFinding.canReach(tile, true) && Player.getPosition().distanceTo(tile)>3 )
+				AccurateMouse.clickMinimap(tile.getPosition());
+			
+			// Wait until we stop moving
+			General.sleep(1000);
+			while(Player.isMoving() && Player.getPosition().distanceTo(tile)>3)
+				General.sleep(500);
+		} else {
+			General.println("Could not walk to object :(");
 		}
 		
 		// Return if we actually made it
