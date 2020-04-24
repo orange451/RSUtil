@@ -354,38 +354,40 @@ public class AIOWalk {
 			AccurateMouse.clickMinimap(tile.getPosition());
 		}*/
 		
+		WalkingCondition condition = new WalkingCondition() {
+			@Override
+			public State action() {
+				if ( PlayerUtil.isInDanger() ) {
+					General.println("In danger. Exiting pathing");
+					return State.EXIT_OUT_WALKER_FAIL;
+				}
+				
+				if ( PathFinding.canReach(tile.getPosition(), false) && Player.getPosition().distanceTo(tile)<=3) {
+					General.println("Success");
+					return State.EXIT_OUT_WALKER_SUCCESS;
+				}
+				
+				AntiBan.idle(AntiBan.generateAFKTime(4000.0F));
+				
+				RSTile currentTile = Player.getRSPlayer().getPosition();
+				General.println(currentTile + " / " + lastTile);
+				if ( currentTile.equals(lastTile) )
+					ticksNotMoved++;
+				if ( ticksNotMoved > 8 ) {
+					General.println("Not moving...");
+					return State.EXIT_OUT_WALKER_FAIL;
+				}
+				
+				return State.CONTINUE_WALKER;
+			}
+		};
+		
 		RSTile[] path = PathFinding.generatePath(Player.getPosition(), tile.getPosition(), true);
 		if ( path != null ) {
 			General.println("Walking local path (" + path.length + ") tile(s)");
 			
 			// Walk result
-			WalkerEngine.getInstance().walkPath(new ArrayList<>(Arrays.asList(path)), new WalkingCondition() {
-				@Override
-				public State action() {
-					if ( PlayerUtil.isInDanger() ) {
-						General.println("In danger. Exiting pathing");
-						return State.EXIT_OUT_WALKER_FAIL;
-					}
-					
-					if ( PathFinding.canReach(tile.getPosition(), false) && Player.getPosition().distanceTo(tile)<=3) {
-						General.println("Success");
-						return State.EXIT_OUT_WALKER_SUCCESS;
-					}
-					
-					AntiBan.idle(AntiBan.generateAFKTime(4000.0F));
-					
-					RSTile currentTile = Player.getRSPlayer().getPosition();
-					General.println(currentTile + " / " + lastTile);
-					if ( currentTile.equals(lastTile) )
-						ticksNotMoved++;
-					if ( ticksNotMoved > 8 ) {
-						General.println("Not moving...");
-						return State.EXIT_OUT_WALKER_FAIL;
-					}
-					
-					return State.CONTINUE_WALKER;
-				}
-			});
+			WalkerEngine.getInstance().walkPath(new ArrayList<>(Arrays.asList(path)), condition);
 			
 			// Look at tile
 			if (!tile.isOnScreen())
@@ -401,6 +403,7 @@ public class AIOWalk {
 				General.sleep(500);
 		} else {
 			General.println("Could not walk to object :(");
+			DaxWalker.walkTo(tile, condition);
 		}
 		
 		// Return if we actually made it
