@@ -197,17 +197,27 @@ public class NPCUtil {
 	 * @param string
 	 * @return
 	 */
-	public static RSNPC[] getNPCSWithAction(String option, NPCNames... types) {
+	public static RSNPC[] getNPCSWithAction(String[] options, NPCNames... types) {
 		RSNPC[] npcs = getNPCS(types);
 		ArrayList<RSNPC> npcsA = new ArrayList<RSNPC>(Arrays.asList(npcs));
 		for (int i = 0; i < npcsA.size(); i++) {
 			RSNPC t = npcsA.get(i);
-			if ( !hasAction(t, option) ) {
+			if ( !hasAction(t, options) ) {
 				npcsA.remove(i--);
 			}
 		}
 		
 		return npcsA.toArray(new RSNPC[npcsA.size()]);
+	}
+	
+	/**
+	 * Returns NPCS of a specific type that also contain a specific right-click action.
+	 * @param sheep
+	 * @param string
+	 * @return
+	 */
+	public static RSNPC[] getNPCSWithAction(String option, NPCNames... types) {
+		return getNPCSWithAction(new String[] {option}, types);
 	}
 
 	/**
@@ -216,7 +226,7 @@ public class NPCUtil {
 	 * @param option
 	 * @return
 	 */
-	public static boolean hasAction(RSNPC npc, String option) {
+	public static boolean hasAction(RSNPC npc, String... option) {
 		RSNPCDefinition definition = npc.getDefinition();
 		if ( definition == null )
 			return false;
@@ -224,8 +234,10 @@ public class NPCUtil {
 		String[] actions = definition.getActions();
 		for (int i = 0; i < actions.length; i++) {
 			String a = actions[i];
-			if ( a.equalsIgnoreCase(option) )
-				return true;
+			for (String op : option) {
+				if ( a.equalsIgnoreCase(op) )
+					return true;
+			}
 		}
 		
 		return false;
