@@ -210,6 +210,11 @@ public class GrandExchangeUtil {
 			General.sleep(1000, 2000);
 		}
 		
+		// Set price
+		GEInterfaces.PRICE_MANUAL.click("");
+		General.sleep(1000, 2000);
+		userInputText(Integer.toString(price));
+		
 		// Confirm
 		GEInterfaces.CONFIRM_OFFER.click("");
 		General.sleep(1000, 2000);

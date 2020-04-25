@@ -51,7 +51,7 @@ public enum Locations {
 	ALKHARID_PALACE(new RSTile(3287, 3171), new RSTile(3298, 3167), 0), 
 	ALKHARID_RANGE(new RSTile(3271, 3183), new RSTile(3275, 3179), 0),
 	ALKARID_FISHING_AREA(new RSTile(3266, 3149), new RSTile(3269, 3147), 0),
-
+	
 	VARROK(new RSTile(3182, 3450), new RSTile(3257, 3400), 0), 
 	VARROK_BANK_EAST(new RSTile(3250, 3423), new RSTile(3257, 3420), 0), 
 	VARROK_BANK_WEST(new RSTile(3181, 3445), new RSTile(3185, 3435), 0), 
@@ -212,9 +212,7 @@ public enum Locations {
 	FISHING_GUILD_NORTH_DOCK(new RSTile(2604, 3420), new RSTile(2595, 3425), 0),
 	FISHING_GUILD_MINNOW_DOCK(new RSTile(2622, 3441), new RSTile(2607, 3446), 0),
 	
-	OTTOS_FISHING_GROTTO(new RSTile(2505, 3493), new RSTile(2499, 3518), 0),
-	
-	; 
+	OTTOS_FISHING_GROTTO(new RSTile(2505, 3493), new RSTile(2499, 3518), 0);
 
 	public static int BASEMENT_OFFSET = 6400;
 	private static ArrayList<Locations> locs = new ArrayList<Locations>();
@@ -448,6 +446,9 @@ public enum Locations {
 	 * @return
 	 */
 	public static boolean isNear(Locations loc) {
+		if ( loc == null )
+			return false;
+		
 		if ( loc.contains(Player.getPosition()) )
 			return true;
 

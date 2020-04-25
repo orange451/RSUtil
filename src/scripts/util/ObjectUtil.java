@@ -126,6 +126,9 @@ public class ObjectUtil {
 	}
 
 	public static boolean hasAdjacentPlayer(RSObject object) {
+		if ( object == null )
+			return false;
+		
 		RSTile center = object.getPosition();
 		RSTile[] adjacentTiles = new RSTile[] {
 				new RSTile(center.getX() + 1, center.getY(), center.getPlane()),
@@ -233,7 +236,7 @@ public class ObjectUtil {
 		}
 
 		if (!PathFinding.canReach(obj, false)) {
-			AIOWalk.walkToLegacy(obj.getPosition());
+			AIOWalk.walkTo(obj.getPosition());
 		}
 		Camera.turnToTile(obj);
 

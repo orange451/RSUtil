@@ -1,22 +1,28 @@
 package scripts.util.task;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSTile;
+import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.dax_api.api_lib.DaxWalker;
+import scripts.dax_api.walker_engine.WalkerEngine;
 import scripts.dax_api.walker_engine.WalkingCondition;
 import scripts.util.PlayerUtil;
+import scripts.util.aio.AIOWalk;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.Locations;
 import scripts.util.player.Navigation;
 
 @SuppressWarnings("deprecation")
 public abstract class BotTaskWalk extends BotTask {
-	protected static float radius = 9.0F;
+	protected static float radius = 6.0F;
 
 	// Walking variables
 	protected RSTile walkTo;
@@ -90,9 +96,8 @@ public abstract class BotTaskWalk extends BotTask {
 					@Override
 					public boolean active() {
 						// Force quit
-						if (forceComplete) {
+						if (forceComplete)
 							return true;
-						}
 
 						// Idle while walking.
 						AntiBan.idle(Game.isRunOn() ? (100+AntiBan.generateResponseTime(400)):(100+AntiBan.generateResponseTime(1000)), new Condition() {
@@ -128,23 +133,8 @@ public abstract class BotTaskWalk extends BotTask {
 				@Override
 				public WalkingCondition.State action() {
 					// Force quit
-					if (forceComplete || timedOut) {
+					if (forceComplete || timedOut)
 						return WalkingCondition.State.EXIT_OUT_WALKER_FAIL;
-					}
-
-					// Idle while walking.
-					AntiBan.idle(Game.isRunOn() ? (100+AntiBan.generateResponseTime(400)):(100+AntiBan.generateResponseTime(1000)), new Condition() {
-						@Override
-						public boolean active() {
-							return (forceComplete) || (finalTile.distanceTo(Player.getRSPlayer()) <= BotTaskWalk.radius);
-						}
-					});
-					
-					// Sometimes AFK.
-					AntiBan.afk(AntiBan.generateAFKTime(Game.isRunOn()?3000:15000));
-
-					// Handle run logic
-					runLogic();
 					
 					// Handle timeout
 					RSTile currentPosition = Player.getPosition();
@@ -159,14 +149,47 @@ public abstract class BotTaskWalk extends BotTask {
 					}
 					lastPosition = currentPosition;
 
+					// Idle while walking.
+					AntiBan.idle(Game.isRunOn() ? (100+AntiBan.generateResponseTime(400)):(100+AntiBan.generateResponseTime(1000)), new Condition() {
+						@Override
+						public boolean active() {
+							return (forceComplete) || (finalTile.distanceTo(Player.getRSPlayer()) <= BotTaskWalk.radius);
+						}
+					});
+					
+					// Sometimes AFK.
+					AntiBan.afk(AntiBan.generateAFKTime(Game.isRunOn()?3000:15000));
+
+					// Handle run logic
+					runLogic();
+
 					// Exit condition
 					WalkingCondition.State ret = finalTile.distanceTo(Player.getRSPlayer()) <= BotTaskWalk.radius ? WalkingCondition.State.EXIT_OUT_WALKER_SUCCESS : WalkingCondition.State.CONTINUE_WALKER;
 					return ret;
 				}
 				
 			};
-			DaxWalker.walkTo(finalTile, c);
-			if ( finalTile.distanceTo(Player.getRSPlayer()) < 6)
+			
+			General.println("AAAA");
+			if ( !DaxWalker.walkTo(finalTile, c)) {
+				General.println("BBBB");
+				/*DPathNavigator nav = new DPathNavigator();
+				nav.setAcceptAdjacent(false);
+				RSTile[] path = nav.findPath(finalTile);
+				if ( path != null && path.length < 2 )
+					return true;
+				
+				// Force another local dax walk
+				WalkerEngine.getInstance().walkPath(new ArrayList(Arrays.asList(path)));*/
+				
+				AIOWalk.walkToLegacy(finalTile);
+				
+				// Also do a DPath nav
+				//nav.traverse(finalTile);
+			}
+			
+			// If we're close by, we did it!
+			if ( finalTile.distanceTo(Player.getRSPlayer()) < 2)
 				return true;
 			
 			this.attempts += 1;

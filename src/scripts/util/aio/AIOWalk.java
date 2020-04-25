@@ -1,5 +1,8 @@
 package scripts.util.aio;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +15,7 @@ import org.tribot.api2007.Game;
 import org.tribot.api2007.GroundItems;
 import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Player;
+import org.tribot.api2007.Projection;
 import org.tribot.api2007.Walking;
 import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSNPC;
@@ -26,6 +30,7 @@ import scripts.dax_api.api_lib.models.Point3D;
 import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.dax_api.walker_engine.WalkerEngine;
 import scripts.dax_api.walker_engine.WalkingCondition;
+import scripts.dax_api.walker_engine.WebWalkerPaint;
 import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
 import scripts.util.PlayerUtil;
@@ -41,6 +46,41 @@ import scripts.util.task.BotTaskWalkToBank;
 @SuppressWarnings("deprecation")
 public class AIOWalk {
 
+	private static DPathNavigator nav;
+	
+	public static RSTile[] debug_path;
+	
+	public static RSTile debug_path_destination;
+	
+	public static boolean IS_DAX_WALKING;
+	
+	static {
+		nav = new DPathNavigator();
+		nav.setAcceptAdjacent(false);
+		nav.setStoppingConditionCheckDelay(100L);
+		nav.setMaxDistance(16);
+		nav.setStoppingCondition(new Condition() {
+
+			@Override
+			public boolean active() {
+				if ( PlayerUtil.isInDanger() )
+					return true;
+				if ( IS_DAX_WALKING )
+					return true;
+				AntiBan.idle(AntiBan.generateAFKTime(4000.0F));
+				
+				RSTile currentTile = Player.getRSPlayer().getPosition();
+				if ( currentTile.equals(lastTile) )
+					ticksNotMoved++;
+				if ( ticksNotMoved > 8 )
+					return true;
+				
+				lastTile = currentTile;
+				return Player.getPosition().distanceTo(debug_path_destination)<8 && PathFinding.canReach(debug_path_destination.getPosition(), false);
+			}
+		});
+	}
+	
 	/**
 	 * Walks the player to the specified location.
 	 * @param location
@@ -67,6 +107,29 @@ public class AIOWalk {
 	 */
 	public static boolean walkTo(Locations location, boolean shouldRunTo, AIOStatus status) {
 		if ( location == null )
+			return false;
+		return walkTo(location.getRandomizedCenter(8), shouldRunTo, status);
+	}
+	
+	/**
+	 * Walks the player to the specified tile.
+	 */
+	public static boolean walkTo(RSTile tile) {
+		return walkTo(tile, false);
+	}
+	
+	/**
+	 * Walks the player to the specified tile. Runs if specified.
+	 */
+	public static boolean walkTo(RSTile tile, boolean runTo ) {
+		return walkTo(tile, runTo, new AIOStatus());
+	}
+
+	/**
+	 * Walks the player to the specified tile. Runs if specified.
+	 */
+	public static boolean walkTo(RSTile tile, boolean runTo, AIOStatus status) {
+		if (tile == null)
 			return true;
 		
 		while(Banking.isBankScreenOpen()) {
@@ -74,30 +137,50 @@ public class AIOWalk {
 			General.sleep(2000,3000);
 		}
 		
-		BotTaskWalk task = new BotTaskWalk(location, shouldRunTo) {
-
-			@Override
-			public BotTask getNextTask() {
-				return null;
-			}
-
-			@Override
-			public void init() {
-				General.println("Walking to location: " + location);
-			}
-		};
-				
-		// Complete the task
-		int tries = 0;
-		while( !task.isTaskComplete() ) { // Forces task to run
-			General.sleep(1000);
-			tries++;
-			if ( tries > 20 ) {
-				status.setType(StatusType.FAILED);
-				return false;
+		// Try to DPATH FIRST?
+		boolean daxWalk = true;
+		if ( tile.distanceTo(Player.getPosition()) < 24 ) {
+			General.println("Attempting DPath navigation...");
+			if ( walkToLegacyInternal(tile) ) {
+				daxWalk = false;
 			}
 		}
 		
+		if ( daxWalk ) {
+			IS_DAX_WALKING = true;
+			Locations location = Locations.get(tile);
+			General.println("Walking to location: " + ((location == null)?tile:location.getName()));
+			
+			BotTaskWalk task = new BotTaskWalk(tile, runTo) {
+				
+				@Override
+				public BotTask getNextTask() {
+					return null;
+				}
+	
+				@Override
+				public void init() {
+					//
+				}
+			};
+			
+			// Complete the task
+			int tries = 0;
+			while( !task.isTaskComplete() ) { // Forces task to run
+				General.sleep(1000);
+				tries++;
+				if ( tries > 10 ) {
+					General.println("Failed");
+					status.setType(StatusType.FAILED);
+					IS_DAX_WALKING = false;
+					return false;
+				}
+			}
+			General.sleep(500);
+			
+			General.println("Finished dax walk");
+			IS_DAX_WALKING = false;
+		}
 		return true;
 	}
 
@@ -173,7 +256,7 @@ public class AIOWalk {
 
 		// Walk to the NPC
 		if ( !PathFinding.canReach(npc.getPosition(), false) || npc.getPosition().distanceTo(Player.getPosition()) > 2 )
-			AIOWalk.walkToLegacy(npc.getPosition());
+			AIOWalk.walkTo(npc.getPosition());
 		Camera.turnToTile(npc);
 		
 		// If we still cant do it, use dax!
@@ -217,21 +300,23 @@ public class AIOWalk {
 			return false;
 		}
 
+		// Dax walk to location
 		AIOWalk.walkTo(location, false);
 		
-		if ( location != null ) {
-			if ( Player.getPosition().distanceTo(location.getCenter()) > 3 )
-				AIOWalk.walkToLegacy(location.getCenter());
-		}
+		// Fallback DPATH
+		if ( location != null && !location.contains(Player.getPosition()) )
+			AIOWalk.walkTo(location.getCenter());
 
+		// Find item on ground
 		RSGroundItem[] bs = GroundItems.findNearest(item.getIds());
-		if ((bs == null) || (bs.length == 0)) {
+		if ((bs == null) || (bs.length == 0))
 			return false;
-		}
 
-		AIOWalk.walkToLegacy(bs[0].getPosition());
+		// Turn to item
+		AIOWalk.walkTo(bs[0].getPosition());
 		Camera.turnToTile(bs[0]);
 
+		// Click it
 		int timeout = 0;
 		int startAmount = PlayerUtil.getAmountItemsInInventory(item);
 		while ((!bs[0].click(click)) && (timeout < 8)) {
@@ -243,10 +328,11 @@ public class AIOWalk {
 				break;
 		}
 
-		if (timeout >= 8) {
+		// Oof timeout
+		if (timeout >= 8)
 			return false;
-		}
 
+		// Sleep
 		AntiBan.sleep(1000, 250);
 		while ((Player.isMoving()) || (Player.getAnimation() != -1)) {
 			AntiBan.sleep(500, 200);
@@ -272,13 +358,11 @@ public class AIOWalk {
 	 * @return
 	 */
 	public static boolean walkToLocationForObject(Locations location, ObjectNames object, String string) {
-		if (Player.isMoving()) {
+		if (Player.isMoving())
 			return false;
-		}
 
-		if ( location != null ) {
+		if ( location != null )
 			walkTo(location);
-		}
 
 		return ObjectUtil.interactWithObject(object, string);
 	}
@@ -311,10 +395,10 @@ public class AIOWalk {
 		
 		// If still not near, break out
 		if ( !Locations.isNear(location.getCenter()) )
-				return;
+			return;
 		
 		// DPath Nav the way there
-		new DPathNavigator().traverse(location.getRandomizedPosition());
+		nav.traverse(location.getRandomizedPosition());
 		AntiBan.sleep(700, 250);
 	}
 
@@ -324,6 +408,7 @@ public class AIOWalk {
 		if ( tile == null )
 			return false;
 		
+		debug_path_destination = tile;
 		
 		ticksNotMoved = 0;
 		lastTile = Player.getRSPlayer().getPosition();
@@ -361,10 +446,10 @@ public class AIOWalk {
 			}
 		};
 		
-		DPathNavigator nav = new DPathNavigator();
-		nav.setAcceptAdjacent(true);
+		// Hybrid DPath/Dax walker
 		RSTile[] path = nav.findPath(tile.getPosition());
-		if ( path != null ) {
+		debug_path = path;
+		if ( path != null && path.length > 0 ) {
 			General.println("Walking local path (" + path.length + ") tile(s)");
 			
 			// Walk result
@@ -375,45 +460,49 @@ public class AIOWalk {
 				Camera.turnToTile(tile);
 			
 			// Click minimap if we're close
-			if ( PathFinding.canReach(tile, true) && Player.getPosition().distanceTo(tile)>3 )
+			if ( PathFinding.canReach(tile, true) && Player.getPosition().distanceTo(tile)>4 )
 				AccurateMouse.clickMinimap(tile.getPosition());
 			
 			// Wait until we stop moving
-			General.sleep(1000);
-			while(Player.isMoving() && Player.getPosition().distanceTo(tile)>3)
+			General.sleep(2000);
+			while(Player.isMoving() && Player.getPosition().distanceTo(tile)>1)
 				General.sleep(500);
-		} else {
 			
-			// Fallback, use DPath
-			nav.setStoppingConditionCheckDelay(100L);
-			nav.setStoppingCondition(new Condition() {
-
-				@Override
-				public boolean active() {
-					if ( PlayerUtil.isInDanger() )
-						return true;
-					AntiBan.idle(AntiBan.generateAFKTime(4000.0F));
-					
-					RSTile currentTile = Player.getRSPlayer().getPosition();
-					if ( currentTile.equals(lastTile) )
-						ticksNotMoved++;
-					if ( ticksNotMoved > 8 )
-						return true;
-					
-					lastTile = currentTile;
-					return PathFinding.canReach(tile.getPosition(), false) && Player.getPosition().distanceTo(tile)<8;
+			int dist = nav.findPath(tile.getPosition()).length;
+			if ( dist <= 4 ) {
+				General.println("Success");
+				return true;
+			}
+			
+			General.println("Couldn't local-walk");
+		}
+		
+		// Wait until we stop moving
+		General.sleep(1000);
+		while(Player.isMoving() && Player.getPosition().distanceTo(tile)>3)
+			General.sleep(500);
+		
+		// Return if we actually made it
+		General.println("Couldn't do it :(");
+		return PathFinding.canReach(tile, false);
+	}
+	
+	public static void debugDraw(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		if (debug_path != null && debug_path.length > 0) {
+			for (RSTile tile : debug_path) {
+				if (tile.isOnScreen()) {
+					g2d.draw(Projection.getTileBoundsPoly(tile, 0));
 				}
-			});
-			
-			// Double fallback... use dax
-			if ( !nav.traverse(tile) ) {
-				General.println("Could not walk to object :(");
-				DaxWalker.walkTo(tile, condition);
 			}
 		}
 		
-		// Return if we actually made it
-		return PathFinding.canReach(tile.getPosition(), false);
+		if ( debug_path_destination != null ) {
+			g2d.setColor(new Color(0.8f, 0.1f, 0.1f, 0.5f));
+			g2d.fill(Projection.getTileBoundsPoly(debug_path_destination, 0));
+			g2d.setColor(Color.RED);
+			g2d.draw(Projection.getTileBoundsPoly(debug_path_destination, 0));
+		}
 	}
 	
 	protected static WalkingCondition getWalkingCondition(final RSTile tile) {
