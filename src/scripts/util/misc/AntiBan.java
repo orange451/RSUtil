@@ -14,6 +14,8 @@ import scripts.util.PlayerUtil;
 public final class AntiBan {
 	private static final ABCUtil abc = new ABCUtil();
 	
+	private static long bigResponseTime;
+	
 	static {
 		General.useAntiBanCompliance(true);
 		abc.generateTrackers();
@@ -69,6 +71,15 @@ public final class AntiBan {
 		float randomRight = powerRight * rightBound;
 		float randomLeft = powerLeft * leftBound;
 		int waitTime = (int)(center + randomRight - randomLeft);
+		
+		if ( waitTime > 10 )
+			bigResponseTime+=4;
+		else
+			bigResponseTime = Math.max(bigResponseTime-1, 0);
+		
+		if ( bigResponseTime > 1)
+			while(waitTime > 2000)
+				waitTime = (int) (waitTime * 0.7);
 
 		return waitTime;
 	}
@@ -87,6 +98,15 @@ public final class AntiBan {
 		float randomRight = powerRight * rightBound;
 		float randomLeft = powerLeft * leftBound;
 		int waitTime = (int)(center + randomRight - randomLeft);
+		
+		if ( waitTime > 10 )
+			bigResponseTime+=4;
+		else
+			bigResponseTime = Math.max(bigResponseTime-1, 0);
+		
+		if ( bigResponseTime > 1)
+			while(waitTime > 10000)
+				waitTime = (int) (waitTime * 0.7);
 
 		return waitTime;
 	}
@@ -101,15 +121,18 @@ public final class AntiBan {
 		int afkTime = (int) (generateAFKTime(maxTime)*abcReac);
 		long timeToWait = System.currentTimeMillis() + afkTime;
 
-		afk = true;
-		while (System.currentTimeMillis() + 1000L < timeToWait) {
-			General.sleep(100L);
-			if (PlayerUtil.isDead() || PlayerUtil.isInDanger()) {
-				afk = false;
-				break;
+		if ( System.currentTimeMillis() + 1000L < timeToWait ) {
+			General.println("AFK for " + afkTime + " ms");
+			afk = true;
+			while (System.currentTimeMillis() + 1000L < timeToWait) {
+				General.sleep(100L);
+				if (PlayerUtil.isDead() || PlayerUtil.isInDanger()) {
+					afk = false;
+					break;
+				}
 			}
+			afk = false;
 		}
-		afk = false;
 		
 		// Regenerate trackers
 		abc.generateTrackers();
@@ -131,9 +154,11 @@ public final class AntiBan {
 	 * @param condition
 	 */
 	public static void idle(long timeToWait, Condition condition) {
-		timeToWait = System.currentTimeMillis() + timeToWait;
+		long endTime = System.currentTimeMillis() + timeToWait;
 		
-		while (System.currentTimeMillis() < timeToWait) {
+		General.println("Genearating idle time: " + timeToWait + " ms");
+		
+		while (System.currentTimeMillis() < endTime) {
 
 			// Break if we're in danger
 			if (PlayerUtil.needsToEat() || PlayerUtil.isInDanger() || PlayerUtil.isDead())
@@ -154,9 +179,8 @@ public final class AntiBan {
 			timedActions();
 
 			// Camera rotation because we're not a bot i swear
-			if (randomChance(250)) {
+			if (randomChance(250))
 				rotateCameraRandom();
-			}
 
 			// Break if we're in danger
 			if (PlayerUtil.needsToEat() || PlayerUtil.isInDanger() || PlayerUtil.isDead())

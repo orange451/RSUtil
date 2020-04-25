@@ -86,6 +86,13 @@ public class AIOEquipment {
 		return null;
 	}
 	
+	/**
+	 * Returns the first tool matching the provided toolclass and minimum material type.
+	 * The tool can be either equipped or in inventory..
+	 * @param tool
+	 * @param minimumMaterial
+	 * @return
+	 */
 	public static RSItem getFirstTool(ToolClass tool, EquipmentMaterial minimumMaterial) {
 		ItemIds[] desiredItems = ItemNames.get(ToolType.getToolTypes(tool, minimumMaterial));
 		int[] desiredItemIds = ItemNames.get(desiredItems);

@@ -386,9 +386,9 @@ public class AIOAttack {
 			if ( npc.getPosition().distanceTo(Player.getPosition())>2 )
 				return null;
 			
-			// Walk to it
+			// If we can't reach it, don't worry about it!
 			if ( !PathFinding.canReach(npc, false) )
-				AIOWalk.walkTo(npc.getPosition());
+				return null;
 
 			// Try to click/moveto target
 			int fails = 0;

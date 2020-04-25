@@ -21,7 +21,6 @@ import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 import scripts.util.names.Locations;
 import scripts.util.names.NPCNames;
-import scripts.util.names.internal.ItemNamesData;
 
 public class AIOItem {
 	
@@ -34,13 +33,13 @@ public class AIOItem {
 	 * The GP multiplier the AIO will markup the item when attempting to buy it.
 	 * A higher number will result in more GP spent, but a higher likelyhood of getting the item.
 	 */
-	public static double GE_BUY_MARKUP_MULTIPLIER = 1.20;
+	public static double GE_BUY_MARKUP_MULTIPLIER = 1.25;
 	
 	/**
 	 * The GP multiplier the AIO will markdown the item when attempting to sell it.
 	 * A lower number will result in less GP earned, but a higher likelyhood of getting the item.
 	 */
-	public static double GE_BUY_MARKDOWN_MULTIPLIER = 0.9;
+	public static double GE_BUY_MARKDOWN_MULTIPLIER = 0.8;
 	
 	/**
 	 * Attempts to find a specific item in the players inventory.
@@ -151,7 +150,7 @@ public class AIOItem {
 		}
 		
 		// Open GE
-		while(!NPCUtil.interactWithFirstNPC("Exchange G", NPCNames.GRAND_EXCHANGE_CLERK) )
+		while(!GrandExchangeUtil.openGrandExchange() )
 			General.sleep(1000);
 		General.sleep(2000, 2400);
 		while(Player.isMoving())
@@ -170,6 +169,9 @@ public class AIOItem {
 		while(GrandExchangeUtil.getCollectItems().length == 0) {
 			General.println("Waiting for offers to collect...");
 			General.sleep(1000);
+			
+			if ( !GrandExchangeUtil.isGrandExchangeOpen() )
+				GrandExchangeUtil.openGrandExchange();
 		}
 
 		// Collect the offer

@@ -18,7 +18,9 @@ import org.tribot.api2007.types.RSItem;
 
 import scripts.dax_api.shared.jsonSimple.JSONObject;
 import scripts.dax_api.shared.jsonSimple.parser.JSONParser;
+import scripts.util.NPCUtil;
 import scripts.util.names.ItemIds;
+import scripts.util.names.NPCNames;
 
 public class GrandExchangeUtil {
 	
@@ -287,5 +289,9 @@ public class GrandExchangeUtil {
 		}
 		
 		return null;
+	}
+
+	public static boolean openGrandExchange() {
+		return NPCUtil.interactWithFirstNPC("Exchange G", NPCNames.GRAND_EXCHANGE_CLERK);
 	}
 }
