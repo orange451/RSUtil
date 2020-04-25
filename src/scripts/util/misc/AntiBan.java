@@ -12,13 +12,22 @@ import scripts.util.PlayerUtil;
 
 @SuppressWarnings("deprecation")
 public final class AntiBan {
-	private static final ABCUtil abc = new ABCUtil();
+	private static ABCUtil abc;
 	
 	private static long bigResponseTime;
 	
+	private static final long OFFSET_RESPONSE_TIME = 500;
+	
+	private static final long OFFSET_AFK_TIME = 1024;
+	
 	static {
-		General.useAntiBanCompliance(true);
-		abc.generateTrackers();
+		try {
+			abc = new ABCUtil();
+			abc.generateTrackers();
+			General.useAntiBanCompliance(true);
+		} catch(Exception e) {
+			System.out.println("Could not generate ABC");
+		}
 	}
 
 	private static boolean afk;
@@ -70,7 +79,8 @@ public final class AntiBan {
 		float powerLeft = (float)Math.pow(Math.random(), 3.0D);
 		float randomRight = powerRight * rightBound;
 		float randomLeft = powerLeft * leftBound;
-		int waitTime = (int)(center + randomRight - randomLeft);
+		double offset = Math.pow(getAccountOffset(OFFSET_RESPONSE_TIME), 2) * 200;
+		int waitTime = (int)(center + randomRight - randomLeft + offset);
 		
 		if ( waitTime > 10 )
 			bigResponseTime+=4;
@@ -97,7 +107,8 @@ public final class AntiBan {
 		float powerLeft = (float)Math.pow(Math.random(), 3.0D);
 		float randomRight = powerRight * rightBound;
 		float randomLeft = powerLeft * leftBound;
-		int waitTime = (int)(center + randomRight - randomLeft);
+		double offset = Math.pow(getAccountOffset(OFFSET_AFK_TIME), 2) * 1000;
+		int waitTime = (int)(center + randomRight - randomLeft + offset);
 		
 		if ( waitTime > 10 )
 			bigResponseTime+=4;
@@ -109,6 +120,41 @@ public final class AntiBan {
 				waitTime = (int) (waitTime * 0.7);
 
 		return waitTime;
+	}
+	
+	/**
+	 * Returns an offset (0-1) based on an accounts username
+	 * @return
+	 */
+	public static double getAccountOffset() {
+		return getAccountOffset(0);
+	}
+	
+	/**
+	 * Returns an offset (0-1) based on an accounts username
+	 * @return
+	 */
+	public static double getAccountOffset(long extraOffset) {
+		return getAccountOffset(Player.getRSPlayer().getName(), extraOffset);
+	}
+	
+	/**
+	 * Returns an offset (0-1) based on an accounts username
+	 * @return
+	 */
+	public static double getAccountOffset(String name) {
+		return getAccountOffset(name, 0);
+	}
+	
+	/**
+	 * Returns an offset (0-1) based on an accounts username. Mixes extra offset into the returned offset value.
+	 * @return
+	 */
+	public static double getAccountOffset(String accountName, long extraOffset) {
+		long max = (long) 1.0e6;
+		long offset = (long)(extraOffset*1.33e3);
+		long overallHash = ((accountName.hashCode()*567)+offset) % max;
+		return (overallHash/(double)max) * 0.5 + 0.5;
 	}
 
 	/**

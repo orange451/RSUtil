@@ -1,6 +1,7 @@
 package scripts.util.names;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.allatori.annotations.DoNotRename;
@@ -10,7 +11,7 @@ import scripts.util.names.internal.ItemNamesData;
 
 @DoNotRename
 public class NameGenerator {
-	private static ArrayList<String> names;
+	private static List<String> names;
 	private static Random random;
 	
 	/**
@@ -61,8 +62,8 @@ public class NameGenerator {
 		names.addAll(generateStrings(ObjectNames.values()));
 	}
 
-	private static ArrayList<String> generateStrings(Object[] values) {
-		ArrayList<String> ret = new ArrayList<String>();
+	private static List<String> generateStrings(Object[] values) {
+		List<String> ret = new ArrayList<String>();
 		for (int i = 0; i < values.length; i++) {
 			String t = values[i].toString();
 			if ( t.startsWith("_") )
