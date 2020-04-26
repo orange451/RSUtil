@@ -1,7 +1,6 @@
 package scripts.util;
 
 import org.tribot.api2007.Interfaces;
-import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSInterface;
 
 import scripts.util.names.Locations;
@@ -25,6 +24,19 @@ public class MotherloadUtil {
 		}
 	}
 	
+	/**
+	 * Returns whether the hopper is full
+	 */
+	public static boolean isHopperFull() {
+		if ( !isInMotherloadMine() )
+			return false;
+		
+		return getHopperBagAmount() > 80;
+	}
+	
+	/**
+	 * Returns whether the player is inside motherload mine
+	 */
 	public static boolean isInMotherloadMine() {
 		return Locations.isNear(Locations.MOTHERLOAD_MINE);
 	}
