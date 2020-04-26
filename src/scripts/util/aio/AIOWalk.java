@@ -141,7 +141,7 @@ public class AIOWalk {
 		boolean daxWalk = true;
 		if ( tile.distanceTo(Player.getPosition()) < 24 ) {
 			General.println("Attempting DPath navigation...");
-			if ( walkToLegacyInternal(tile) ) {
+			if ( walkToLegacyInternal(tile) && Player.getPosition().distanceTo(tile) <= 2 ) {
 				daxWalk = false;
 			}
 		}
@@ -169,14 +169,14 @@ public class AIOWalk {
 			while( !task.isTaskComplete() ) { // Forces task to run
 				General.sleep(1000);
 				tries++;
-				if ( tries > 10 ) {
+				if ( tries > 1 ) {
 					General.println("Failed");
 					status.setType(StatusType.FAILED);
 					IS_DAX_WALKING = false;
 					return false;
 				}
 			}
-			General.sleep(500);
+			General.sleep(250);
 			
 			General.println("Finished dax walk");
 			IS_DAX_WALKING = false;
@@ -482,9 +482,14 @@ public class AIOWalk {
 		while(Player.isMoving() && Player.getPosition().distanceTo(tile)>3)
 			General.sleep(500);
 		
+		if ( Player.getPosition().distanceTo(tile) <= 1 ) {
+			General.println("We made it!");
+			return true;
+		}
+		
 		// Return if we actually made it
 		General.println("Couldn't do it :(");
-		return PathFinding.canReach(tile, false);
+		return false;
 	}
 	
 	public static void debugDraw(Graphics g) {

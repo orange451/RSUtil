@@ -1,7 +1,6 @@
 package scripts.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.tribot.api.General;
@@ -11,8 +10,6 @@ import org.tribot.api2007.Objects;
 import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Players;
-import org.tribot.api2007.types.RSNPC;
-import org.tribot.api2007.types.RSNPCDefinition;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSObjectDefinition;
 import org.tribot.api2007.types.RSPlayer;
@@ -103,7 +100,7 @@ public class ObjectUtil {
 		for (int i = 0; i < objects.size(); i++) {
 			RSObject o = (RSObject)objects.get(i);
 			int tdist = o.getPosition().distanceTo(position);
-			boolean hasAdjacent = adjacentPlayersAddDistance && hasAdjacentPlayer(o);
+			boolean hasAdjacent = adjacentPlayersAddDistance && hasAdjacentPlayers(o, false);
 			
 			if ( hasAdjacent ) 
 				tdist += 10;
@@ -125,9 +122,13 @@ public class ObjectUtil {
 		return mine;
 	}
 
-	public static boolean hasAdjacentPlayer(RSObject object) {
+	public static boolean hasAdjacentPlayers(RSObject object, boolean includeUs) {
+		return getAdjacentPlayers(object, includeUs).length > 0;
+	}
+
+	public static RSPlayer[] getAdjacentPlayers(RSObject object, boolean includeUs) {
 		if ( object == null )
-			return false;
+			return new RSPlayer[] {};
 		
 		RSTile center = object.getPosition();
 		RSTile[] adjacentTiles = new RSTile[] {
@@ -137,18 +138,32 @@ public class ObjectUtil {
 				new RSTile(center.getX(), center.getY() - 1, center.getPlane())
 		};
 		
+		List<RSPlayer> t = new ArrayList<>();
 		RSPlayer[] players = Players.getAll();
 		for (RSTile tile : adjacentTiles) {
 			for (RSPlayer player : players) {
-				if ( player.equals(Player.getRSPlayer()))
+				if ( player.equals(Player.getRSPlayer()) && !includeUs)
 					continue;
 				
 				if ( player.getPosition().equals(tile) )
-					return true;
+					t.add(player);
 			}
 		}
 		
-		return false;
+		return t.toArray(new RSPlayer[t.size()]);
+	}
+	
+	public static boolean isPlayerAdjacent(RSObject object, RSPlayer player) {
+		boolean contains = false;
+		RSPlayer[] adjacent = ObjectUtil.getAdjacentPlayers(object, true);
+		for (RSPlayer t : adjacent) {
+			if ( t.equals(player) ) {
+				contains = true;
+				break;
+			}
+		}
+		
+		return contains;
 	}
 
 	/**
@@ -228,16 +243,13 @@ public class ObjectUtil {
 	 * @param click
 	 * @return
 	 */
-	@SuppressWarnings("deprecation")
 	public static boolean interactWithObject(ObjectNames object, String click) {
 		RSObject obj = scripts.util.ObjectUtil.get(object, 10);
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
 
-		if (!PathFinding.canReach(obj, false)) {
+		if (!PathFinding.canReach(obj, false))
 			AIOWalk.walkTo(obj.getPosition());
-		}
 		Camera.turnToTile(obj);
 
 

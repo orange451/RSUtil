@@ -173,9 +173,9 @@ public abstract class BotTaskWalk extends BotTask {
 				
 			};
 			
-			General.println("AAAA");
+			General.println("Attempting to daxwalk " + attempts);
 			if ( !DaxWalker.walkTo(finalTile, c)) {
-				General.println("BBBB");
+				General.println("Failed... Attempting to legacy walk...");
 				/*DPathNavigator nav = new DPathNavigator();
 				nav.setAcceptAdjacent(false);
 				RSTile[] path = nav.findPath(finalTile);
