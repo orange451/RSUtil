@@ -678,6 +678,9 @@ public class ItemNamesData extends ItemIds {
 	public static ItemIds[] get(Object... objects) {
 		List<ItemIds> list = new ArrayList<>();
 		for (Object object : objects) {
+			if ( object == null )
+				continue;
+			
 			if ( object.getClass().isArray() ) {
 				Collections.addAll(list, get((Object[])object));
 			} else if ( object instanceof List ) {
@@ -686,7 +689,7 @@ public class ItemNamesData extends ItemIds {
 				list.add(((ItemWrapper)object).getItem());
 			} else if ( object instanceof RSItem ) {
 				list.add(ItemNames.get(((RSItem)object).getID()));
-			} else {
+			} else if ( object instanceof ItemIds ) {
 				list.add((ItemIds) object);
 			}
 		}
