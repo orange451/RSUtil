@@ -11,6 +11,7 @@ import scripts.util.ItemUtil;
 import scripts.util.misc.ItemWrapper;
 import scripts.util.misc.NameFormatter;
 import scripts.util.names.ItemIds;
+import scripts.util.names.ItemNames;
 
 public class ItemNamesData extends ItemIds {
 	public static final ItemNamesData SLIDING_PIECE = new ItemNamesData(3640, 3638, 3639, 3630, 3631, 3632, 3633, 3634, 3635, 3636, 3637, 3650, 3651, 3649, 3641, 3642, 3643, 3644, 3645, 3646, 3647, 3648, 3660, 3661, 3662, 3652, 3653, 3654, 3655, 3656, 3657, 3658, 3659, 3663, 3664, 3665, 3666, 2749, 2760, 2757, 2756, 2755, 2754, 2753, 2752, 2751, 2750, 2759, 2758, 2771, 2770, 2768, 2767, 2766, 2765, 2764, 2763, 2762, 2761, 2769, 2772, 3619, 3626, 3625, 3624, 3623, 3622, 3621, 3620, 3629, 3628, 3627);
@@ -683,6 +684,8 @@ public class ItemNamesData extends ItemIds {
 				Collections.addAll(list, get((List<?>)object));
 			} else if ( object instanceof ItemWrapper ) {
 				list.add(((ItemWrapper)object).getItem());
+			} else if ( object instanceof RSItem ) {
+				list.add(ItemNames.get(((RSItem)object).getID()));
 			} else {
 				list.add((ItemIds) object);
 			}

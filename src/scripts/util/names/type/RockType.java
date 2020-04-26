@@ -12,7 +12,8 @@ public enum RockType implements ObjectWrapper {
 	IRON(ObjectNames.ORE_IRON, 5, 15),
 	MITHRIL(ObjectNames.ORE_MITHRIL, 16, 40),
 	ADAMANT(ObjectNames.ORE_ADAMANT, 16, 40), 
-	CLAY(ObjectNames.ORE_CLAY, 1, 4);
+	CLAY(ObjectNames.ORE_CLAY, 1, 4), 
+	PAY_DIRT(ObjectNames.ORE_PAY_DIRT, Integer.MAX_VALUE, 4);
 	
 	private ObjectNames objectType;
 	private int minTravelDistance;

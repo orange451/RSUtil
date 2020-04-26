@@ -525,4 +525,5 @@ public class ItemNames6 extends ItemNames5 {
     public static final ItemNamesData MYSTIC_STEAM_STAFF = new ItemNamesData(11738);
     public static final ItemNamesData SMOKE_BATTLESTAFF = new ItemNamesData(11998);
     public static final ItemNamesData MYSTIC_SMOKE_STAFF = new ItemNamesData(12000);
+    public static final ItemNamesData PAY_DIRT = new ItemNamesData(12011);
 }

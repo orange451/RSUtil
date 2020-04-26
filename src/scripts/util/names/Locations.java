@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.tribot.api.interfaces.Positionable;
 import org.tribot.api2007.Player;
-import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
 
 import scripts.util.misc.NameFormatter;
@@ -137,12 +136,13 @@ public enum Locations {
 	FALDOR_RANGE(new RSTile(2991, 3367), new RSTile(2988, 3365), 0),
 	
 	MOTHERLOAD_MINE(new RSTile(3723, 5689), new RSTile(3768, 5639), 0),
-	MOTHERLOAD_MINE_WATER(new RSTile(3742, 5673), new RSTile(3749, 565), 0),
+	MOTHERLOAD_MINE_WATER(new RSTile(3749, 5672), new RSTile(3751, 5660), 0),
 	MOTHERLOAD_MINE_BANK(new RSTile(3757, 5661), new RSTile(3760, 5670), 0),
 	MOTHERLOAD_MINE_ORE_AREA_1(new RSTile(3732, 5690), new RSTile(3763, 5687), 0),
 	MOTHERLOAD_MINE_ORE_AREA_2(new RSTile(3726, 5654), new RSTile(3721, 5689), 0),
 	MOTHERLOAD_MINE_ORE_AREA_3(new RSTile(3769, 5638), new RSTile(3718, 5643), 0),
 	MOTHERLOAD_MINE_ORE_AREA_4(new RSTile(3769, 5641), new RSTile(3765, 5688), 0),
+	MOTHERLOAD_MINE_STRUT(new RSTile(3741, 5672, 0), new RSTile(3741, 5660, 0)),
 	
 	THURGOS_HOUSE(new RSTile(3001, 3145), new RSTile(2999, 3143), 0),
 
@@ -231,6 +231,10 @@ public enum Locations {
 		int h = Math.abs( northWest.getY() - southEast.getY() );
 		this.location = new Rectangle( x, y, w, h );
 		this.floor = floor;
+	}
+	
+	private Locations( RSTile corner1, RSTile corner2 ) {
+		this(corner1, corner2, corner1.getPlane());
 	}
 
 	/**

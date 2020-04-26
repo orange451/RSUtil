@@ -13,6 +13,7 @@ public enum OreType implements ItemWrapper {
 	IRON(ItemNames.IRON_ORE),
 	MITHRIL(ItemNames.MITHRIL_ORE),
 	ADAMANT(ItemNames.ADAMANTITE_ORE), 
+	PAY_DIRT(ItemNames.PAY_DIRT), 
 	CLAY(ItemNames.CLAY);
 	
 	private ItemIds item;

@@ -37,6 +37,9 @@ public abstract class BotTaskWalk extends BotTask {
 
 	public BotTaskWalk(Locations location, boolean runTo) {
 		this(location.getRandomizedCenter(radius), runTo);
+		
+		if ( location.contains(Player.getRSPlayer()) )
+			this.forceComplete();
 	}
 
 	public BotTaskWalk(RSTile location, boolean runTo) {

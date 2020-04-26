@@ -357,14 +357,14 @@ public class AIOWalk {
 	 * @param object
 	 * @return
 	 */
-	public static boolean walkToLocationForObject(Locations location, ObjectNames object, String string) {
+	public static boolean walkToLocationForObject(Locations location, ObjectNames object, String action) {
 		if (Player.isMoving())
 			return false;
 
 		if ( location != null )
 			walkTo(location);
 
-		return ObjectUtil.interactWithObject(object, string);
+		return ObjectUtil.interactWithObject(object, action);
 	}
 	
 	/**

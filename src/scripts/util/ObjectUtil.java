@@ -251,8 +251,12 @@ public class ObjectUtil {
 			return false;
 		
 		General.sleep(1000L);
+		long timeout = System.currentTimeMillis() + 10000;
 		while ((Player.isMoving()) || (Player.getAnimation() != -1)) {
 			General.sleep(500L);
+			
+			if ( System.currentTimeMillis() > timeout )
+				break;
 		}
 		return true;
 	}

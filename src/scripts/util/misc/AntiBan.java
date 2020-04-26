@@ -202,7 +202,7 @@ public final class AntiBan {
 	public static void idle(long timeToWait, Condition condition) {
 		long endTime = System.currentTimeMillis() + timeToWait;
 		
-		General.println("Genearating idle time: " + timeToWait + " ms");
+		General.println("Generating idle time: " + timeToWait + " ms");
 		
 		while (System.currentTimeMillis() < endTime) {
 
@@ -295,5 +295,9 @@ public final class AntiBan {
 	 */
 	public static int random(int i) {
 		return (int)(Math.random()*i);
+	}
+
+	public static <T> T choose(@SuppressWarnings("unchecked") T... objects) {
+		return objects[AntiBan.random(objects.length)];
 	}
 }
