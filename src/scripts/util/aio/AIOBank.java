@@ -9,6 +9,7 @@ import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
+import scripts.util.names.Locations;
 
 public class AIOBank {
 	/**
@@ -96,6 +97,27 @@ public class AIOBank {
 		// Walk to nearest bank and open it
 		if ( !walkToNearestBankAndOpen(status) )
 			return false;
+		
+		// Deposit
+		return walkToBankAndDepositAllExcept(status, null, exclude);
+	}
+	
+	public static boolean walkToBankAndDepositAllExcept(Locations location, ItemIds...exclude) {
+		return walkToBankAndDepositAllExcept(new AIOStatus(), location, exclude);
+	}
+	
+	public static boolean walkToBankAndDepositAllExcept(AIOStatus status, Locations location, ItemIds...exclude) {
+		if ( location != null )
+			if ( !AIOWalk.walkTo(location) )
+				return false;
+		
+		// Open Bank
+		status.setStatus("Opening bank");
+		while ( !Banking.isBankScreenOpen() ) {
+			Banking.openBank();
+			AntiBan.sleep(1000, 500);
+		}
+		AntiBan.sleep(2000, 1000);
 		
 		// Deposit
 		status.setStatus("Depositing Items");

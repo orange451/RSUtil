@@ -23,8 +23,7 @@ public enum Banks {
 	LUMBRIDGE(Locations.LUMBRIDGE_BANK), 
 	ALKHARID(Locations.ALKHARID_BANK), 
 	DRAYNOR(Locations.DRAYNOR_BANK), 
-	EDGEVILLE(Locations.EDGEVILLE_BANK),
-	MOTHERLOAD(Locations.MOTHERLOAD_MINE_BANK);
+	EDGEVILLE(Locations.EDGEVILLE_BANK);
 
 	private Locations location;
 
