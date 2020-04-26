@@ -13,6 +13,9 @@ import org.tribot.api2007.Inventory.DROPPING_PATTERN;
 import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSItem;
 
+import scripts.util.names.ItemIds;
+import scripts.util.names.ItemNames;
+
 /**
  * Shift dropping
  * 
@@ -111,6 +114,10 @@ public class ShiftDrop {
 			Keyboard.sendRelease(KeyEvent.CHAR_UNDEFINED, KeyEvent.VK_SHIFT);
 		}
 	}
+	
+	public static void shiftDrop(ItemIds... ids) {
+		shiftDrop(ItemNames.get(ids));
+	}
 
 	public static void shiftDrop(int... ids) {
 		int rand = General.random(1, 3);
@@ -128,7 +135,7 @@ public class ShiftDrop {
 	}
 
 	public static void shiftDropAll() {
-		shiftDrop();
+		shiftDrop(new int[] {});
 	}
 
 }

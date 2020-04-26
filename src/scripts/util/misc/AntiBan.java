@@ -152,7 +152,7 @@ public final class AntiBan {
 	 */
 	public static double getAccountOffset(String accountName, long extraOffset) {
 		long max = (long) 1.0e6;
-		long offset = (long)(extraOffset*1.33e3);
+		long offset = (long)(extraOffset*1.33e6);
 		long overallHash = ((accountName.hashCode()*567)+offset) % max;
 		return (overallHash/(double)max) * 0.5 + 0.5;
 	}
