@@ -79,7 +79,7 @@ public final class AntiBan {
 		float powerLeft = (float)Math.pow(Math.random(), 3.0D);
 		float randomRight = powerRight * rightBound;
 		float randomLeft = powerLeft * leftBound;
-		double offset = Math.pow(getAccountOffset(OFFSET_RESPONSE_TIME), 2) * 200;
+		double offset = Math.pow(getAccountOffset(OFFSET_RESPONSE_TIME), 2) * 400;
 		int waitTime = (int)(center + randomRight - randomLeft + offset);
 		
 		if ( waitTime > 10 )
@@ -107,7 +107,7 @@ public final class AntiBan {
 		float powerLeft = (float)Math.pow(Math.random(), 3.0D);
 		float randomRight = powerRight * rightBound;
 		float randomLeft = powerLeft * leftBound;
-		double offset = Math.pow(getAccountOffset(OFFSET_AFK_TIME), 2) * 1000;
+		double offset = Math.pow(getAccountOffset(OFFSET_AFK_TIME), 2) * 4000;
 		int waitTime = (int)(center + randomRight - randomLeft + offset);
 		
 		if ( waitTime > 10 )

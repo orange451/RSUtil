@@ -8,18 +8,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tribot.api.General;
 import org.tribot.api.interfaces.Positionable;
 import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Projection;
 import org.tribot.api2007.types.RSTile;
 
 public class AreaBounds {
+	/** List of walkable tiles */
 	private RSTile[] walkableTiles;
+	
+	/** List of nonwalkable tiles */
 	private RSTile[] nonWalkableTiles;
+	
+	/** Root tile used to create AreaBounds */
 	private RSTile root;
 	
+	/** Internal tile lookup map */
 	private Map<RSTile, Boolean> tileLookup;
+	
+	/** Max distance area will scan for tiles from root */
+	private final static int MAX_DISTANCE = 24;
 	
 	public AreaBounds(Positionable position) {
 		RSTile start = position.getPosition();
@@ -32,15 +40,13 @@ public class AreaBounds {
 
 		this.walkableTiles = walkable.toArray(new RSTile[walkable.size()]);
 		this.nonWalkableTiles = nonWalkable.toArray(new RSTile[nonWalkable.size()]);
-		
-		General.println("Generated AreaBounds: " + getWalkableTiles().length + " / " + getNonWalkableTiles().length);
 	}
 	
 	private void fillTiles(RSTile tile, List<RSTile> walkable, List<RSTile> nonWalkable) {
 		if ( tile == null )
 			return;
 		
-		if ( tile.distanceTo(root) > 24 )
+		if ( tile.distanceTo(root) > MAX_DISTANCE )
 			return;
 		
 		Boolean isWalkable = tileLookup.get(tile);
@@ -101,9 +107,9 @@ public class AreaBounds {
 	 * @return
 	 */
 	public boolean isTouching(Positionable positionable) {
-		RSTile nonwalk = getNearestNonWalkableTile(positionable.getPosition());
+		RSTile nonwalk = chestAdjacentNonWalkableTile(positionable.getPosition());
 		if ( nonwalk == null )
-			nonwalk = getNearestWalkableTile(positionable.getPosition());
+			nonwalk = checkAdjacentWalkableTile(positionable.getPosition());
 			
 		return nonwalk != null;
 	}
@@ -138,11 +144,23 @@ public class AreaBounds {
 		}
 	}
 
+	/**
+	 * Returns the tile that was used to build this AreaBounds originally.
+	 * @return
+	 */
 	public RSTile getRoot() {
 		return this.root;
 	}
 
-	public RSTile getNearestWalkableTile(RSTile position) {
+	/**
+	 * Return the nearest walkable tile to a given RSTile within the area.
+	 * @param position
+	 * @return
+	 */
+	public RSTile checkAdjacentWalkableTile(RSTile position) {
+		if ( position == null )
+			return null;
+			
 		if ( tileLookup.get(position) != null && tileLookup.get(position).booleanValue() )
 			return position;
 		
@@ -165,7 +183,15 @@ public class AreaBounds {
 		return null;
 	}
 
-	public RSTile getNearestNonWalkableTile(RSTile position) {
+	/**
+	 * Returns the nearest nonwalkable RSTile within the area.
+	 * @param position
+	 * @return
+	 */
+	public RSTile chestAdjacentNonWalkableTile(RSTile position) {
+		if ( position == null )
+			return null;
+			
 		if ( tileLookup.get(position) != null && !tileLookup.get(position).booleanValue() )
 			return position;
 		
@@ -186,5 +212,15 @@ public class AreaBounds {
 			return t4;
 		
 		return null;
+	}
+	
+	public boolean equals(AreaBounds bounds) {
+		if ( bounds == null )
+			return false;
+		
+		if (!(bounds instanceof AreaBounds))
+			return false;
+		
+		return bounds.tileLookup.equals(this.tileLookup);
 	}
 }
