@@ -382,8 +382,7 @@ public class PlayerUtil {
 	 */
 	public static RSItem getFirstItemInInventory(ItemIds... check) {
 		RSItem[] items = Inventory.getAll();
-		for (int i = 0; i < items.length; i++) {
-			RSItem item = items[i];
+		for (RSItem item : items) {
 			boolean notedMatch = false;
 			for (ItemIds temp : check) {
 				RSItem temp2 = new RSItem(0, temp.getIds()[0], 1, RSItem.TYPE.OTHER);

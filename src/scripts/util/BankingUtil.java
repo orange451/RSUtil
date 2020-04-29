@@ -106,7 +106,7 @@ public class BankingUtil {
 			}
 			
 			if ( Banking.withdraw(quantity, t[0].getID()) ) {
-				AntiBan.sleep(2000, 250);
+				AntiBan.sleep(3000, 250);
 				return true;
 			}
 		}

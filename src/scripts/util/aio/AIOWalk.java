@@ -257,7 +257,10 @@ public class AIOWalk {
 		// Walk to the NPC
 		if ( !PathFinding.canReach(npc.getPosition(), false) || npc.getPosition().distanceTo(Player.getPosition()) > 2 )
 			AIOWalk.walkTo(npc.getPosition());
-		Camera.turnToTile(npc);
+		
+		// Look at NPC if we cant
+		if ( !npc.isOnScreen() )
+			Camera.turnToTile(npc);
 		
 		// If we still cant do it, use dax!
 		if ( !PathFinding.canReach(npc.getPosition(), false) )
@@ -314,7 +317,8 @@ public class AIOWalk {
 
 		// Turn to item
 		AIOWalk.walkTo(bs[0].getPosition());
-		Camera.turnToTile(bs[0]);
+		if ( !bs[0].isOnScreen() )
+			Camera.turnToTile(bs[0]);
 
 		// Click it
 		int timeout = 0;
@@ -434,10 +438,12 @@ public class AIOWalk {
 				else
 					ticksNotMoved = 0;
 				
-				if ( ticksNotMoved > 4 )
+				if ( ticksNotMoved > 6 ) {
+					General.println("Stuck.. Rotating camera");
 					AntiBan.rotateCameraRandom();
+				}
 				
-				if ( ticksNotMoved > 8 ) {
+				if ( ticksNotMoved > 10 ) {
 					General.println("Not moving...");
 					return State.EXIT_OUT_WALKER_FAIL;
 				}
@@ -517,7 +523,7 @@ public class AIOWalk {
 					return WalkingCondition.State.EXIT_OUT_WALKER_SUCCESS;
 				}
 
-				if (AntiBan.randomChance(23))
+				if (AntiBan.randomChance(32))
 					AntiBan.rotateCameraRandom();
 				
 				AntiBan.timedActions();

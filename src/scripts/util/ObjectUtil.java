@@ -250,8 +250,9 @@ public class ObjectUtil {
 
 		if (!PathFinding.canReach(obj, false))
 			AIOWalk.walkTo(obj.getPosition());
-		Camera.turnToTile(obj);
-
+		
+		if ( !obj.isOnScreen() || AntiBan.randomChance(5))
+			Camera.turnToTile(obj);
 
 		int tries = 0;
 		while (!obj.click(new String[] { click }) && tries < 8) {
