@@ -111,7 +111,7 @@ public enum ToolType implements ItemWrapper {
 	}	
 	
 	private static int compareQuality(int a, int b) {
-		return a-b;
+		return b-a;
 	}
 
 	public static ToolType match(ItemIds item) {
