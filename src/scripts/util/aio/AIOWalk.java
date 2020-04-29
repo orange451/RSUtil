@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Banking;
@@ -16,7 +14,6 @@ import org.tribot.api2007.GroundItems;
 import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Projection;
-import org.tribot.api2007.Walking;
 import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSTile;
@@ -24,13 +21,9 @@ import org.tribot.api2007.util.DPathNavigator;
 
 import scripts.aio.f2pquester.F2PQuester;
 import scripts.dax_api.api_lib.DaxWalker;
-import scripts.dax_api.api_lib.models.PathResult;
-import scripts.dax_api.api_lib.models.PathStatus;
-import scripts.dax_api.api_lib.models.Point3D;
 import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.dax_api.walker_engine.WalkerEngine;
 import scripts.dax_api.walker_engine.WalkingCondition;
-import scripts.dax_api.walker_engine.WebWalkerPaint;
 import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
 import scripts.util.PlayerUtil;
@@ -58,7 +51,7 @@ public class AIOWalk {
 		nav = new DPathNavigator();
 		nav.setAcceptAdjacent(false);
 		nav.setStoppingConditionCheckDelay(100L);
-		nav.setMaxDistance(16);
+		nav.setMaxDistance(32);
 		nav.setStoppingCondition(new Condition() {
 
 			@Override
@@ -501,6 +494,7 @@ public class AIOWalk {
 	public static void debugDraw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		if (debug_path != null && debug_path.length > 0) {
+			g2d.setColor(Color.WHITE);
 			for (RSTile tile : debug_path) {
 				if (tile.isOnScreen()) {
 					g2d.draw(Projection.getTileBoundsPoly(tile, 0));
