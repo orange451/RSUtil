@@ -491,6 +491,23 @@ public class PlayerUtil {
 		// Return
 		return ret;
 	}
+	
+	/**
+	 * Returns a list of all attacking characters. Combines {@link PlayerUtil#getAttackingPlayers()} and {@link PlayerUtil#getAttackingCharacters()}
+	 * @return
+	 */
+	public static RSCharacter[] getAttackingCharacters() {
+		RSNPC[] npcs = getAttackingNPCS();
+		RSPlayer[] players = getAttackingPlayers();
+		
+		List<RSCharacter> characters = new ArrayList<>();
+		for (RSNPC npc : npcs)
+			characters.add((RSCharacter)npc);
+		for (RSPlayer player : players)
+			characters.add((RSCharacter)player);
+		
+		return characters.toArray(new RSCharacter[characters.size()]);
+	}
 
 	/**
 	 * Returns a list of all attacking players.

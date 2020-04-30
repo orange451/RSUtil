@@ -2,6 +2,8 @@ package scripts.util.names;
 
 import com.allatori.annotations.DoNotRename;
 
+import scripts.util.misc.NameFormatter;
+
 @DoNotRename
 public enum Quests {
 	// Finished
@@ -155,5 +157,9 @@ public enum Quests {
 
 	public int getFinished() {
 		return this.finish;
+	}
+
+	public String getName() {
+		return NameFormatter.get(toString());
 	}
 }
