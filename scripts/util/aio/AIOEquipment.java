@@ -60,21 +60,31 @@ public class AIOEquipment {
 	 * @return Whether or not the tool was/is equipped.
 	 */
 	public static RSItem getToolAndEquipIfPossible(ToolClass tool, EquipmentMaterial minimumMaterial) {
-		ItemIds[] desiredItems = ItemNames.get(ToolType.getToolTypes(tool, minimumMaterial));
+		ToolType[] tools = ToolType.getToolTypes(tool, minimumMaterial);
 		
 		// Check if item is in inventory or equipment
 		RSItem inventoryItem = getFirstTool(tool, minimumMaterial);
 		if ( inventoryItem != null )
 			return inventoryItem;
 		
-		// Try to go get the item
-		for (int i = 0; i < desiredItems.length; i++) {
-			RSItem item = AIOItem.getItem(desiredItems[i]);
+		// Try to go get the item (WITHOUT BUYING)
+		ToolType bestTool = null;
+		boolean SHOULD_USE_GE = AIOItem.CAN_USE_GE_TO_BUY_ITEMS;
+		AIOItem.CAN_USE_GE_TO_BUY_ITEMS = false;
+		for (ToolType toolObject : tools) {
+			
+			// Dont consider items we cant even use!
+			if ( toolObject.getType().getPrimarySkill().getActualLevel() < toolObject.getMaterial().getMinimumEquipLevel() )
+				continue;
+			
+			// Mark the best usable tool
+			if ( bestTool == null )
+				bestTool = toolObject;
+
+			// Attempt to get and equip item
+			RSItem item = AIOItem.getItem(toolObject.getItem());
 			if ( item != null ) {
-				if ( SKILLS.ATTACK.getActualLevel() >= ToolType.match(ItemNames.get(item.getID())).getMaterial().getMinimumEquipLevel()) {
-					AntiBan.sleep(500, 250);
-					item.click("wield");
-					AntiBan.sleep(1250, 500);
+				if ( attemptEquip(toolObject, item) ) {
 					RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
 					if ( equipped != null )
 						return equipped;
@@ -84,7 +94,44 @@ public class AIOEquipment {
 			}
 		}
 		
+		// RESET GE VARIABLE TO USER DEFINED
+		AIOItem.CAN_USE_GE_TO_BUY_ITEMS = SHOULD_USE_GE;
+		
+		// REDO LOGIC BUT WITH BUYING INSTEAD!
+		// TODO Think of some way to not duplicate this whole chunk of code.........
+		if ( SHOULD_USE_GE ) {
+			for (ToolType toolObject : tools) {
+				
+				// Dont consider items we cant even use!
+				if ( toolObject.getType().getPrimarySkill().getActualLevel() < toolObject.getMaterial().getMinimumEquipLevel() )
+					continue;
+				
+				// Attempt to get and equip item
+				RSItem item = AIOItem.getItem(toolObject.getItem());
+				if ( item != null ) {
+					if ( attemptEquip(toolObject, item) ) {
+						RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
+						if ( equipped != null )
+							return equipped;
+					}
+					
+					return item;
+				}
+			}
+		}
+		
 		return null;
+	}
+	
+	private static boolean attemptEquip(ToolType tool, RSItem item) {
+		if ( SKILLS.ATTACK.getActualLevel() >= tool.getMaterial().getMinimumEquipLevel()) {
+			AntiBan.sleep(500, 250);
+			item.click("wield");
+			AntiBan.sleep(1250, 500);
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
