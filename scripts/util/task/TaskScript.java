@@ -43,7 +43,7 @@ public abstract class TaskScript extends Script {
 			}
 			
 			if (!this.currentTask.isCancelled() && this.currentTask.isTaskComplete()) {
-				if ( this.currentTask != null )
+				if ( this.currentTask != null && !this.isOnBreak() )
 					setCurrentTask(this.currentTask.getNextTask());
 			}
 		}

@@ -9,11 +9,13 @@ public class BreakHelper {
 		if (BREAK_START_TIME == -1)
 			BREAK_START_TIME = System.currentTimeMillis();
 		
+		long TEMP = BREAK_TIME_CURRENT;
 		BREAK_TIME_CURRENT = System.currentTimeMillis() - BREAK_START_TIME;
+		
+		BREAK_TIME_TOTAL += BREAK_TIME_CURRENT-TEMP;
 	}
 
 	public static void cancelBreak() {
-		BREAK_TIME_TOTAL += BREAK_TIME_CURRENT;
 		BREAK_TIME_CURRENT = 0;
 		BREAK_START_TIME = -1;
 	}
