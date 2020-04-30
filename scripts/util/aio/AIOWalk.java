@@ -292,24 +292,34 @@ public class AIOWalk {
 	 * @return
 	 */
 	public static boolean walkToLocationForItem(Locations location, ItemIds item, String click) {
-		if (Player.isMoving()) {
+		if (Player.isMoving())
 			return false;
-		}
-
-		// Dax walk to location
-		AIOWalk.walkTo(location, false);
 		
-		// Fallback DPATH
-		if ( location != null && !location.contains(Player.getPosition()) )
-			AIOWalk.walkTo(location.getCenter());
-
 		// Find item on ground
 		RSGroundItem[] bs = GroundItems.findNearest(item.getIds());
-		if ((bs == null) || (bs.length == 0))
-			return false;
+
+		// Dax walk to location
+		if ( bs.length == 0 ) {
+			AIOWalk.walkTo(location, false);
+			
+			// Fallback DPATH
+			if ( location != null && !location.contains(Player.getPosition()) )
+				AIOWalk.walkTo(location.getCenter());
+	
+			// Find item on ground
+			bs = GroundItems.findNearest(item.getIds());
+			if ((bs == null) || (bs.length == 0)) {
+				General.println("Could not find item: " + item);
+				return false;
+			}
+		}
 
 		// Turn to item
 		AIOWalk.walkTo(bs[0].getPosition());
+		if ( Player.getPosition().distanceTo(bs[0]) > 4 && PathFinding.canReach(Player.getPosition(), bs[0], true) ) {
+			AccurateMouse.clickMinimap(bs[0]);
+			General.sleep(500,2000);
+		}
 		if ( !bs[0].isOnScreen() )
 			Camera.turnToTile(bs[0]);
 
