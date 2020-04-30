@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.tribot.api.interfaces.Positionable;
 import org.tribot.api2007.Player;
+import org.tribot.api2007.types.RSArea;
 import org.tribot.api2007.types.RSTile;
 
 import scripts.util.misc.NameFormatter;
@@ -249,6 +250,17 @@ public enum Locations {
 	 */
 	public RSTile getCenter() {
 		return new RSTile(this.location.x + this.location.width / 2, this.location.y + this.location.height / 2, floor);
+	}
+	
+	/**
+	 * Returns the area covered by this location.
+	 * @return
+	 */
+	public RSArea getArea() {
+		return new RSArea(
+				new RSTile(this.location.x, this.location.y, floor),
+				new RSTile(this.location.x + this.location.width, this.location.y + this.location.height, floor)
+		);
 	}
 
 	/**
