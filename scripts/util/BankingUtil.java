@@ -10,7 +10,6 @@ import org.tribot.api2007.types.RSItem;
 
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
-import scripts.util.names.ItemNames;
 import scripts.util.names.internal.ItemNamesData;
 import scripts.util.names.type.FoodType;
 

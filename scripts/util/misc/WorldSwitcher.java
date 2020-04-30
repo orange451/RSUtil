@@ -1,13 +1,13 @@
 package scripts.util.misc;
 
 import java.awt.Rectangle;
+
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.input.Mouse;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.GameTab;
-import org.tribot.api2007.GameTab.TABS;
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.NPCChat;
 import org.tribot.api2007.types.RSInterfaceChild;

@@ -7,7 +7,6 @@ import java.util.Random;
 import com.allatori.annotations.DoNotRename;
 
 import scripts.util.misc.NameFormatter;
-import scripts.util.names.internal.ItemNamesData;
 
 @DoNotRename
 public class NameGenerator {
@@ -56,7 +55,7 @@ public class NameGenerator {
 		
 		// Add the names to the array
 		names = new ArrayList<String>();
-		names.addAll(generateStrings(ItemNamesData.values()));
+		names.addAll(generateStrings(ItemNames.values()));
 		names.addAll(generateStrings(Locations.values()));
 		names.addAll(generateStrings(NPCNames.values()));
 		names.addAll(generateStrings(ObjectNames.values()));

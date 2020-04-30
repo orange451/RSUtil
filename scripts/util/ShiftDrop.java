@@ -50,10 +50,19 @@ public class ShiftDrop {
 		shiftButton.click("");
 	}
 	
+	/**
+	 * Returns whether shipft drop is enabled.
+	 * @return
+	 */
 	public static boolean isShiftDropEnabled() {
 		return Game.getSetting(1055) == -2147343104;
 	}
 	
+	/**
+	 * Shift drop a list of Item Ids based on a specified dropping pattern.
+	 * @param pattern
+	 * @param ids
+	 */
 	public static void shiftDrop(DROPPING_PATTERN pattern, int... ids) {
 		
 		// Enable shift dropping
@@ -115,10 +124,18 @@ public class ShiftDrop {
 		}
 	}
 	
+	/**
+	 * Shift drop a list of item ids with a random Dropping pattern.
+	 * @param ids
+	 */
 	public static void shiftDrop(ItemIds... ids) {
 		shiftDrop(ItemNames.get(ids));
 	}
-
+	
+	/**
+	 * Shift drop a list of item ids with a random Dropping pattern.
+	 * @param ids
+	 */
 	public static void shiftDrop(int... ids) {
 		int rand = General.random(1, 3);
 		switch (rand) {
@@ -134,8 +151,10 @@ public class ShiftDrop {
 		}
 	}
 
+	/**
+	 * Shift drop entire inventory.
+	 */
 	public static void shiftDropAll() {
 		shiftDrop(new int[] {});
 	}
-
 }

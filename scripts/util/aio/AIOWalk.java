@@ -542,7 +542,6 @@ public class AIOWalk {
 		return c;
 	}
 	
-	@SuppressWarnings("deprecation")
 	protected static Condition getWalkingConditionAlt(final RSTile tile) {
 		Condition c = new Condition() {
 			@Override

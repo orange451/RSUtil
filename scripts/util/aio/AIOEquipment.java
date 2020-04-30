@@ -1,6 +1,5 @@
 package scripts.util.aio;
 
-import org.tribot.api.General;
 import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Skills.SKILLS;
 import org.tribot.api2007.types.RSItem;

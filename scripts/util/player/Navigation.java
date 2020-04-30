@@ -23,9 +23,12 @@ import scripts.util.names.ObjectNames;
 /**
  * This is a very experimental class. It has not been refactored. And as such it is very ugly.
  * It was an attempt to get webwalking to be able to go up and down stairs at specific locations.
+ * Use DaxWalker instead.
  * @author orange451
  */
+@SuppressWarnings("deprecation")
 @DoNotRename
+@Deprecated
 public class Navigation {
 
 	/**

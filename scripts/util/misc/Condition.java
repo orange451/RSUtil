@@ -1,5 +1,6 @@
-package scripts.util;
+package scripts.util.misc;
 
+@SuppressWarnings("deprecation")
 public class Condition extends org.tribot.api.types.generic.Condition {
 	@FunctionalInterface
 	public interface ConditionLambda {

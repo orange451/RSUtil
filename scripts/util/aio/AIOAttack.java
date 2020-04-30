@@ -17,7 +17,6 @@ import scripts.util.misc.AntiBan;
 import scripts.util.names.Animations;
 import scripts.util.names.NPCNames;
 
-@SuppressWarnings("deprecation")
 public class AIOAttack {
 	public static boolean CANCEL_IF_NEAR_DEATH = true;
 	public static int MAX_AFK_TIME = 25000;

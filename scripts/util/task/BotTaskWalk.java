@@ -1,18 +1,12 @@
 package scripts.util.task;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSTile;
-import org.tribot.api2007.util.DPathNavigator;
-
 import scripts.dax_api.api_lib.DaxWalker;
-import scripts.dax_api.walker_engine.WalkerEngine;
 import scripts.dax_api.walker_engine.WalkingCondition;
 import scripts.util.PlayerUtil;
 import scripts.util.aio.AIOWalk;

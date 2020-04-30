@@ -8,7 +8,6 @@ import java.util.List;
 import scripts.util.misc.ItemWrapper;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
-import scripts.util.names.internal.ItemNamesData;
 
 public enum ToolType implements ItemWrapper {
 	BRONZE_SWORD(EquipmentMaterial.BRONZE, ToolClass.SWORD, ItemNames.BRONZE_SWORD),
