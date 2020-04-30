@@ -4,6 +4,7 @@ import com.allatori.annotations.DoNotRename;
 
 @DoNotRename
 public enum Animations {
+	SMITHING(899),
 	MINING(new int[] { 629, 628, 6753, 6752 }), 
 	THIEVING(new int[] { 832 }), 
 	NONE(new int[] { -1 }),
