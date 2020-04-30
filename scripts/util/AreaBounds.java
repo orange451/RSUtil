@@ -26,6 +26,12 @@ public class AreaBounds {
 	/** Internal tile lookup map */
 	private Map<RSTile, Boolean> tileLookup;
 	
+	/** Minimum tile */
+	private RSTile minTile;
+	
+	/** Maximum tile */
+	private RSTile maxTile;
+	
 	/** Max distance area will scan for tiles from root */
 	private final static int MAX_DISTANCE = 24;
 	
@@ -34,10 +40,31 @@ public class AreaBounds {
 
 		root = start;
 		tileLookup = new HashMap<>();
+		
+		// Compute all tiles
 		List<RSTile> walkable = new ArrayList<>();
 		List<RSTile> nonWalkable = new ArrayList<>();
 		fillTiles(start, walkable, nonWalkable);
 
+		// Find min/max files
+		int minX,minY;
+		int maxX,maxY;
+		minX = minY = Integer.MAX_VALUE;
+		maxX = maxY = Integer.MIN_VALUE;
+		for (RSTile tile : tileLookup.keySet()) {
+			if ( tile.getX() < minX )
+				minX = tile.getX();
+			if ( tile.getY() < minY )
+				minY = tile.getY();
+			if ( tile.getX() > maxX )
+				maxX = tile.getX();
+			if ( tile.getY() > maxY )
+				maxY = tile.getY();
+		}
+		minTile = new RSTile(minX, minY, root.getPlane());
+		maxTile = new RSTile(maxX, maxY, root.getPlane());
+		
+		// Update public tile info
 		this.walkableTiles = walkable.toArray(new RSTile[walkable.size()]);
 		this.nonWalkableTiles = nonWalkable.toArray(new RSTile[nonWalkable.size()]);
 	}
@@ -214,13 +241,18 @@ public class AreaBounds {
 		return null;
 	}
 	
-	public boolean equals(AreaBounds bounds) {
-		if ( bounds == null )
+	@Override
+	public boolean equals(Object object) {
+		if ( object == null )
 			return false;
 		
-		if (!(bounds instanceof AreaBounds))
+		if (!(object instanceof AreaBounds))
 			return false;
 		
-		return bounds.tileLookup.equals(this.tileLookup);
+		AreaBounds bounds = (AreaBounds)object;
+		
+		return this.minTile.equals(bounds.minTile)
+				&& this.maxTile.equals(bounds.maxTile)
+				&& this.size() == bounds.size();
 	}
 }
