@@ -269,6 +269,9 @@ public class PlayerUtil {
 	 * Sets the desired users train method
 	 */
 	public static void setTrainMethod(TrainMethod trainMethod) {
+		if ( trainMethod == null )
+			return;
+		
 		while (Banking.isBankScreenOpen()) {
 			Banking.close();
 			General.sleep(1000);
