@@ -7,13 +7,12 @@ import scripts.util.names.ItemNames;
 
 public enum BarType implements ItemWrapper {
 	BRONZE_BAR(ItemNames.BRONZE_BAR, OreType.COPPER, OreType.TIN, 1, 1),
-	IRON_BAR(ItemNames.IRON_BAR, OreType.IRON, null, 0, 15),
+	IRON_BAR(ItemNames.IRON_BAR, OreType.IRON, 15),
 	STEEL_BAR(ItemNames.STEEL_BAR, OreType.IRON, OreType.COAL, 2, 30),
-	GOLD_BAR(ItemNames.GOLD_BAR, OreType.GOLD, null, 0, 40),
+	GOLD_BAR(ItemNames.GOLD_BAR, OreType.GOLD, 40),
 	MITHRIL_BAR(ItemNames.MITHRIL_BAR, OreType.MITHRIL, OreType.COAL, 4, 50),
 	ADAMANT_BAR(ItemNames.ADAMANTITE_BAR, OreType.ADAMANT, OreType.COAL, 6, 70),
-	RUNE_BAR(ItemNames.RUNITE_BAR, OreType.RUNE, OreType.COAL, 8, 85),
-	;
+	RUNE_BAR(ItemNames.RUNITE_BAR, OreType.RUNE, OreType.COAL, 8, 85);
 	
 	private ItemIds item;
 	private OreType primaryOre;
@@ -28,9 +27,37 @@ public enum BarType implements ItemWrapper {
 		this.secondaryOreAmmount = secondaryOreAmmount;
 		this.minimumLevel = minimumLevel;
 	}
+
+	private BarType(ItemIds item, OreType primaryOre, int minimumLevel) {
+		this(item, primaryOre, null, 0, minimumLevel);
+	}
 	
 	public String getName() {
 		return NameFormatter.get(this.toString());
+	}
+	
+	public OreType getPrimaryOre() {
+		return this.primaryOre;
+	}
+	
+	public int getPrimaryOreAmount() {
+		return 1;
+	}
+	
+	public OreType getSecondaryOre() {
+		return this.secondaryOre;
+	}
+	
+	public int getSecondaryOreAmount() {
+		return this.secondaryOreAmmount;
+	}
+	
+	public int getTotalOresRequired() {
+		return this.getSecondaryOreAmount() + this.getPrimaryOreAmount();
+	}
+	
+	public int getMinimumSmithingLevelRequired() {
+		return this.minimumLevel;
 	}
 
 	@Override

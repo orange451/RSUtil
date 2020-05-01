@@ -20,7 +20,7 @@ public class AIOPlayer {
 		RSCharacter[] chars = ignoreNPC?PlayerUtil.getAttackingPlayers():PlayerUtil.getAttackingCharacters();
 		
 		if ( chars.length > 0 ) {
-			AIOWalk.walkToNearestBank();
+			AIOBank.walkToNearestBank();
 			
 			if ( PlayerUtil.getHealth() < PlayerUtil.getHPToEatAt() ) {
 				if ( AIOBank.walkToNearestBankAndWithdrawFirstItem(1, ItemNames.get(FoodType.values())) ) {

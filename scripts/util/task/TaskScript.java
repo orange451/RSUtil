@@ -70,6 +70,10 @@ public abstract class TaskScript extends Script {
 		//script.stopScript();
 	}
 	
+	public static boolean isRunning() {
+		return script.running;
+	}
+	
 	/**
 	 * Stops the current task.
 	 */
