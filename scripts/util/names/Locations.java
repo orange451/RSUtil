@@ -221,6 +221,8 @@ public enum Locations {
 	
 	OTTOS_FISHING_GROTTO(new RSTile(2505, 3493), new RSTile(2499, 3518), 0),
 	
+	GRAND_TREE_AGILITY_ARENA(new RSTile(2477, 3436, 0), new RSTile(2472, 3440, 0)),
+	
 	TZ_HARR_CITY_FURNACE(new RSTile(2445, 5152, 0), new RSTile(2449, 5150, 0)),
 	;
 
