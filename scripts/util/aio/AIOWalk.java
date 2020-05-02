@@ -19,11 +19,11 @@ import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSTile;
 import org.tribot.api2007.util.DPathNavigator;
 
-import scripts.aio.f2pquester.F2PQuester;
 import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.dax_api.walker_engine.WalkerEngine;
 import scripts.dax_api.walker_engine.WalkingCondition;
+import scripts.f2pquester.F2PQuester;
 import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
 import scripts.util.PlayerUtil;
@@ -101,6 +101,10 @@ public class AIOWalk {
 	public static boolean walkTo(Locations location, boolean shouldRunTo, AIOStatus status) {
 		if ( location == null )
 			return false;
+		
+		if ( location.contains(Player.getPosition()) )
+			return true;
+		
 		return walkTo(location.getRandomizedCenter(8), shouldRunTo, status);
 	}
 	

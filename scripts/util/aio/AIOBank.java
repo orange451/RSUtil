@@ -125,10 +125,10 @@ public class AIOBank {
 		AntiBan.sleep(1000, 500);
 		
 		// Close bank
-		status.setStatus("Closing Bank");
+		/*status.setStatus("Closing Bank");
 		while ( !Banking.close() ) {
 			AntiBan.sleep(1000, 500);
-		}
+		}*/
 		
 		// Everything went successful.
 		status.setType(StatusType.SUCCESS);
