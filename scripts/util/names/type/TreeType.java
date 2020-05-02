@@ -33,7 +33,7 @@ public enum TreeType implements ObjectWrapper {
 	}
 	
 	public String getName() {
-		return NameFormatter.get(this.toString());
+		return NameFormatter.formatName(this.toString());
 	}
 
 	public static TreeType match(ObjectNames object) {

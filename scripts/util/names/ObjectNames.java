@@ -73,7 +73,7 @@ public enum ObjectNames {
 	}
 
 	public String getName() {
-		return name == null ? NameFormatter.get(toString()) : name;
+		return name == null ? NameFormatter.formatName(toString()) : name;
 	}
 
 	public static ObjectNames find(String formattedName) {

@@ -38,7 +38,7 @@ public enum RockType implements ObjectWrapper {
 	}
 	
 	public String getName() {
-		return NameFormatter.get(this.toString());
+		return NameFormatter.formatName(this.toString());
 	}
 
 	public static RockType get(ObjectNames rock) {

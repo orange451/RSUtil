@@ -50,7 +50,7 @@ public enum FishType implements ItemWrapper {
 	}
 	
 	public String getName() {
-		return NameFormatter.get(this.toString());
+		return NameFormatter.formatItemName(this.toString());
 	}
 	
 	public int getMinimumLevelRequiredToFish() {

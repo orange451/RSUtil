@@ -57,7 +57,7 @@ public enum FishingEquipment {
 	}
 	
 	public String getName() {
-		return displayName==null?NameFormatter.get(this.toString()):this.displayName;
+		return displayName==null?NameFormatter.formatItemName(this.toString()):this.displayName;
 	}
 
 	public NPCNames[] getNPCNames() {

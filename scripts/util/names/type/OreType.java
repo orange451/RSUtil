@@ -15,8 +15,7 @@ public enum OreType implements ItemWrapper {
 	ADAMANT(ItemNames.ADAMANTITE_ORE), 
 	RUNE(ItemNames.RUNITE_ORE),
 	PAY_DIRT(ItemNames.PAY_DIRT), 
-	CLAY(ItemNames.CLAY), 
-	;
+	CLAY(ItemNames.CLAY);
 	
 	private ItemIds item;
 	
@@ -30,7 +29,7 @@ public enum OreType implements ItemWrapper {
 	}
 	
 	public String getName() {
-		return NameFormatter.get(this.toString());
+		return NameFormatter.formatItemName(this.toString());
 	}
 
 	public static OreType get(ItemNames item) {

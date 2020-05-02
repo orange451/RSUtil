@@ -69,7 +69,7 @@ public class NameGenerator {
 				continue;
 			
 			// Format it
-			String formatted = NameFormatter.get(t);
+			String formatted = NameFormatter.formatName(t);
 			
 			// Remove some stuff
 			String[] temp = formatted.split(" ");

@@ -33,7 +33,7 @@ public enum BarType implements ItemWrapper {
 	}
 	
 	public String getName() {
-		return NameFormatter.get(this.toString());
+		return NameFormatter.formatItemName(this.toString());
 	}
 	
 	public OreType getPrimaryOre() {

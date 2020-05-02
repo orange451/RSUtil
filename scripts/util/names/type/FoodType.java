@@ -4,6 +4,7 @@ import org.tribot.api2007.Skills.SKILLS;
 
 import scripts.util.PlayerUtil;
 import scripts.util.misc.ItemWrapper;
+import scripts.util.misc.NameFormatter;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
@@ -49,6 +50,10 @@ public enum FoodType implements ItemWrapper {
 	@Override
 	public ItemIds getItem() {
 		return this.item;
+	}
+	
+	public String getName() {
+		return NameFormatter.formatItemName(this.toString());
 	}
 	
 	public int getHealth() {

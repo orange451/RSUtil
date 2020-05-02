@@ -307,7 +307,7 @@ public enum Locations {
 	 * @return
 	 */
 	public String getName() {
-		return NameFormatter.get(toString());
+		return NameFormatter.formatName(toString());
 	}
 
 	/**

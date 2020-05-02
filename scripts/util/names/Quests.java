@@ -160,6 +160,6 @@ public enum Quests {
 	}
 
 	public String getName() {
-		return NameFormatter.get(toString());
+		return NameFormatter.formatName(toString());
 	}
 }

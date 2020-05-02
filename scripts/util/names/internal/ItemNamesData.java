@@ -557,7 +557,7 @@ public class ItemNamesData extends ItemIds {
 	 * @return
 	 */
 	public String getName() {
-		return NameFormatter.get(toString());
+		return NameFormatter.formatItemName(toString());
 	}
 
 	/**

@@ -96,7 +96,7 @@ public enum NPCNames {
 	private NPCNames(boolean attackable, int combatLevel, int...ids) {
 		this(attackable, null, combatLevel, ids);
 		
-		this.name = NameFormatter.get(toString());
+		this.name = NameFormatter.formatName(toString());
 	}
 	
 	private NPCNames(boolean attackable, String name, int combatLevel) {
