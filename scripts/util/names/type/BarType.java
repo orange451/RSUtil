@@ -48,6 +48,13 @@ public enum BarType implements ItemWrapper {
 		return this.secondaryOre;
 	}
 	
+	public OreType[] getOresUsed() {
+		if ( this.getSecondaryOre() == null || this.getSecondaryOreAmount() == 0 )
+			return new OreType[] {this.getPrimaryOre()};
+		
+		return new OreType[] { this.getPrimaryOre(), this.getSecondaryOre() };
+	}
+	
 	public int getSecondaryOreAmount() {
 		return this.secondaryOreAmmount;
 	}
