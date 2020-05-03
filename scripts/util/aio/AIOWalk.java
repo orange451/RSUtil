@@ -23,7 +23,6 @@ import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.dax_api.walker_engine.WalkerEngine;
 import scripts.dax_api.walker_engine.WalkingCondition;
-import scripts.f2pquester.F2PQuester;
 import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
 import scripts.util.PlayerUtil;
@@ -35,6 +34,7 @@ import scripts.util.names.ObjectNames;
 import scripts.util.task.BotTask;
 import scripts.util.task.BotTaskWalk;
 import scripts.util.task.BotTaskWalkToBank;
+import scripts.util.task.TaskScript;
 
 @SuppressWarnings("deprecation")
 public class AIOWalk {
@@ -527,7 +527,7 @@ public class AIOWalk {
 	protected static WalkingCondition getWalkingCondition(final RSTile tile) {
 		WalkingCondition c = new WalkingCondition() {
 			public WalkingCondition.State action() {
-				if (F2PQuester.STOPPED) {
+				if (!TaskScript.isStarted()) {
 					return WalkingCondition.State.EXIT_OUT_WALKER_SUCCESS;
 				}
 
@@ -550,7 +550,7 @@ public class AIOWalk {
 		Condition c = new Condition() {
 			@Override
 			public boolean active() {
-				if (F2PQuester.STOPPED) {
+				if (!TaskScript.isStarted()) {
 					return true;
 				}
 				

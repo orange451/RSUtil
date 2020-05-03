@@ -87,7 +87,7 @@ public class AIOBank {
 			walkToNearestBank();
 		
 		// Return since inventory is empty
-		int excludedItemsInInventory = PlayerUtil.getAmountItemsInInventory(false, exclude);
+		int excludedItemsInInventory = PlayerUtil.getAmountItemsInInventory(false, true, exclude);
 		int itemsInInventoryToBank = Inventory.getAll().length - excludedItemsInInventory;
 		if ( itemsInInventoryToBank <= 0 ) {
 			status.setType(StatusType.SUCCESS);

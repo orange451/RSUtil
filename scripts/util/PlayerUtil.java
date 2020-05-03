@@ -339,7 +339,7 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static int getAmountItemsInInventory(ItemIds... check) {
-		return getAmountItemsInInventory(true, check);
+		return getAmountItemsInInventory(true, true, check);
 	}
 
 	/**
@@ -347,20 +347,22 @@ public class PlayerUtil {
 	 * @param check
 	 * @return
 	 */
-	public static int getAmountItemsInInventory(boolean countStacks, ItemIds... check) {
+	public static int getAmountItemsInInventory(boolean countStacks, boolean countNotes, ItemIds... check) {
 		int amt = 0;
 		RSItem[] items = Inventory.getAll();
 		for (int i = 0; i < items.length; i++) {
 			RSItem item = items[i];
 			
 			boolean notedMatch = false;
-			for (ItemIds temp : check) {
-				RSItem temp2 = new RSItem(0, temp.getIds()[0], 1, RSItem.TYPE.OTHER);
-				if ( temp2.getDefinition() == null )
-					continue;
-				
-				if ( item.getDefinition().getName().equalsIgnoreCase(temp2.getDefinition().getName())) {
-					notedMatch = true;
+			if ( countNotes ) {
+				for (ItemIds temp : check) {
+					RSItem temp2 = new RSItem(0, temp.getIds()[0], 1, RSItem.TYPE.OTHER);
+					if ( temp2.getDefinition() == null )
+						continue;
+					
+					if ( item.getDefinition().getName().equalsIgnoreCase(temp2.getDefinition().getName())) {
+						notedMatch = true;
+					}
 				}
 			}
 			
@@ -378,7 +380,7 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static boolean hasItemsInInventory(ItemIds...check) {
-		return getAmountItemsInInventory(false, check) > 0;
+		return getAmountItemsInInventory(false, true, check) > 0;
 	}
 
 	/**
