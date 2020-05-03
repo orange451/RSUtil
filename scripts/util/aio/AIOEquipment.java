@@ -74,7 +74,7 @@ public class AIOEquipment {
 		for (ToolType toolObject : tools) {
 			
 			// Dont consider items we cant even use!
-			if ( toolObject.getType().getPrimarySkill().getActualLevel() < toolObject.getMaterial().getMinimumEquipLevel() )
+			if ( toolObject.getType().getPrimarySkill().getActualLevel() < toolObject.getMaterial().getMinimumEquipLevel() + toolObject.getType().getSkillOffset() )
 				continue;
 			
 			// Mark the best usable tool
@@ -103,7 +103,7 @@ public class AIOEquipment {
 			for (ToolType toolObject : tools) {
 				
 				// Dont consider items we cant even use!
-				if ( toolObject.getType().getPrimarySkill().getActualLevel() < toolObject.getMaterial().getMinimumEquipLevel() )
+				if ( toolObject.getType().getPrimarySkill().getActualLevel() < toolObject.getMaterial().getMinimumEquipLevel() + toolObject.getType().getSkillOffset() )
 					continue;
 				
 				// Attempt to get and equip item
