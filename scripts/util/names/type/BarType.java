@@ -79,6 +79,13 @@ public enum BarType implements ItemWrapper {
 		}
 		return null;	
 	}
+
+	public int getTotalBarsCanMake(int amtPrimaryOre, int amtSecondaryOre) {
+		if ( this.getSecondaryOreAmount() == 0 || this.getSecondaryOre() == null )
+			return amtPrimaryOre/getPrimaryOreAmount();
+		
+		return Math.min(amtPrimaryOre/getPrimaryOreAmount(), amtSecondaryOre/getSecondaryOreAmount());
+	}
 }
 
 

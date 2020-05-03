@@ -58,7 +58,7 @@ public final class AntiBan {
 		if (abc.shouldRotateCamera()) {
 			abc.rotateCamera();
 		}
-		if (abc.shouldLeaveGame() && randomChance(NPCDialogue.isInConversation() ? 128 : 32))
+		if (abc.shouldLeaveGame() && randomChance((NPCDialogue.isInConversation() ? 128 : 64) + (int)(getAccountOffset() * 64)))
 			abc.leaveGame();
 	}
 
