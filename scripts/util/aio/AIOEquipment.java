@@ -1,5 +1,6 @@
 package scripts.util.aio;
 
+import org.tribot.api.General;
 import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Skills.SKILLS;
 import org.tribot.api2007.types.RSItem;
@@ -74,7 +75,7 @@ public class AIOEquipment {
 		for (ToolType toolObject : tools) {
 			
 			// Dont consider items we cant even use!
-			if ( toolObject.getType().getPrimarySkill().getActualLevel() < toolObject.getMaterial().getMinimumEquipLevel() + toolObject.getType().getSkillOffset() )
+			if ( !canUseTool(toolObject) )
 				continue;
 			
 			// Mark the best usable tool
@@ -103,7 +104,7 @@ public class AIOEquipment {
 			for (ToolType toolObject : tools) {
 				
 				// Dont consider items we cant even use!
-				if ( toolObject.getType().getPrimarySkill().getActualLevel() < toolObject.getMaterial().getMinimumEquipLevel() + toolObject.getType().getSkillOffset() )
+				if ( !canUseTool(toolObject) )
 					continue;
 				
 				// Attempt to get and equip item
@@ -121,6 +122,10 @@ public class AIOEquipment {
 		}
 		
 		return null;
+	}
+	
+	private static boolean canUseTool(ToolType tool) {
+		return tool.getType().getPrimarySkill().getActualLevel() >= tool.getMaterial().getMinimumEquipLevel() + tool.getType().getSkillOffset();
 	}
 	
 	private static boolean attemptEquip(ToolType tool, RSItem item) {
@@ -150,6 +155,13 @@ public class AIOEquipment {
 		if ( count > 0 ) {
 			for (RSItem item : Equipment.getItems()) {
 				for (int id : desiredItemIds) {
+					ToolType toolType = ToolType.match(ItemNames.get(id));
+					if ( toolType == null )
+						continue;
+					
+					if ( !canUseTool(toolType) )
+						continue;
+					
 					if ( id == item.getID() )
 						return item;
 				}

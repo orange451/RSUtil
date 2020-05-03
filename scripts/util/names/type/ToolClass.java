@@ -14,6 +14,7 @@ public enum ToolClass {
 	
 	private ToolClass(SKILLS primarySkill, int skillOffset) {
 		this.primarySkill = primarySkill;
+		this.skillOffset = skillOffset;
 	}
 	
 	public SKILLS getPrimarySkill() {
