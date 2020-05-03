@@ -134,8 +134,16 @@ public class AIOBank {
 		status.setType(StatusType.SUCCESS);
 		return true;
 	}
+	
+	public static boolean walkToNearestBankAndWithdrawMoney(int quantity) {
+		return walkToNearestBankAndWithdrawFirstItem(quantity, ItemNames.COINS);
+	}
 
 	public static boolean walkToNearestBankAndWithdrawFirstItem(int quantity, ItemIds... desiredItem) {
+		return walkToNearestBankAndWithdrawFirstItem(false, quantity, desiredItem);
+	}
+	
+	public static boolean walkToNearestBankAndWithdrawFirstItem(boolean noted, int quantity, ItemIds... desiredItem) {
 		// Go to bank
 		if ( !walkToNearestBankAndOpen() ) {
 			General.println("Couldnt open bank");
@@ -143,15 +151,11 @@ public class AIOBank {
 		}
 		
 		// Withdraw
-		if ( !BankingUtil.withdrawFirstItem(quantity, desiredItem) ) {
+		if ( !BankingUtil.withdrawFirstItem(noted, quantity, desiredItem) ) {
 			General.println("Couldn't withdraw " + quantity + " / " + desiredItem.toString());
 			return false;
 		}
 		
 		return true;
-	}
-	
-	public static boolean walkToNearestBankAndWithdrawMoney(int quantity) {
-		return walkToNearestBankAndWithdrawFirstItem(quantity, ItemNames.COINS);
 	}
 }

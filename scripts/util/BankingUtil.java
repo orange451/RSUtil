@@ -70,16 +70,18 @@ public class BankingUtil {
 	 * @param desiredItems
 	 */
 	public static boolean withdrawFirstItem(ItemIds... desiredItems) {
-		return withdrawFirstItem(1, desiredItems);
+		return withdrawFirstItem(false, 1, desiredItems);
 	}
 	
 	/**
 	 * Withdraws the first item in your bank from a list of desired items
 	 * @param desiredItems
 	 */
-	public static boolean withdrawFirstItem(int quantity, ItemIds... desiredItems) {
+	public static boolean withdrawFirstItem(boolean noted, int quantity, ItemIds... desiredItems) {
 		if (!Banking.isBankScreenOpen())
 			return false;
+		
+		BankingUtil.setNote(noted);
 		
 		for (ItemIds item : desiredItems) {
 			RSItem[] t = Banking.find(item.getIds());
