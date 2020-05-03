@@ -356,6 +356,9 @@ public class PlayerUtil {
 			boolean notedMatch = false;
 			for (ItemIds temp : check) {
 				RSItem temp2 = new RSItem(0, temp.getIds()[0], 1, RSItem.TYPE.OTHER);
+				if ( temp2.getDefinition() == null )
+					continue;
+				
 				if ( item.getDefinition().getName().equalsIgnoreCase(temp2.getDefinition().getName())) {
 					notedMatch = true;
 				}

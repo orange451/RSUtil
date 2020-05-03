@@ -672,7 +672,10 @@ public class ItemNamesData extends ItemIds {
 		
 		ItemIds[] ret = new ItemIds[wrapper.length];
 		for (int i = 0; i < wrapper.length; i++) {
-			ret[i] = wrapper[i].getItem();
+			if ( wrapper[i] == null )
+				ret[i] = ItemNames.NONE;
+			else
+				ret[i] = wrapper[i].getItem();
 		}
 		
 		return ret;

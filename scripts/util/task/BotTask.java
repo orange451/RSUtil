@@ -23,15 +23,26 @@ public abstract class BotTask {
 
 	public abstract boolean isTaskComplete();
 	
+	/**
+	 * Mark this task as cancelled. If finished, it will not go on to the next task.
+	 */
 	public void cancel() {
 		this.cancelled = true;
 		this.forceComplete = true;
 	}
 
+	/**
+	 * Returns whether the task is cancelled.
+	 * @return
+	 */
 	public boolean isCancelled() {
 		return this.cancelled;
 	}
 	
+	/**
+	 * Returns whether the task has already initialized. A task initializes on the first tick it runs.
+	 * @return
+	 */
 	public boolean initialized() {
 		return this.initialized;
 	}
