@@ -2,6 +2,8 @@ package scripts.util.task;
 
 import org.tribot.script.Script;
 
+import scripts.util.misc.AntiBan;
+
 public abstract class TaskScript extends Script {
 	private boolean running;
 	private BotTask currentTask;
@@ -58,6 +60,7 @@ public abstract class TaskScript extends Script {
 		if ( script.scriptStarted )
 			return;
 		
+		AntiBan.fatigueReset();
 		script.currentTask = script.getStartingTask();
 		script.scriptStarted = true;
 	}

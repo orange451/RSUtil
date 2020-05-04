@@ -248,21 +248,26 @@ public class ObjectUtil {
 		if (obj == null)
 			return false;
 
+		// Walk to object
 		if (!PathFinding.canReach(obj, false))
 			AIOWalk.walkTo(obj.getPosition());
 		
+		// Rotate to object if needed
 		if ( !obj.isOnScreen() || AntiBan.randomChance(5))
 			Camera.turnToTile(obj);
 
+		// Try to click
 		int tries = 0;
 		while (!obj.click(new String[] { click }) && tries < 8) {
 			AntiBan.idle(83, 156);
 			tries++;
 		}
 		
+		// Oof we couldnt click
 		if ( tries >= 8 )
 			return false;
 		
+		// Wait until player is finished doing whatever it needed to do after clicking
 		General.sleep(1000L);
 		long timeout = System.currentTimeMillis() + 10000;
 		while ((Player.isMoving()) || (Player.getAnimation() != -1)) {
@@ -271,6 +276,8 @@ public class ObjectUtil {
 			if ( System.currentTimeMillis() > timeout )
 				break;
 		}
+		
+		// Sucessfully clicked 
 		return true;
 	}
 }

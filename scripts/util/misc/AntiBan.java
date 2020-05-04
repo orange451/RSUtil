@@ -16,12 +16,20 @@ public final class AntiBan {
 	
 	private static long bigResponseTime;
 	
+	private static long fatigue_start = -1;
+	
+	private static long fatigue_peak = -1;
+
+	private static final long OFFSET_FATIGUE = 256;
+	
 	private static final long OFFSET_RESPONSE_TIME = 500;
 	
 	private static final long OFFSET_AFK_TIME = 1024;
 	
 	static {
 		try {
+			fatigueReset();
+			
 			abc = new ABCUtil();
 			abc.generateTrackers();
 			General.useAntiBanCompliance(true);
@@ -72,7 +80,7 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static int generateResponseTime(float maxTime) {
-		float center = (float)(maxTime * General.randomDouble(0.2D, 0.25D));
+		float center = (float)(maxTime * (General.randomDouble(0.3D, 0.35D) + (fatigueGet()*0.75d)));
 		float rightBound = maxTime - center;
 		float leftBound = center;
 		float powerRight = (float)Math.pow(Math.random(), 6.0D) * 2.0F;
@@ -100,7 +108,7 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static int generateAFKTime(float maxTime) {
-		float center = (float)(maxTime * General.randomDouble(0.005D, 0.013D));
+		float center = (float)(maxTime * (General.randomDouble(0.005D, 0.013D) + (fatigueGet() * 0.5d)));
 		float rightBound = maxTime - center;
 		float leftBound = center;
 		float powerRight = (float)Math.pow(Math.random(), 6.0D) * 2.0F;
@@ -296,7 +304,31 @@ public final class AntiBan {
 	public static int random(int i) {
 		return (int)(Math.random()*i);
 	}
+	
+	/**
+	 * Resets the internal fatigue timers
+	 */
+	public static void fatigueReset() {
+		long minutes = AntiBan.random((int) (60 + (getAccountOffset(OFFSET_FATIGUE)*30))) + 60;
+		
+		fatigue_start = System.currentTimeMillis();
+		fatigue_peak = System.currentTimeMillis() + (1000 * 60 * minutes);
+	}
+	
+	/**
+	 * Returns the ratio of fatigue between 0 and 1.
+	 * @return 
+	 */
+	public static double fatigueGet() {
+		if ( fatigue_start == -1 )
+			fatigueReset();
+		
+		return (System.currentTimeMillis()-fatigue_start) / (double)(fatigue_peak-fatigue_start);
+	}
 
+	/**
+	 * Randomly pick an element from a list of elements.
+	 */
 	public static <T> T choose(@SuppressWarnings("unchecked") T... objects) {
 		return objects[AntiBan.random(objects.length)];
 	}
