@@ -36,7 +36,11 @@ public class AIOEquipment {
 	 * @return Whether or not the tool was/is equipped.
 	 */
 	public static boolean equipTool(ToolClass tool, EquipmentMaterial minimumMaterial) {
-		return getToolAndEquipIfPossible(tool, minimumMaterial) != null;
+		RSItem item = getToolAndEquipIfPossible(tool, minimumMaterial);
+		if ( item == null )
+			return false;
+		
+		return getFirstEquipped(tool, minimumMaterial) != null;
 	}
 	
 	/**
@@ -141,38 +145,7 @@ public class AIOEquipment {
 		return false;
 	}
 	
-	private static boolean isEquipped(ItemIds... desiredItems) {
-		int[] desiredItemIds = ItemNames.get(desiredItems);
-		
-		// Check if we have it already equipped
-		int count = Equipment.getCount(desiredItemIds);
-		if ( count > 0 ) {
-			for (RSItem item : Equipment.getItems()) {
-				for (int id : desiredItemIds) {
-					ToolType toolType = ToolType.match(ItemNames.get(id));
-					if ( toolType == null )
-						continue;
-					
-					if ( !canUseTool(toolType) )
-						continue;
-					
-					if ( id == item.getID() )
-						return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Returns the first tool matching the provided toolclass and minimum material type.
-	 * The tool can be either equipped or in inventory..
-	 * @param tool
-	 * @param minimumMaterial
-	 * @return
-	 */
-	public static RSItem getFirstTool(ToolClass tool, EquipmentMaterial minimumMaterial) {
+	private static RSItem getFirstEquipped(ToolClass tool, EquipmentMaterial minimumMaterial) {
 		ItemIds[] desiredItems = ItemNames.get(ToolType.getToolTypes(tool, minimumMaterial));
 		int[] desiredItemIds = ItemNames.get(desiredItems);
 		
@@ -194,8 +167,25 @@ public class AIOEquipment {
 			}
 		}
 		
+		return null;
+	}
+	
+	/**
+	 * Returns the first tool matching the provided toolclass and minimum material type.
+	 * The tool can be either equipped or in inventory..
+	 * @param tool
+	 * @param minimumMaterial
+	 * @return
+	 */
+	public static RSItem getFirstTool(ToolClass tool, EquipmentMaterial minimumMaterial) {
+
+		// Check for item in equipment
+		RSItem equipped = getFirstEquipped(tool, minimumMaterial);
+		if ( equipped != null )
+			return equipped;
+		
 		// Check for item in inventory
-		RSItem inventoryItem = PlayerUtil.getFirstItemInInventory(desiredItems);
+		RSItem inventoryItem = PlayerUtil.getFirstItemInInventory(ItemNames.get(ToolType.getToolTypes(tool, minimumMaterial)));
 		if ( inventoryItem != null )
 			return inventoryItem;
 		
