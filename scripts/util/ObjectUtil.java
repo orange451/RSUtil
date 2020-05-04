@@ -1,7 +1,10 @@
 package scripts.util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.tribot.api.General;
 import org.tribot.api.interfaces.Positionable;
@@ -93,12 +96,34 @@ public class ObjectUtil {
 	 * @return
 	 */
 	public static RSObject get(ObjectNames obj, Positionable position, int MAX_DIST, boolean adjacentPlayersAddDistance) {
-		List<RSObject> objects = getAll(obj);
-		RSObject mine = null;
-		int dist = MAX_DIST;
+		RSObject[] objects = getAll(obj, position, MAX_DIST, adjacentPlayersAddDistance);
+		if ( objects.length == 0 )
+			return null;
 		
+		return objects[0];
+	}
+	
+	/**
+	 * Returns the closest objects with a matching object name to the given position.
+	 * All objects returned MUST be reachable from {@link PathFinding#canReach()}.
+	 * @param obj
+	 * @param position
+	 * @param MAX_DIST
+	 * @return
+	 */
+	public static RSObject[] getAll(ObjectNames obj, Positionable position, int MAX_DIST, boolean adjacentPlayersAddDistance) {
+		List<RSObject> objects = getAll(obj);
+		
+		List<RSObject> temp = new ArrayList<>();
+		Map<RSObject, Double> distance = new HashMap<>();
+		
+		// Get all relevent objects
 		for (int i = 0; i < objects.size(); i++) {
 			RSObject o = (RSObject)objects.get(i);
+
+			if ( !PathFinding.canReach(Player.getPosition(), o.getPosition(), true) )
+				continue;
+
 			int tdist = o.getPosition().distanceTo(position);
 			boolean hasAdjacent = adjacentPlayersAddDistance && hasAdjacentPlayers(o, false);
 			
@@ -106,20 +131,20 @@ public class ObjectUtil {
 				tdist += 10;
 
 			// Farther away the object is, the more uncertain we are of exact distance
-			for (int j = 0; j < (int)(tdist / 3); j++) {
+			for (int j = 0; j < (int)(tdist / 3); j++)
 				tdist += General.random(-1, 1);
-			}
 			
-			if ( !PathFinding.canReach(Player.getPosition(), o.getPosition(), true) )
-				tdist = Integer.MAX_VALUE;
-			
-			if (tdist < dist) {
-				dist = tdist;
-				mine = o;
-			}
+			distance.put(o, (double) tdist);
+			temp.add(o);
 		}
+		
+		// sort
+		temp.sort((Object arg0, Object arg1) -> {
+			return (int) (distance.get(arg0)-distance.get(arg1));
+		});
 
-		return mine;
+		// return
+		return temp.toArray(new RSObject[temp.size()]);
 	}
 
 	public static boolean hasAdjacentPlayers(RSObject object, boolean includeUs) {
