@@ -22,6 +22,8 @@ public final class AntiBan {
 
 	private static final long OFFSET_FATIGUE = 256;
 	
+	private static final long OFFSET_FATIGUE_POWER = 300;
+	
 	private static final long OFFSET_RESPONSE_TIME = 500;
 	
 	private static final long OFFSET_AFK_TIME = 1024;
@@ -323,7 +325,18 @@ public final class AntiBan {
 		if ( fatigue_start == -1 )
 			fatigueReset();
 		
-		return (System.currentTimeMillis()-fatigue_start) / (double)(fatigue_peak-fatigue_start);
+		// Get linear fatigue 0-1
+		double fatigue = (System.currentTimeMillis()-fatigue_start) / (double)(fatigue_peak-fatigue_start);
+		if ( fatigue < 0 )
+			fatigue = 0;
+		if ( fatigue > 1 )
+			fatigue = 1;
+		
+		// Raise to power, but different for all accounts!
+		fatigue = Math.pow(fatigue, 1 + getAccountOffset(OFFSET_FATIGUE_POWER) * 0.5);
+		
+		// Return
+		return fatigue;
 	}
 
 	/**
