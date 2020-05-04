@@ -1,6 +1,5 @@
 package scripts.util.aio;
 
-import org.tribot.api.General;
 import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Skills.SKILLS;
 import org.tribot.api2007.types.RSItem;
@@ -131,9 +130,36 @@ public class AIOEquipment {
 	private static boolean attemptEquip(ToolType tool, RSItem item) {
 		if ( SKILLS.ATTACK.getActualLevel() >= tool.getMaterial().getMinimumEquipLevel()) {
 			AntiBan.sleep(500, 250);
-			item.click("wield");
+			if ( tool.getType() == ToolClass.SHIELD )
+				item.click("wear");
+			else
+				item.click("wield");
 			AntiBan.sleep(1250, 500);
 			return true;
+		}
+		
+		return false;
+	}
+	
+	private static boolean isEquipped(ItemIds... desiredItems) {
+		int[] desiredItemIds = ItemNames.get(desiredItems);
+		
+		// Check if we have it already equipped
+		int count = Equipment.getCount(desiredItemIds);
+		if ( count > 0 ) {
+			for (RSItem item : Equipment.getItems()) {
+				for (int id : desiredItemIds) {
+					ToolType toolType = ToolType.match(ItemNames.get(id));
+					if ( toolType == null )
+						continue;
+					
+					if ( !canUseTool(toolType) )
+						continue;
+					
+					if ( id == item.getID() )
+						return true;
+				}
+			}
 		}
 		
 		return false;
