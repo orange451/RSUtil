@@ -82,7 +82,7 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static int generateResponseTime(float maxTime) {
-		float center = (float)(maxTime * (General.randomDouble(0.3D, 0.35D) + (fatigueGet()*0.75d)));
+		float center = (float)(maxTime * (General.randomDouble(0.3D, 0.35D) + (fatigueGet()*0.15d)));
 		float rightBound = maxTime - center;
 		float leftBound = center;
 		float powerRight = (float)Math.pow(Math.random(), 6.0D) * 2.0F;
@@ -110,7 +110,7 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static int generateAFKTime(float maxTime) {
-		float center = (float)(maxTime * (General.randomDouble(0.005D, 0.013D) + (fatigueGet() * 0.5d)));
+		float center = (float)(maxTime * (General.randomDouble(0.005D, 0.013D) + (fatigueGet() * 0.25d)));
 		float rightBound = maxTime - center;
 		float leftBound = center;
 		float powerRight = (float)Math.pow(Math.random(), 6.0D) * 2.0F;
