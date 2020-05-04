@@ -1,5 +1,7 @@
 package scripts.util.names;
 
+import org.tribot.api2007.types.RSObject;
+
 import com.allatori.annotations.DoNotRename;
 
 import scripts.util.misc.NameFormatter;
@@ -76,15 +78,24 @@ public enum ObjectNames {
 		return name == null ? NameFormatter.formatName(toString()) : name;
 	}
 
-	public static ObjectNames find(String formattedName) {
+	public static ObjectNames match(String formattedName) {
 		ObjectNames[] types = values();
 		for (int i = 0; i < types.length; i++) {
-			if (types[i].getName().equals(formattedName)) {
+			if (types[i].getName().equalsIgnoreCase(formattedName)) {
 				return types[i];
 			}
 		}
 
 		return null;
+	}
+	
+	public static ObjectNames match(RSObject object) {
+		ObjectNames o = match(object.getDefinition().getName());
+		if ( o != null )
+			return o;
+		
+		o = match(object.getID());
+		return o;
 	}
 	
 	public static ObjectNames match(int id) {
