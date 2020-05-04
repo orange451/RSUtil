@@ -96,7 +96,7 @@ public class ObjectUtil {
 	 * @return
 	 */
 	public static RSObject get(ObjectNames obj, Positionable position, int MAX_DIST, boolean adjacentPlayersAddDistance) {
-		RSObject[] objects = getAll(obj, position, MAX_DIST, adjacentPlayersAddDistance);
+		RSObject[] objects = getAll(obj, position, MAX_DIST, false, adjacentPlayersAddDistance);
 		if ( objects.length == 0 )
 			return null;
 		
@@ -111,7 +111,7 @@ public class ObjectUtil {
 	 * @param MAX_DIST
 	 * @return
 	 */
-	public static RSObject[] getAll(ObjectNames obj, Positionable position, int MAX_DIST, boolean adjacentPlayersAddDistance) {
+	public static RSObject[] getAll(ObjectNames obj, Positionable position, int MAX_DIST, boolean ignoreNonPathfindable, boolean adjacentPlayersAddDistance) {
 		List<RSObject> objects = getAll(obj);
 		
 		List<RSObject> temp = new ArrayList<>();
@@ -121,7 +121,7 @@ public class ObjectUtil {
 		for (int i = 0; i < objects.size(); i++) {
 			RSObject o = (RSObject)objects.get(i);
 
-			if ( !PathFinding.canReach(Player.getPosition(), o.getPosition(), true) )
+			if ( ignoreNonPathfindable && !PathFinding.canReach(Player.getPosition(), o.getPosition(), true) )
 				continue;
 
 			int tdist = o.getPosition().distanceTo(position);
