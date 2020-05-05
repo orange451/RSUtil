@@ -215,7 +215,7 @@ public class AIOWalk {
 		// Complete the task
 		int tries = 0;
 		while( !walkToBank.isTaskComplete() ) { // Forces task to run
-			General.sleep(1000);
+			General.sleep(500);
 			tries++;
 			if ( tries > 20 ) {
 				status.setType(StatusType.FAILED);
@@ -303,7 +303,7 @@ public class AIOWalk {
 		RSGroundItem[] bs = GroundItems.findNearest(item.getIds());
 
 		// Dax walk to location
-		if ( bs.length == 0 ) {
+		if ( location != null && bs.length == 0 ) {
 			AIOWalk.walkTo(location, false);
 			
 			// Fallback DPATH
@@ -331,8 +331,13 @@ public class AIOWalk {
 		int timeout = 0;
 		int startAmount = PlayerUtil.getAmountItemsInInventory(item);
 		while ((!bs[0].click(click)) && (timeout < 8)) {
+			
 			timeout++;
-			AntiBan.idle(83, 156);
+			AntiBan.idle(134, 213);
+			
+			bs = GroundItems.findNearest(item.getIds());
+			if ( bs.length == 0 )
+				break;
 			
 			int currentAmount = PlayerUtil.getAmountItemsInInventory(item);
 			if ( currentAmount > startAmount )
@@ -340,14 +345,17 @@ public class AIOWalk {
 		}
 
 		// Oof timeout
-		if (timeout >= 8)
+		if (timeout >= 8) {
+			General.sleep(1000);
 			return false;
+		}
 
 		// Sleep
 		AntiBan.sleep(1000, 250);
 		while ((Player.isMoving()) || (Player.getAnimation() != -1)) {
 			AntiBan.sleep(500, 200);
 		}
+		AntiBan.sleep(500, 200);
 		return true;
 	}
 	

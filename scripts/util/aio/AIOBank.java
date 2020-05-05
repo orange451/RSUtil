@@ -53,7 +53,7 @@ public class AIOBank {
 			Banking.openBank();
 			AntiBan.sleep(1000, 500);
 		}
-		AntiBan.sleep(2000, 1000);
+		AntiBan.sleep(1000, 900);
 		
 		return true;
 	}
@@ -113,16 +113,18 @@ public class AIOBank {
 		
 		// Open Bank
 		status.setStatus("Opening bank");
-		while ( !Banking.isBankScreenOpen() ) {
-			Banking.openBank();
-			AntiBan.sleep(1000, 500);
+		if ( !Banking.isBankScreenOpen() ) {
+			while ( !Banking.isBankScreenOpen() ) {
+				Banking.openBank();
+				AntiBan.sleep(1000, 500);
+			}
+			AntiBan.sleep(1000, 900);
 		}
-		AntiBan.sleep(2000, 1000);
 		
 		// Deposit
 		status.setStatus("Depositing Items");
 		Banking.depositAllExcept(ItemNames.get(exclude));
-		AntiBan.sleep(1000, 500);
+		AntiBan.sleep(1500, 1500);
 		
 		// Close bank
 		/*status.setStatus("Closing Bank");
