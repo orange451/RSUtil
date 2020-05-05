@@ -32,6 +32,7 @@ public enum NPCNames {
 	ELLIS(false),
 	FATHER_AERECK(false),
 	FATHER_URHNEY(false),
+	FATHER_LAWRENCE(false),
 	FISHING_SPOT(false),
 	ROD_FISHING_SPOT(false),
 	FROG(true),
@@ -72,7 +73,10 @@ public enum NPCNames {
 	WHITE_KNIGHT(true),
 	WYSON(false),
 	ZOMBIE(true),
-	GRAND_EXCHANGE_CLERK(false);
+	GRAND_EXCHANGE_CLERK(false),
+	ROMEO(false, "Romeo"),
+	JULIET(false, "Juliet"),
+	APOTHECARY(false, "Apothecary");
 
 	private boolean attackable;
 	private String name;
