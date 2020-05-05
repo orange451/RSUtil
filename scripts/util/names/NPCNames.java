@@ -25,6 +25,7 @@ public enum NPCNames {
 	DAIRY_COW(false, "Dairy Cow", 0, 1172),
 	DARK_WIZARD(true),
 	DREZEL(false),
+	DORIC(false),
 	DUKE_HORACIO(false),
 	DWARF(true),
 	DR_HARLOW(false),
