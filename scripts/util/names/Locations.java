@@ -199,6 +199,7 @@ public enum Locations {
 	TUTORIAL_ISLAND_MAGIC( new RSTile(3140, 3088), new RSTile(3142, 3090), 0),
 	
 	TEMPLE_PASS(new RSTile(3405, 3490), new RSTile(3408, 3487), 0),
+	TEMPLE_TRAPDOOR(new RSTile(3407, 3504, 0), new RSTile(3404, 3507, 0)),
 	TEMPLE_DUNGEON(new RSTile(3407, 9906, 0), new RSTile(3403, 9907, 0)),
 	TEMPLE_DUNGEON_WELL(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_DUNGEON_DREZELS_ROOM(new RSTile(0, 0), new RSTile(0, 0), 0),

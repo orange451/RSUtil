@@ -243,10 +243,11 @@ public class AIOWalk {
 		}
 
 		// Walk to general location
-		walkTo(location);
+		if(location != null)
+			walkTo(location);
 
 		// Find NPC
-		RSNPC npc = NPCUtil.getFirstNPC(name);
+		RSNPC npc = name == null ? null : NPCUtil.getFirstNPC(name);
 		if (npc == null) {
 			return false;
 		}

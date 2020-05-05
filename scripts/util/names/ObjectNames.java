@@ -53,7 +53,9 @@ public enum ObjectNames {
 	STRUT("Strut", 26669),
 	CRATE("Crate", 357),
 	BROKEN_STRUT("Broken strut", 26670), 
-	WATERPUMP("Waterpump", 24004),
+	WATERPUMP("Waterpump", 24004), 
+	LARGE_DOOR("Large Door", 3489, 3940), 
+	TRAP_DOOR("Trapdoor", 1581),
 	;
 
 	private int[] id;
