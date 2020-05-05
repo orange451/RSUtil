@@ -56,7 +56,7 @@ public enum Locations {
 	ALKHARID_AGILITY_START(new RSTile(3272, 3195), new RSTile(3274, 3196)),
 	
 	VARROK(new RSTile(3182, 3450), new RSTile(3257, 3400), 0),
-	VARROCK_AGILIRT_START(new RSTile(3221, 3418, 0), new RSTile(3222, 3411, 0)),
+	VARROK_AGILITY_START(new RSTile(3221, 3418, 0), new RSTile(3222, 3411, 0)),
 	VARROK_BANK_EAST(new RSTile(3250, 3423), new RSTile(3257, 3420), 0), 
 	VARROK_BANK_WEST(new RSTile(3181, 3445), new RSTile(3185, 3435), 0), 
 	VARROK_MINE_WEST(new RSTile(3172, 3379), new RSTile(3184, 3364), 0), 
@@ -74,7 +74,7 @@ public enum Locations {
 	VARROK_SHOP_RUNES(new RSTile(3252, 3399), new RSTile(3254, 3403), 0),
 	VARROK_CHURCH(new RSTile(3252, 3487), new RSTile(3259, 3476), 0),
 	VARROK_CHURCH_YEW(new RSTile(3247, 3474), new RSTile(3251, 3471), 0),
-	VARROK_CASTLE_KINGS_ROOM(new RSTile(3219, 3474), new RSTile(3225, 3471), 0),
+	VARROK_CASTLE_KINGS_ROOM(new RSTile(3220, 3475, 0), new RSTile(3224, 3470, 0)),
 	VARROK_CASTLE_LOWER(new RSTile(3201, 3498), new RSTile(3224, 3471), 0), 
 	VARROK_CASTLE_NW_STAIR(new RSTile(3200, 3500), new RSTile(3206, 3494), 2), 
 	VARROK_CASTLE_LIBRARY(new RSTile(3207, 3497), new RSTile(3214, 3490), 0),
@@ -140,6 +140,7 @@ public enum Locations {
 	FALADOR_CHICKENS(new RSTile(3015, 3287), new RSTile(3019, 3293), 0),
 	FALDOR_YEWS(new RSTile(3044, 3321), new RSTile(3001, 3315), 0),
 	FALDOR_RANGE(new RSTile(2991, 3367), new RSTile(2988, 3365), 0),
+	FALDOR_WATER_SPICKET(new RSTile(2951, 3380, 0), new RSTile(2949, 3383, 0)),
 	
 	MOTHERLOAD_MINE(new RSTile(3714, 5692,0), new RSTile(3773, 5635,0)),
 	MOTHERLOAD_MINE_WATER(new RSTile(3749, 5672), new RSTile(3751, 5660), 0),
@@ -198,7 +199,7 @@ public enum Locations {
 	TUTORIAL_ISLAND_MAGIC( new RSTile(3140, 3088), new RSTile(3142, 3090), 0),
 	
 	TEMPLE_PASS(new RSTile(3405, 3490), new RSTile(3408, 3487), 0),
-	TEMPLE_DUNGEON(new RSTile(3404, 9906), new RSTile(3406, 9905), 0),
+	TEMPLE_DUNGEON(new RSTile(3407, 9906, 0), new RSTile(3403, 9907, 0)),
 	TEMPLE_DUNGEON_WELL(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_DUNGEON_DREZELS_ROOM(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR(new RSTile(0, 0), new RSTile(0, 0), 0),

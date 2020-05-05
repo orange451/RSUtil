@@ -9,7 +9,9 @@ public enum Animations {
 	THIEVING(new int[] { 832 }), 
 	NONE(new int[] { -1 }),
 	FISHING(new int[] { 621, 623, 622, 618, 619 }),
-	CHOPPING(879);
+	CHOPPING(879), 
+	PUMPING_WATER(832),
+	;
 
 	private int[] ids;
 

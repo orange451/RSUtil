@@ -52,7 +52,9 @@ public enum ObjectNames {
 	SACK(26688),
 	STRUT("Strut", 26669),
 	CRATE("Crate", 357),
-	BROKEN_STRUT("Broken strut", 26670);
+	BROKEN_STRUT("Broken strut", 26670), 
+	WATERPUMP("Waterpump", 24004),
+	;
 
 	private int[] id;
 	private String name;
