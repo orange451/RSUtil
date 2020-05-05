@@ -264,6 +264,8 @@ public final class AntiBan {
 	 */
 	public static void sleep(int average, int deviation) {
 		int time = (int) (average*0.75+generateResponseTime(deviation));
+		if ( time < 5 )
+			time = 5;
 		idle(time);
 	}
 

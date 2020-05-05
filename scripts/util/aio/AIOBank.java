@@ -12,6 +12,8 @@ import scripts.util.names.ItemNames;
 import scripts.util.names.Locations;
 
 public class AIOBank {
+	private static long OFFSET_BANK = 101;
+	
 	/**
 	 * Walks to nearest bank. Uses {@link AIOWalk#walkToNearestBank()}
 	 * @return
@@ -51,9 +53,9 @@ public class AIOBank {
 		status.setStatus("Opening bank");
 		while ( !Banking.isBankScreenOpen() ) {
 			Banking.openBank();
-			AntiBan.sleep(1000, 500);
+			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 900);
 		}
-		AntiBan.sleep(1000, 900);
+		AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1500), 1500);
 		
 		return true;
 	}
@@ -116,15 +118,15 @@ public class AIOBank {
 		if ( !Banking.isBankScreenOpen() ) {
 			while ( !Banking.isBankScreenOpen() ) {
 				Banking.openBank();
-				AntiBan.sleep(1000, 500);
+				AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 500);
 			}
-			AntiBan.sleep(1000, 900);
+			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1200);
 		}
 		
 		// Deposit
 		status.setStatus("Depositing Items");
 		Banking.depositAllExcept(ItemNames.get(exclude));
-		AntiBan.sleep(1500, 1500);
+		AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1500);
 		
 		// Close bank
 		/*status.setStatus("Closing Bank");
