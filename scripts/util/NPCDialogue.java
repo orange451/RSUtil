@@ -29,11 +29,13 @@ public class NPCDialogue {
 	 * @return
 	 */
 	public static boolean hasClickToContinue() {
-		return getContinueButton() != null;
+		return getContinueButton(162) != null || getContinueButton(193) != null;
 	}
 	
-	private static RSInterface getContinueButton() {
-		RSInterfaceMaster root = Interfaces.get(162);
+	private static RSInterface getContinueButton(int id) {
+		RSInterfaceMaster root = Interfaces.get(id);
+		if ( root == null )
+			return null;
 		
 		RSInterfaceChild[] children = root.getChildren();
 		if ( children != null ) {
@@ -64,7 +66,12 @@ public class NPCDialogue {
 	 */
 	public static boolean clickContinue() {
 		if ( hasClickToContinue() ) {
-			getContinueButton().click("");
+			if ( getContinueButton(162) != null )
+				getContinueButton(162).click("");
+			
+			if ( getContinueButton(193) != null )
+				getContinueButton(193).click("");
+			
 			AntiBan.sleep(800, 400);
 			return true;
 		}

@@ -56,6 +56,7 @@ public enum ObjectNames {
 	WATERPUMP("Waterpump", 24004), 
 	LARGE_DOOR("Large Door", 3489, 3940), 
 	TRAP_DOOR("Trapdoor", 1581),
+	CADAVA_BUSH("Cadava bush"),
 	;
 
 	private int[] id;

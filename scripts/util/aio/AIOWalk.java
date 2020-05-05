@@ -23,6 +23,7 @@ import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.walker.utils.AccurateMouse;
 import scripts.dax_api.walker_engine.WalkerEngine;
 import scripts.dax_api.walker_engine.WalkingCondition;
+import scripts.util.NPCDialogue;
 import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
 import scripts.util.PlayerUtil;
@@ -251,28 +252,50 @@ public class AIOWalk {
 		if (npc == null) {
 			return false;
 		}
+		
+		// In dialog, stop!
+		if ( NPCDialogue.isInConversation() )
+			return false;
 
 		// Walk to the NPC
 		if ( !PathFinding.canReach(npc.getPosition(), false) || npc.getPosition().distanceTo(Player.getPosition()) > 2 )
 			AIOWalk.walkTo(npc.getPosition());
+
+		// In dialog, stop!
+		if ( NPCDialogue.isInConversation() )
+			return false;
 		
 		// Look at NPC if we cant
 		if ( !npc.isOnScreen() )
 			Camera.turnToTile(npc);
 		
+		// In dialog, stop!
+		if ( NPCDialogue.isInConversation() )
+			return false;
+		
 		// If we still cant do it, use dax!
 		if ( !PathFinding.canReach(npc.getPosition(), false) )
 			DaxWalker.walkTo(npc);
+		
+		// In dialog, stop!
+		if ( NPCDialogue.isInConversation() )
+			return false;
 		
 		// If we STILL cant reach.. fuck
 		if ( !PathFinding.canReach(npc.getPosition(), false) )
 			return false;
 		
-		
+		// In dialog, stop!
+		if ( NPCDialogue.isInConversation() )
+			return false;
 		
 		// Wait a sec
 		AntiBan.sleep(1000, 200);
 
+		// In dialog, stop!
+		if ( NPCDialogue.isInConversation() )
+			return false;
+		
 		// Talk to NPC
 		if (!npc.click(new String[] { interact }))
 			return false;
