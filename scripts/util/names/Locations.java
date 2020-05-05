@@ -227,6 +227,8 @@ public enum Locations {
 	GRAND_TREE_AGILITY_ARENA(new RSTile(2477, 3436, 0), new RSTile(2472, 3440, 0)),
 	
 	TZ_HARR_CITY_FURNACE(new RSTile(2445, 5152, 0), new RSTile(2449, 5150, 0)),
+	
+	DORICS_HOUSE(new RSTile(2950, 3452, 0), new RSTile(2953, 3449, 0)),
 	;
 
 	public static int BASEMENT_OFFSET = 6400;
