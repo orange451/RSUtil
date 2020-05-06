@@ -131,8 +131,15 @@ public class AIOItem {
 		// Walk to GE
 		AIOWalk.walkTo(Locations.GRAND_EXCHANGE);
 		
-		// Attempt to get money from bank
+		// Figure out how much item is worth
 		int buyPrice = (int) Math.ceil((Math.max(ge.getSellAverage(), ge.getBuyAverage()) * GE_BUY_MARKUP_MULTIPLIER));
+		if ( buyPrice == 0 ) {
+			GrandExchangeUtil.forceUpdateGEPriceData();
+			General.println("Could not get GE price data...");
+			return false;
+		}
+		
+		// Attempt to get money from bank
 		int money = PlayerUtil.getAmountOfMoney();
 		General.println("Will buy item for " + buyPrice + " gp");
 		if ( money < buyPrice*quantity ) {
@@ -141,6 +148,12 @@ public class AIOItem {
 				return false;
 			}
 			General.sleep(800,1400);
+		}
+		
+		// Make sure we have money
+		if ( PlayerUtil.getAmountItemsInInventory(ItemNames.COINS) == 0 ) {
+			General.println("We don't have money...");
+			return false;
 		}
 		
 		// Close bank
