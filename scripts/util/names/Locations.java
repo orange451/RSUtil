@@ -174,6 +174,7 @@ public enum Locations {
 	DWARVEN_MINE(new RSTile(3011, 3451), new RSTile(3019, 3446), 0),
 	DWARVEN_MINE_NORTH(new RSTile(3033, 9830), new RSTile(3030, 9821), 0),
 	DWARVEN_MINE_SOUTH(new RSTile(3035, 9782), new RSTile(3056, 9762), 0),
+	DWARVEN_MINE_CLAY_PIT(new RSTile(3054, 9818, 0), new RSTile(3052, 9821, 0)),
 
 	BLACK_KNIGHT_FORTRESS(new RSTile(3024, 3503), new RSTile(3030, 3498), 0), 
 
