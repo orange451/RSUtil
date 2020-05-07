@@ -1,6 +1,10 @@
 package scripts.util.names;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.tribot.api.General;
 import org.tribot.api2007.Player;
@@ -44,11 +48,20 @@ public enum Banks {
 	 * @return
 	 */
 	public static Banks getNearestBank() {
-		Banks[] banks = values();
+		// Sort banks based on distance
+		List<Banks> tempBank = new ArrayList<>(Arrays.asList(values()));
+		Collections.sort(tempBank, (Banks arg0, Banks arg1) -> {
+			int d1 = arg0.getLocation().getCenter().distanceTo(Player.getPosition());
+			int d2 = arg1.getLocation().getCenter().distanceTo(Player.getPosition());
+			
+			return d1-d2;
+		});
+		
+		// Get distance of first 4
 		Banks ret = null;
 		int dist = Integer.MAX_VALUE;
-		for (int i = 0; i < banks.length; i++) {
-			Banks bank = banks[i];
+		for (int i = 0; i < Math.min(4, tempBank.size()); i++) {
+			Banks bank = tempBank.get(i);
 
 			int tries = 0;
 			
