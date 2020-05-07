@@ -170,6 +170,7 @@ public enum Locations {
 	RIMMINGTON_FARM(new RSTile(2945, 3260), new RSTile(2955, 3247), 0), 
 	RIMMINGTON_SHOP_GENERAL(new RSTile(2947, 3217), new RSTile(2949, 3212), 0),
 	RIMMINGTON_MINE(new RSTile(2970, 3248), new RSTile(2987, 3232), 0),
+	RIMMINGTON_RANGE(new RSTile(2970, 3209, 0), new RSTile(2966, 3212, 0)),
 
 	DWARVEN_MINE(new RSTile(3011, 3451), new RSTile(3019, 3446), 0),
 	DWARVEN_MINE_NORTH(new RSTile(3033, 9830), new RSTile(3030, 9821), 0),
