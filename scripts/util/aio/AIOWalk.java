@@ -28,6 +28,7 @@ import scripts.util.NPCUtil;
 import scripts.util.ObjectUtil;
 import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;
+import scripts.util.names.Banks;
 import scripts.util.names.ItemIds;
 import scripts.util.names.Locations;
 import scripts.util.names.NPCNames;
@@ -195,8 +196,10 @@ public class AIOWalk {
 		
 		status.setStatus("Walking to bank...");
 		
+		return walkTo(Banks.getNearestBank().getLocation());
+		
 		// Generate walk to bank task
-		BotTaskWalkToBank walkToBank = new BotTaskWalkToBank() {
+		/*BotTaskWalkToBank walkToBank = new BotTaskWalkToBank() {
 			@Override
 			public BotTask getNextTask() {
 				return null;
@@ -219,7 +222,7 @@ public class AIOWalk {
 			}
 		}
 		
-		return true;
+		return true;*/
 	}
 
 	
