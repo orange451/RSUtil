@@ -16,6 +16,9 @@ public class BreakHelper {
 	}
 
 	public static void cancelBreak() {
+		if ( BREAK_TIME_CURRENT > 0 )
+			AntiBan.fatigueReset();
+		
 		BREAK_TIME_CURRENT = 0;
 		BREAK_START_TIME = -1;
 	}
