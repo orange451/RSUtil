@@ -1,7 +1,6 @@
 package scripts.util;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +64,9 @@ public class ObjectUtil {
 	public static boolean isA(RSObject o, ObjectNames obj) {
 		if ( o == null )
 			return false;
+		
+		if ( o.getDefinition().getName().equalsIgnoreCase(obj.getName()) )
+			return true;
 		
 		int[] ids = obj.getIds();
 		for (int ii = 0; ii < ids.length; ii++) {

@@ -137,9 +137,9 @@ public class AIOWalk {
 		
 		// Try to DPATH FIRST?
 		boolean daxWalk = true;
-		if ( tile.distanceTo(Player.getPosition()) < 24 && tile.getPlane() == Player.getPosition().getPlane() ) {
+		if ( tile.distanceTo(Player.getPosition()) < 24 /*&& tile.getPlane() == Player.getPosition().getPlane()*/ ) {
 			General.println("Attempting DPath navigation...");
-			if ( walkToLegacyInternal(tile) && Player.getPosition().distanceTo(tile) <= 2 ) {
+			if ( walkToLegacyInternal(tile) && (Player.getPosition().distanceTo(tile) <= 2 && tile.getPlane() == Player.getPosition().getPlane()) ) {
 				daxWalk = false;
 			}
 		}
@@ -163,16 +163,11 @@ public class AIOWalk {
 			};
 			
 			// Complete the task
-			int tries = 0;
 			while( !task.isTaskComplete() ) { // Forces task to run
-				General.sleep(1000);
-				tries++;
-				if ( tries > 1 ) {
-					General.println("Failed");
-					status.setType(StatusType.FAILED);
-					IS_DAX_WALKING = false;
-					return false;
-				}
+				General.println("Failed");
+				status.setType(StatusType.FAILED);
+				IS_DAX_WALKING = false;
+				return false;
 			}
 			General.sleep(250);
 			
@@ -523,11 +518,11 @@ public class AIOWalk {
 		}
 		
 		// Wait until we stop moving
-		General.sleep(1000);
+		General.sleep(250);
 		while(Player.isMoving() && Player.getPosition().distanceTo(tile)>3)
 			General.sleep(500);
 		
-		if ( Player.getPosition().distanceTo(tile) <= 1 ) {
+		if ( Player.getPosition().distanceTo(tile) <= 1 && tile.getPlane() == Player.getPosition().getPlane() ) {
 			General.println("We made it!");
 			return true;
 		}

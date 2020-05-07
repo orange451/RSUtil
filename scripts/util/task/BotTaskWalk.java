@@ -88,7 +88,7 @@ public abstract class BotTaskWalk extends BotTask {
 			RSTile finalTile = finalTileTemp;
 			
 			// Fallback method!
-			if (this.attempts > 30) {
+			if (this.attempts > 10) {
 				Condition c = new Condition() {
 					@Override
 					public boolean active() {
@@ -186,7 +186,7 @@ public abstract class BotTaskWalk extends BotTask {
 			}
 			
 			// If we're close by, we did it!
-			if ( finalTile.distanceTo(Player.getRSPlayer()) < 2)
+			if ( finalTile.distanceTo(Player.getRSPlayer()) < 2 && finalTile.getPlane() == Player.getPosition().getPlane())
 				return true;
 			
 			this.attempts += 1;
