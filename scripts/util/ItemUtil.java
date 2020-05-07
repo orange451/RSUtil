@@ -49,6 +49,15 @@ public class ItemUtil {
 	}
 	
 	/**
+	 * Returns whether an item is stackable
+	 * @param id
+	 * @return
+	 */
+	public static boolean isStackable(int id) {
+		return new RSItem(0, id, 1, RSItem.TYPE.OTHER).getDefinition().isStackable();
+	}
+	
+	/**
 	 * Returns generic RSItem from id.
 	 * @param id
 	 * @return
