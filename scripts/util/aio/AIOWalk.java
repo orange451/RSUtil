@@ -137,7 +137,7 @@ public class AIOWalk {
 		
 		// Try to DPATH FIRST?
 		boolean daxWalk = true;
-		if ( tile.distanceTo(Player.getPosition()) < 24 ) {
+		if ( tile.distanceTo(Player.getPosition()) < 24 && tile.getPlane() == Player.getPosition().getPlane() ) {
 			General.println("Attempting DPath navigation...");
 			if ( walkToLegacyInternal(tile) && Player.getPosition().distanceTo(tile) <= 2 ) {
 				daxWalk = false;
@@ -463,7 +463,7 @@ public class AIOWalk {
 					return State.EXIT_OUT_WALKER_FAIL;
 				}
 				
-				if ( PathFinding.canReach(tile.getPosition(), true) && Player.getPosition().distanceTo(tile)<=3) {
+				if ( PathFinding.canReach(tile.getPosition(), true) && Player.getPosition().distanceTo(tile)<=3 && tile.getPlane() == Player.getPosition().getPlane()) {
 					General.println("Success");
 					return State.EXIT_OUT_WALKER_SUCCESS;
 				}
