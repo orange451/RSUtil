@@ -104,10 +104,30 @@ public class AIOBank {
 		return walkToBankAndDepositAllExcept(status, null, exclude);
 	}
 	
+	/**
+	 * Walks the player to the specified bank. Opens the bank. Deposits all.
+	 */
+	public static boolean walkToBankAndDepositAll(Locations location) {
+		return walkToBankAndDepositAll(new AIOStatus(), location);
+	}
+	
+	/**
+	 * Walks the player to the specified bank. Opens the bank. Deposits all.
+	 */
+	public static boolean walkToBankAndDepositAll(AIOStatus status, Locations location) {
+		return walkToBankAndDepositAllExcept(status, location, new ItemNames[] {});
+	}
+
+	/**
+	 * Walks the player to the specified bank. Opens the bank. Deposits all except the items in the exclusion list.
+	 */
 	public static boolean walkToBankAndDepositAllExcept(Locations location, ItemIds...exclude) {
 		return walkToBankAndDepositAllExcept(new AIOStatus(), location, exclude);
 	}
-	
+
+	/**
+	 * Walks the player to the specified bank. Opens the bank. Deposits all except the items in the exclusion list.
+	 */
 	public static boolean walkToBankAndDepositAllExcept(AIOStatus status, Locations location, ItemIds...exclude) {
 		if ( location != null )
 			if ( !AIOWalk.walkTo(location) )
