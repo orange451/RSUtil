@@ -202,7 +202,7 @@ public abstract class BotTaskWalk extends BotTask {
 			WebWalking.setUseRun(true);
 		} else {
 			if ( shouldRun ) {
-				if (Game.getRunEnergy() > 15.0D + Math.random() * 25.0D) {
+				if (Game.getRunEnergy() > 10.0D + Math.random() * 25.0D) {
 					PlayerUtil.setRun(true);
 					WebWalking.setUseRun(true);
 				}
