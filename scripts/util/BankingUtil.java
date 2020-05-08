@@ -10,6 +10,7 @@ import org.tribot.api2007.types.RSItem;
 
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
+import scripts.util.names.ItemNames;
 import scripts.util.names.internal.ItemNamesData;
 import scripts.util.names.type.FoodType;
 
@@ -81,6 +82,10 @@ public class BankingUtil {
 		if (!Banking.isBankScreenOpen())
 			return false;
 		
+		// If only taking out money, dont note
+		if ( desiredItems != null && desiredItems.length == 1 && desiredItems[0] == ItemNames.COINS )
+			noted = false;
+		
 		BankingUtil.setNote(noted);
 		
 		for (ItemIds item : desiredItems) {
@@ -102,7 +107,7 @@ public class BankingUtil {
 				if ( quantity > freeSpace ) {
 					BankingUtil.setNote(true);
 				} else {
-					BankingUtil.setNote(false);
+					BankingUtil.setNote(noted);
 				}
 			}
 			

@@ -89,6 +89,7 @@ public class AIOEquipment {
 			// Attempt to get and equip item
 			RSItem item = AIOItem.getItem(toolObject.getItem());
 			if ( item != null ) {
+				General.sleep(800);
 				if ( attemptEquip(toolObject, item) ) {
 					RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);
 					if ( equipped != null )

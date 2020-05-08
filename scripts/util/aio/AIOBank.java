@@ -43,6 +43,10 @@ public class AIOBank {
 	 * @return
 	 */
 	public static boolean walkToNearestBankAndOpen(AIOStatus status) {
+		// Bank already open
+		if ( Banking.isBankScreenOpen() ) 
+				return true;
+		
 		// Walk to nearest bank
 		if ( !walkToNearestBank(status) ) {
 			status.setType(StatusType.FAILED);
