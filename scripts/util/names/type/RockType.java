@@ -10,8 +10,9 @@ public enum RockType implements ObjectWrapper {
 	COAL(ObjectNames.ORE_COAL, 2, 30),
 	GOLD(ObjectNames.ORE_GOLD, 16, 40),
 	IRON(ObjectNames.ORE_IRON, 5, 15),
-	MITHRIL(ObjectNames.ORE_MITHRIL, 16, 40),
-	ADAMANT(ObjectNames.ORE_ADAMANT, 16, 40), 
+	MITHRIL(ObjectNames.ORE_MITHRIL, 16, 55),
+	ADAMANT(ObjectNames.ORE_ADAMANT, 16, 70), 
+	RUNE(ObjectNames.ORE_ADAMANT, 160, 85), 
 	CLAY(ObjectNames.ORE_CLAY, 1, 4), 
 	PAY_DIRT(ObjectNames.ORE_PAY_DIRT, Integer.MAX_VALUE, 4);
 	
@@ -48,5 +49,9 @@ public enum RockType implements ObjectWrapper {
 			}
 		}
 		return null;
+	}
+
+	public OreType getOre() {
+		return OreType.valueOf(this.toString());
 	}
 }
