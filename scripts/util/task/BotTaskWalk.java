@@ -198,8 +198,10 @@ public abstract class BotTaskWalk extends BotTask {
 	
 	private void runLogic() {
 		if ((PlayerUtil.isInDanger()) || (PlayerUtil.isUnderAttack(true))) {
-			PlayerUtil.setRun(true);
-			WebWalking.setUseRun(true);
+			if (Game.getRunEnergy() > 5) {
+				PlayerUtil.setRun(true);
+				WebWalking.setUseRun(true);
+			}
 		} else {
 			if ( shouldRun ) {
 				if (Game.getRunEnergy() > 10.0D + Math.random() * 25.0D) {
@@ -207,11 +209,11 @@ public abstract class BotTaskWalk extends BotTask {
 					WebWalking.setUseRun(true);
 				}
 			} else {
-				if (Game.getRunEnergy() > 50.0D + Math.random() * 25.0D) {
+				if (Game.getRunEnergy() > 75.0D + Math.random() * 25.0D) {
 					PlayerUtil.setRun(true);
 					WebWalking.setUseRun(true);
 				} else {
-					if (Game.getRunEnergy() < 25) {
+					if (Game.getRunEnergy() < 30 + Math.random() * 15.0D) {
 						PlayerUtil.setRun(false);
 						WebWalking.setUseRun(false);
 					}

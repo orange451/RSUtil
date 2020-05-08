@@ -1,5 +1,6 @@
 package scripts.util.aio;
 
+import org.tribot.api.General;
 import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Skills.SKILLS;
 import org.tribot.api2007.types.RSItem;
@@ -128,7 +129,11 @@ public class AIOEquipment {
 	}
 	
 	private static boolean canUseTool(ToolType tool) {
-		return tool.getType().getPrimarySkill().getActualLevel() >= tool.getMaterial().getMinimumEquipLevel() + tool.getType().getSkillOffset();
+		int off = 0;
+		if ( tool.getMaterial().getMinimumEquipLevel() > 1 )
+			off = tool.getType().getSkillOffset();
+		
+		return tool.getType().getPrimarySkill().getActualLevel() >= tool.getMaterial().getMinimumEquipLevel() + off;
 	}
 	
 	private static boolean attemptEquip(ToolType tool, RSItem item) {
