@@ -31,6 +31,9 @@ public abstract class TaskScript extends Script {
 
 			onStep();
 			
+			// Only auto-relog if we have a task
+			this.setLoginBotState(getCurrentTask() != null);
+			
 			if ( this.currentTask == null )
 				continue;
 			

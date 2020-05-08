@@ -20,13 +20,15 @@ public final class AntiBan {
 	
 	private static long fatigue_peak = -1;
 
-	private static final long OFFSET_FATIGUE = 256;
+	public static final long OFFSET_FATIGUE = 256;
 	
-	private static final long OFFSET_FATIGUE_POWER = 300;
+	public static final long OFFSET_FATIGUE_POWER = 300;
 	
-	private static final long OFFSET_RESPONSE_TIME = 500;
+	public static final long OFFSET_RESPONSE_TIME = 500;
 	
-	private static final long OFFSET_AFK_TIME = 1024;
+	public static final long OFFSET_AFK_TIME = 1024;
+	
+	public static final long OFFSET_CHANGE_LOCATION = 1;
 	
 	static {
 		try {
