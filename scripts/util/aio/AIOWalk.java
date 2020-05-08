@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Banking;
@@ -35,7 +36,6 @@ import scripts.util.names.NPCNames;
 import scripts.util.names.ObjectNames;
 import scripts.util.task.BotTask;
 import scripts.util.task.BotTaskWalk;
-import scripts.util.task.BotTaskWalkToBank;
 import scripts.util.task.TaskScript;
 
 @SuppressWarnings("deprecation")

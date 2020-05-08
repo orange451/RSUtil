@@ -207,8 +207,15 @@ public abstract class BotTaskWalk extends BotTask {
 					WebWalking.setUseRun(true);
 				}
 			} else {
-				PlayerUtil.setRun(false);
-				WebWalking.setUseRun(false);
+				if (Game.getRunEnergy() > 50.0D + Math.random() * 25.0D) {
+					PlayerUtil.setRun(true);
+					WebWalking.setUseRun(true);
+				} else {
+					if (Game.getRunEnergy() < 25) {
+						PlayerUtil.setRun(false);
+						WebWalking.setUseRun(false);
+					}
+				}
 			}
 		}
 	}
