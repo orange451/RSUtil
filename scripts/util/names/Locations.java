@@ -206,7 +206,7 @@ public enum Locations {
 	TEMPLE_PASS(new RSTile(3405, 3490), new RSTile(3408, 3487), 0),
 	TEMPLE_TRAPDOOR(new RSTile(3407, 3504, 0), new RSTile(3404, 3507, 0)),
 	TEMPLE_DUNGEON(new RSTile(3407, 9906, 0), new RSTile(3403, 9907, 0)),
-	TEMPLE_DUNGEON_WELL(new RSTile(0, 0), new RSTile(0, 0), 0),
+	TEMPLE_DUNGEON_WELL(new RSTile(3416, 9896, 0), new RSTile(3428, 9884, 0)),
 	TEMPLE_DUNGEON_DREZELS_ROOM(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_ALTAR(new RSTile(3409, 3491, 0), new RSTile(3418, 3484, 0)),
 	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(3409, 3490, 2), new RSTile(3411, 3487, 2)),

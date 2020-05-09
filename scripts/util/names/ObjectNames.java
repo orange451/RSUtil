@@ -57,7 +57,9 @@ public enum ObjectNames {
 	LARGE_DOOR("Large Door", 3489, 3940), 
 	TRAP_DOOR("Trapdoor", 1581),
 	CADAVA_BUSH("Cadava bush"), 
-	CELL_DOOR("Cell door", 3463),
+	CELL_DOOR("Cell door", 3463), 
+	Well("Well", 3485), 
+	MONUMENT("Monument", 3493, 3494, 3495, 3496, 3497, 3498, 3499),
 	;
 
 	private int[] id;
