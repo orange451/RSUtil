@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.tribot.api.General;
+import org.tribot.api2007.Game;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSTile;
 
@@ -15,6 +16,8 @@ import scripts.dax_api.api_lib.DaxWalker;
 import scripts.dax_api.api_lib.WebWalkerServerApi;
 import scripts.dax_api.api_lib.models.PlayerDetails;
 import scripts.dax_api.api_lib.models.Point3D;
+import scripts.util.PlayerUtil;
+import scripts.util.names.type.WorldType;
 
 @DoNotRename
 public enum Banks {
@@ -27,12 +30,25 @@ public enum Banks {
 	ALKHARID(Locations.ALKHARID_BANK), 
 	DRAYNOR(Locations.DRAYNOR_BANK), 
 	EDGEVILLE(Locations.EDGEVILLE_BANK),
-	CATHERBY(Locations.CATHERBY_BANK);
+	CATHERBY(Locations.CATHERBY_BANK, true);
 
 	private Locations location;
+	private boolean members;
 
 	private Banks(Locations location) {
+		this(location, false);
+	}
+
+	private Banks(Locations location, boolean members) {
 		this.location = location;
+	}
+	
+	/**
+	 * Returns whether this bank is for members only.
+	 * @return
+	 */
+	public boolean isMembers() {
+		return this.members;
 	}
 
 	/**
@@ -42,6 +58,25 @@ public enum Banks {
 	public Locations getLocation() {
 		return this.location;
 	}
+	
+	/**
+	 * Returns list of banks you can bank at.
+	 * @return
+	 */
+	public static List<Banks> getBanks() {
+		List<Banks> ret = new ArrayList<>();
+		for (Banks bank : values()) {
+			boolean isInMemberWorld = WorldType.getWorldType(Game.getCurrentWorld()) == WorldType.MEMBER;
+			if ( bank.isMembers() && isInMemberWorld )
+				ret.add(bank);
+			else if ( bank.isMembers() && !isInMemberWorld )
+				continue;
+			
+			ret.add(bank);
+		}
+		
+		return ret;
+	}
 
 	/**
 	 * Returns the nearest bank from the players current position.
@@ -49,7 +84,7 @@ public enum Banks {
 	 */
 	public static Banks getNearestBank() {
 		// Sort banks based on distance
-		List<Banks> tempBank = new ArrayList<>(Arrays.asList(values()));
+		List<Banks> tempBank = getBanks();
 		Collections.sort(tempBank, (Banks arg0, Banks arg1) -> {
 			int d1 = arg0.getLocation().getCenter().distanceTo(Player.getPosition());
 			int d2 = arg1.getLocation().getCenter().distanceTo(Player.getPosition());
