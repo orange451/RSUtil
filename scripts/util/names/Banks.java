@@ -3,7 +3,6 @@ package scripts.util.names;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.tribot.api.General;
@@ -27,7 +26,8 @@ public enum Banks {
 	LUMBRIDGE(Locations.LUMBRIDGE_BANK), 
 	ALKHARID(Locations.ALKHARID_BANK), 
 	DRAYNOR(Locations.DRAYNOR_BANK), 
-	EDGEVILLE(Locations.EDGEVILLE_BANK);
+	EDGEVILLE(Locations.EDGEVILLE_BANK),
+	CATHERBY(Locations.CATHERBY_BANK);
 
 	private Locations location;
 
