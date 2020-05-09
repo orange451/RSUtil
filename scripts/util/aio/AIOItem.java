@@ -49,7 +49,18 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem) {
-		return getItem(desiredItem, 1);
+		return getItem(desiredItem, false);
+	}
+	
+	/**
+	 * Attempts to find a specific item in the players inventory.
+	 * If the item is not found, the player will walk to the bank to withdraw.
+	 * If the item is not in the bank, the player will go to GE to buy if {@link AIOItem#CAN_USE_GE_TO_BUY_ITEMS} is true.
+	 * @param desiredItems
+	 * @return
+	 */
+	public static RSItem getItem(ItemIds desiredItem, boolean canNote) {
+		return getItem(desiredItem, 1, canNote);
 	}
 	
 	/**
