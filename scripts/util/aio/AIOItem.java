@@ -50,7 +50,7 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem) {
-		return getItem(desiredItem, true);
+		return getItem(desiredItem, false);
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem, int quantity) {
-		return getItem(desiredItem, quantity, true);
+		return getItem(desiredItem, quantity, false);
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem, int quantity, int buyQuantity) {
-		return getItem(desiredItem, quantity, buyQuantity, true);
+		return getItem(desiredItem, quantity, buyQuantity, false);
 	}
 	
 	/**
