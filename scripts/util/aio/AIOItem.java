@@ -178,7 +178,8 @@ public class AIOItem {
 			return false;
 		
 		// Walk to GE
-		AIOWalk.walkTo(Locations.GRAND_EXCHANGE);
+		if ( !Locations.isNear(Locations.GRAND_EXCHANGE) )
+			AIOWalk.walkTo(Locations.GRAND_EXCHANGE);
 		
 		// Figure out how much item is worth
 		int buyPrice = (int) Math.ceil((Math.max(ge.getSellAverage(), ge.getBuyAverage()) * GE_BUY_MARKUP_MULTIPLIER));
