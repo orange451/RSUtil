@@ -141,6 +141,8 @@ public class AIOItem {
 					Banking.deposit(Integer.MAX_VALUE, item.getID()); // Deposit non note version
 					General.sleep(2000);
 					return AIOItem.getItem(desiredItem, quantity, buyQuantity, canNoteItem);
+				} else {
+					return item;
 				}
 			} else {
 				return item;
