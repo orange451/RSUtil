@@ -93,7 +93,7 @@ public class AIOItem {
 		String itemName = ItemUtil.fromId(desiredItemIds[0]).getDefinition().getName();
 		
 		// Check if it is in inventory, and equip if not.
-		General.println("Checking inventory for: " + itemName + " (" + Arrays.toString(desiredItemIds) + ")");
+		General.println("Checking inventory for: ("+quantity+") " + itemName + " (" + Arrays.toString(desiredItemIds) + ")");
 		int count = PlayerUtil.getAmountItemsInInventory(desiredItem);
 		if ( count >= quantity ) {
 			RSItem item = PlayerUtil.getFirstItemInInventory(desiredItem);
@@ -106,7 +106,7 @@ public class AIOItem {
 			return getItem(desiredItem, quantity, buyQuantity);
 
 		// Not in bank, lets go to GE and buy it!
-		if ( CAN_USE_GE_TO_BUY_ITEMS && buyQuantity > 0 ) {
+		if ( CAN_USE_GE_TO_BUY_ITEMS && buyQuantity > 0 && !desiredItem.equals(ItemNames.COINS) ) {
 			General.println("Attempting to buy item from GE");
 			if ( buyAtGE(desiredItem, buyQuantity) )
 				return getItem(desiredItem, quantity, buyQuantity);
