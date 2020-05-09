@@ -14,6 +14,7 @@ import org.tribot.api2007.types.RSItem;
 
 import scripts.util.ItemUtil;
 import scripts.util.NPCUtil;
+import scripts.util.NotedItem;
 import scripts.util.PlayerUtil;
 import scripts.util.ge.GEItem;
 import scripts.util.ge.GrandExchangeUtil;
@@ -49,7 +50,7 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem) {
-		return getItem(desiredItem, false);
+		return getItem(desiredItem, true);
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem, int quantity) {
-		return getItem(desiredItem, quantity, false);
+		return getItem(desiredItem, quantity, true);
 	}
 	
 	/**
@@ -111,7 +112,7 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem, int quantity, int buyQuantity) {
-		return getItem(desiredItem, quantity, buyQuantity, false);
+		return getItem(desiredItem, quantity, buyQuantity, true);
 	}
 	
 	/**
@@ -146,12 +147,14 @@ public class AIOItem {
 			if ( buyAtGE(desiredItem, buyQuantity) ) {
 				General.sleep(2000);
 				RSItem inventoryItem = getItem(desiredItem, quantity, buyQuantity, true);
-				if ( canNoteItem ) {
+				boolean noted = inventoryItem.getStack() > 1;
+				
+				if ( !noted || canNoteItem ) {
 					return inventoryItem;
 				} else {
 					// We received note, but we cant accept note. Put back it bank, and take out
 					GrandExchange.close();
-					AIOBank.walkToNearestBankAndDeposit(ItemNames.get(inventoryItem));
+					AIOBank.walkToNearestBankAndDeposit(ItemNames.get(inventoryItem.getID()-1));
 					General.sleep(1000);
 					return AIOItem.getItem(desiredItem, quantity, buyQuantity, canNoteItem);
 				}
