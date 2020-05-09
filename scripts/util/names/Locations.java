@@ -208,9 +208,8 @@ public enum Locations {
 	TEMPLE_DUNGEON(new RSTile(3407, 9906, 0), new RSTile(3403, 9907, 0)),
 	TEMPLE_DUNGEON_WELL(new RSTile(0, 0), new RSTile(0, 0), 0),
 	TEMPLE_DUNGEON_DREZELS_ROOM(new RSTile(0, 0), new RSTile(0, 0), 0),
-	TEMPLE_ALTAR(new RSTile(0, 0), new RSTile(0, 0), 0),
-	TEMPLE_ALTAR_2ND_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
-	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(0, 0), new RSTile(0, 0), 0),
+	TEMPLE_ALTAR(new RSTile(3409, 3491, 0), new RSTile(3418, 3484, 0)),
+	TEMPLE_ALTAR_3RD_FLOOR(new RSTile(3409, 3490, 2), new RSTile(3411, 3487, 2)),
 	
 	KARAMJA_DOCK(new RSTile(2924, 3180), new RSTile(2925, 3175), 0), 
 	
