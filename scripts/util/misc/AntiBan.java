@@ -180,8 +180,10 @@ public final class AntiBan {
 	 * @param maxTime
 	 */
 	public static void afk(float maxTime) {
-		double abcReac = Math.max(0.3, abc.generateReactionTime()/10000d);
+		double abcReac = Math.min(2, Math.max(0.3, abc.generateReactionTime()/10000d));
 		int afkTime = (int) (generateAFKTime(maxTime)*abcReac);
+		afkTime = Math.min(60000, afkTime);
+		
 		long timeToWait = System.currentTimeMillis() + afkTime;
 
 		if ( System.currentTimeMillis() + 1000L < timeToWait ) {
