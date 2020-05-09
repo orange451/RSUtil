@@ -83,7 +83,7 @@ public class BankingUtil {
 			return false;
 		
 		// If only taking out money, dont note
-		if ( desiredItems != null && desiredItems.length == 1 && desiredItems[0] == ItemNames.COINS )
+		if ( desiredItems != null && desiredItems.length >= 1 && desiredItems[0].equals(ItemNames.COINS) )
 			noted = false;
 		
 		BankingUtil.setNote(noted);
@@ -105,7 +105,7 @@ public class BankingUtil {
 				return false;
 			} else {
 				if ( quantity > freeSpace ) {
-					BankingUtil.setNote(true);
+					BankingUtil.setNote(!item.equals(ItemNames.COINS));
 				} else {
 					BankingUtil.setNote(noted);
 				}

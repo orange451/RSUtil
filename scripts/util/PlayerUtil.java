@@ -294,6 +294,9 @@ public class PlayerUtil {
 			if ( !trainInterface[i].isHidden() )
 				lastIndex = i;
 		
+		if (lastIndex == 0)
+			return;
+		
 		switch(trainMethod) {
 			case ATTACK_XP: {
 				trainInterface[0].click("");
@@ -389,13 +392,24 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static RSItem getFirstItemInInventory(ItemIds... check) {
+		return getFirstItemInInventory(true, check);
+	}
+
+	/**
+	 * Returns the first occurrence of a specific item in the players inventory.
+	 * @param check
+	 * @return
+	 */
+	public static RSItem getFirstItemInInventory(boolean countNote, ItemIds... check) {
 		RSItem[] items = Inventory.getAll();
 		for (RSItem item : items) {
 			boolean notedMatch = false;
-			for (ItemIds temp : check) {
-				RSItem temp2 = new RSItem(0, temp.getIds()[0], 1, RSItem.TYPE.OTHER);
-				if ( item.getDefinition().getName().equalsIgnoreCase(temp2.getDefinition().getName())) {
-					notedMatch = true;
+			if ( countNote ) {
+				for (ItemIds temp : check) {
+					RSItem temp2 = new RSItem(0, temp.getIds()[0], 1, RSItem.TYPE.OTHER);
+					if ( item.getDefinition().getName().equalsIgnoreCase(temp2.getDefinition().getName())) {
+						notedMatch = true;
+					}
 				}
 			}
 			

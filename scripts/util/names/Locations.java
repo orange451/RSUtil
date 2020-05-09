@@ -190,7 +190,7 @@ public enum Locations {
 	EDGEVILLE_CHAOS_DRUIDS(new RSTile(3108, 9934), new RSTile(3114, 9930), 0),
 	EDGEVILLE_RANGE(new RSTile(3077, 3492), new RSTile(3081, 3496), 0),
 	
-	GRAND_EXCHANGE(new RSTile(3160, 3488, 0), new RSTile(3169, 3483, 0)),
+	GRAND_EXCHANGE(new RSTile(3160, 3490, 0), new RSTile(3169, 3483, 0)),
 
 	TUTORIAL_ISLAND_START( new RSTile(3090, 3100), new RSTile(3098, 3112), 0 ),
 	TUTORIAL_ISLAND_SURVIVAL( new RSTile(3097, 3093), new RSTile(3106, 3100), 0 ),
@@ -503,7 +503,7 @@ public enum Locations {
 		double area = Math.sqrt(wid*wid+hei*hei);
 		double minDist = area * 0.8;
 		minDist = Math.min(minDist, 24);
-		minDist = Math.max(minDist, 8);
+		minDist = Math.max(minDist, 12);
 		
 		// If we're more than 10 tiles away from the nearest side, not near it.
 		if ( d > minDist )

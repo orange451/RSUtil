@@ -131,13 +131,26 @@ public class AIOItem {
 		int count = PlayerUtil.getAmountItemsInInventory(desiredItem);
 		if ( count >= quantity ) {
 			RSItem item = PlayerUtil.getFirstItemInInventory(desiredItem);
-			return item;
+			if ( !canNoteItem ) {
+				RSItem nonNoteItem = PlayerUtil.getFirstItemInInventory(false, desiredItem);
+				
+				// If we have item, but no non-noted version, and we can't accept notes
+				if ( item != null && nonNoteItem == null ) {
+					GrandExchange.close();
+					AIOBank.walkToNearestBankAndOpen();
+					Banking.deposit(Integer.MAX_VALUE, item.getID()); // Deposit non note version
+					General.sleep(2000);
+					return AIOItem.getItem(desiredItem, quantity, buyQuantity, canNoteItem);
+				}
+			} else {
+				return item;
+			}
 		}
 		
 		// Go to bank to get item
 		General.println("Checking bank for: " + itemName + " (" + Arrays.toString(desiredItemIds) + ")");
 		if ( AIOBank.walkToNearestBankAndWithdrawFirstItem(canNoteItem, quantity, desiredItem) ) {
-			General.sleep(1000);
+			General.sleep(2000);
 			return getItem(desiredItem, quantity, buyQuantity, canNoteItem);
 		}
 
@@ -152,11 +165,6 @@ public class AIOItem {
 				if ( !noted || canNoteItem ) {
 					return inventoryItem;
 				} else {
-					// We received note, but we cant accept note. Put back it bank, and take out
-					GrandExchange.close();
-					AIOBank.walkToNearestBankAndOpen();
-					Banking.deposit(Integer.MAX_VALUE, inventoryItem.getID()-1); // Deposit non note version
-					General.sleep(1000);
 					return AIOItem.getItem(desiredItem, quantity, buyQuantity, canNoteItem);
 				}
 			}
@@ -180,7 +188,8 @@ public class AIOItem {
 		
 		// Walk to GE
 		if ( !Locations.isNear(Locations.GRAND_EXCHANGE) )
-			AIOWalk.walkTo(Locations.GRAND_EXCHANGE);
+			if ( !AIOWalk.walkTo(Locations.GRAND_EXCHANGE) )
+				return false;
 		
 		// Figure out how much item is worth
 		int buyPrice = (int) Math.ceil((Math.max(ge.getSellAverage(), ge.getBuyAverage()) * GE_BUY_MARKUP_MULTIPLIER));
@@ -256,8 +265,9 @@ public class AIOItem {
 		int sellPrice = (int) Math.ceil(Math.max(ge.getSellAverage(), ge.getBuyAverage()) * GE_BUY_MARKDOWN_MULTIPLIER);
 		
 		// Walk to GE
-		if ( !AIOWalk.walkTo(Locations.GRAND_EXCHANGE))
-			return false;
+		if ( !Locations.isNear(Locations.GRAND_EXCHANGE) )
+			if ( !AIOWalk.walkTo(Locations.GRAND_EXCHANGE) )
+				return false;
 		
 		// Get item to sell
 		RSItem sellItem = AIOItem.getItem(item, quantity, 0, quantity > 1);

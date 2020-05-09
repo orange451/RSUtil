@@ -237,9 +237,11 @@ public class AIOBank {
 	
 	public static boolean walkToNearestBankAndWithdrawFirstItem(boolean noted, int quantity, ItemIds... desiredItem) {
 		// Go to bank
-		if ( !walkToNearestBankAndOpen() ) {
-			General.println("Couldnt open bank");
-			return false;
+		if ( !Banking.isBankScreenOpen() ) {
+			if ( !walkToNearestBankAndOpen() ) {
+				General.println("Couldnt open bank");
+				return false;
+			}
 		}
 		
 		// Withdraw
