@@ -154,7 +154,8 @@ public class AIOItem {
 				} else {
 					// We received note, but we cant accept note. Put back it bank, and take out
 					GrandExchange.close();
-					AIOBank.walkToNearestBankAndDeposit(ItemNames.get(inventoryItem.getID()-1));
+					AIOBank.walkToNearestBankAndOpen();
+					Banking.deposit(Integer.MAX_VALUE, inventoryItem.getID()-1); // Deposit non note version
 					General.sleep(1000);
 					return AIOItem.getItem(desiredItem, quantity, buyQuantity, canNoteItem);
 				}
