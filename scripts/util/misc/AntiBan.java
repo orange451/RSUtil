@@ -14,6 +14,8 @@ import scripts.util.PlayerUtil;
 public final class AntiBan {
 	private static ABCUtil abc;
 	
+	private static boolean initialized;
+	
 	private static long bigResponseTime;
 	
 	private static long fatigue_start = -1;
@@ -36,6 +38,7 @@ public final class AntiBan {
 			
 			abc = new ABCUtil();
 			abc.generateTrackers();
+			initialized = true;
 			General.useAntiBanCompliance(true);
 		} catch(Exception e) {
 			System.out.println("Could not generate ABC");
@@ -84,7 +87,7 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static int generateResponseTime(float maxTime) {
-		float center = (float)(maxTime * (General.randomDouble(0.3D, 0.35D) + (fatigueGet()*0.15d)));
+		float center = (float)(maxTime * (General.randomDouble(0.3D, 0.35D) + (fatigueGet()*0.33)));
 		float rightBound = maxTime - center;
 		float leftBound = center;
 		float powerRight = (float)Math.pow(Math.random(), 6.0D) * 2.0F;
@@ -94,7 +97,7 @@ public final class AntiBan {
 		double offset = Math.pow(getAccountOffset(OFFSET_RESPONSE_TIME), 2) * 400;
 		int waitTime = (int)(center + randomRight - randomLeft + offset);
 		
-		if ( waitTime > 10 )
+		if ( waitTime > 15000 )
 			bigResponseTime+=4;
 		else
 			bigResponseTime = Math.max(bigResponseTime-1, 0);
@@ -112,7 +115,7 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static int generateAFKTime(float maxTime) {
-		float center = (float)(maxTime * (General.randomDouble(0.005D, 0.013D) + (fatigueGet() * 0.33d)));
+		float center = (float)(maxTime * (General.randomDouble(0.005D, 0.013D) + (fatigueGet() * 0.5d)));
 		float rightBound = maxTime - center;
 		float leftBound = center;
 		float powerRight = (float)Math.pow(Math.random(), 6.0D) * 2.0F;
@@ -122,7 +125,7 @@ public final class AntiBan {
 		double offset = Math.pow(getAccountOffset(OFFSET_AFK_TIME), 2) * 4000;
 		int waitTime = (int)(center + randomRight - randomLeft + offset);
 		
-		if ( waitTime > 10 )
+		if ( waitTime > 20000 )
 			bigResponseTime+=4;
 		else
 			bigResponseTime = Math.max(bigResponseTime-1, 0);
@@ -147,6 +150,8 @@ public final class AntiBan {
 	 * @return
 	 */
 	public static double getAccountOffset(long extraOffset) {
+		if ( !initialized || Player.getRSPlayer() == null )
+			return 0;
 		return getAccountOffset(Player.getRSPlayer().getName(), extraOffset);
 	}
 	
@@ -315,10 +320,14 @@ public final class AntiBan {
 	 * Resets the internal fatigue timers
 	 */
 	public static void fatigueReset() {
-		long minutes = AntiBan.random((int) (60 + (getAccountOffset(OFFSET_FATIGUE)*30))) + 60;
-		
-		fatigue_start = System.currentTimeMillis();
-		fatigue_peak = System.currentTimeMillis() + (1000 * 60 * minutes);
+		try {
+			long minutes = AntiBan.random((int) (60 + (getAccountOffset(OFFSET_FATIGUE)*30))) + 60;
+			
+			fatigue_start = System.currentTimeMillis();
+			fatigue_peak = System.currentTimeMillis() + (1000 * 60 * minutes);
+		} catch(Exception e) {
+			//
+		}
 	}
 	
 	/**
