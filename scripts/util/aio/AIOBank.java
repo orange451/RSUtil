@@ -79,6 +79,35 @@ public class AIOBank {
 	}
 	
 	/**
+	 * Walks the player to the nearest bank. Opens the bank. Deposits specified items.
+	 */
+	public static boolean walkToNearestBankAndDeposit(ItemIds... items) {
+		return walkToNearestBankAndDeposit(new AIOStatus(), items);
+	}
+		
+	/**
+	 * Walks the player to the nearest bank. Opens the bank. Deposits specified items.
+	 */
+	public static boolean walkToNearestBankAndDeposit(AIOStatus status, ItemIds... items) {
+		if ( PlayerUtil.isInDanger() )
+			walkToNearestBank();
+		
+		// Return since inventory is empty
+		int itemsInInventory = PlayerUtil.getAmountItemsInInventory(false, true, items);
+		if ( itemsInInventory == 0 ) {
+			status.setType(StatusType.SUCCESS);
+			return true;
+		}
+		
+		// Walk to nearest bank and open it
+		if ( !walkToNearestBankAndOpen(status) )
+			return false;
+		
+		// Deposit
+		return walkToBankAndDeposit(status, null, items);
+	}
+	
+	/**
 	 * Walks the player to the nearest bank. Opens the bank. Deposits everything except the exclusion list.
 	 */
 	public static boolean walkToNearestBankAndDepositAllExcept(ItemIds... exclude) {
@@ -157,6 +186,41 @@ public class AIOBank {
 		while ( !Banking.close() ) {
 			AntiBan.sleep(1000, 500);
 		}*/
+		
+		// Everything went successful.
+		status.setType(StatusType.SUCCESS);
+		return true;
+	}
+
+	/**
+	 * Walks the player to the specified bank. Opens the bank. Deposits all the items in the list.
+	 */
+	public static boolean walkToBankAndDeposit(Locations location, ItemIds...items) {
+		return walkToBankAndDeposit(new AIOStatus(), location, items);
+	}
+
+	/**
+	 * Walks the player to the specified bank. Opens the bank. Deposits all the items in the list.
+	 */
+	public static boolean walkToBankAndDeposit(AIOStatus status, Locations location, ItemIds...items) {
+		if ( location != null )
+			if ( !AIOWalk.walkTo(location) )
+				return false;
+		
+		// Open Bank
+		status.setStatus("Opening bank");
+		if ( !Banking.isBankScreenOpen() ) {
+			while ( !Banking.isBankScreenOpen() ) {
+				Banking.openBank();
+				AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 500);
+			}
+			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1200);
+		}
+		
+		// Deposit
+		status.setStatus("Depositing Items");
+		Banking.deposit(Integer.MAX_VALUE, ItemNames.get(items));
+		AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1500);
 		
 		// Everything went successful.
 		status.setType(StatusType.SUCCESS);

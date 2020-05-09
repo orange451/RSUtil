@@ -89,11 +89,22 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem, int quantity, int buyQuantity) {
+		return getItem(desiredItem, quantity, buyQuantity, false);
+	}
+	
+	/**
+	 * Attempts to find a specific item in the players inventory.
+	 * If the item is not found, the player will walk to the bank to withdraw.
+	 * If the item is not in the bank, the player will go to GE to buy if {@link AIOItem#CAN_USE_GE_TO_BUY_ITEMS} is true.
+	 * @param desiredItems
+	 * @return
+	 */
+	public static RSItem getItem(ItemIds desiredItem, int quantity, int buyQuantity, boolean canNoteItem) {
 		int[] desiredItemIds = get(desiredItem);
 		String itemName = ItemUtil.fromId(desiredItemIds[0]).getDefinition().getName();
 		
 		// Check if it is in inventory, and equip if not.
-		General.println("Checking inventory for: " + itemName + " (" + Arrays.toString(desiredItemIds) + ")");
+		General.println("Checking inventory for: ("+quantity+") " + itemName + " (" + Arrays.toString(desiredItemIds) + ")");
 		int count = PlayerUtil.getAmountItemsInInventory(desiredItem);
 		if ( count >= quantity ) {
 			RSItem item = PlayerUtil.getFirstItemInInventory(desiredItem);
@@ -102,14 +113,27 @@ public class AIOItem {
 		
 		// Go to bank to get item
 		General.println("Checking bank for: " + itemName + " (" + Arrays.toString(desiredItemIds) + ")");
-		if ( AIOBank.walkToNearestBankAndWithdrawFirstItem(quantity, desiredItem) )
-			return getItem(desiredItem, quantity, buyQuantity);
+		if ( AIOBank.walkToNearestBankAndWithdrawFirstItem(canNoteItem, quantity, desiredItem) ) {
+			General.sleep(1000);
+			return getItem(desiredItem, quantity, buyQuantity, canNoteItem);
+		}
 
 		// Not in bank, lets go to GE and buy it!
-		if ( CAN_USE_GE_TO_BUY_ITEMS && buyQuantity > 0 ) {
+		if ( CAN_USE_GE_TO_BUY_ITEMS && buyQuantity > 0 && !desiredItem.equals(ItemNames.COINS) ) {
 			General.println("Attempting to buy item from GE");
-			if ( buyAtGE(desiredItem, buyQuantity) )
-				return getItem(desiredItem, quantity, buyQuantity);
+			if ( buyAtGE(desiredItem, buyQuantity) ) {
+				General.sleep(2000);
+				RSItem inventoryItem = getItem(desiredItem, quantity, buyQuantity, true);
+				if ( canNoteItem ) {
+					return inventoryItem;
+				} else {
+					// We received note, but we cant accept note. Put back it bank, and take out
+					GrandExchange.close();
+					AIOBank.walkToNearestBankAndDeposit(ItemNames.get(inventoryItem));
+					General.sleep(1000);
+					return AIOItem.getItem(desiredItem, quantity, buyQuantity, canNoteItem);
+				}
+			}
 		}
 		
 		// Failed! :(
@@ -209,7 +233,7 @@ public class AIOItem {
 			return false;
 		
 		// Get item to sell
-		RSItem sellItem = AIOItem.getItem(item, quantity, 0);
+		RSItem sellItem = AIOItem.getItem(item, quantity, 0, quantity > 1);
 		if ( sellItem == null )
 			return false;
 		

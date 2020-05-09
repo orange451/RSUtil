@@ -164,16 +164,20 @@ public class AIOWalk {
 			};
 			
 			// Complete the task
-			while( !task.isTaskComplete() ) { // Forces task to run
-				General.println("Failed");
-				status.setType(StatusType.FAILED);
-				IS_DAX_WALKING = false;
-				return false;
+			int tries = 0;
+			while( !task.isTaskComplete()) { // Forces task to run
+				General.sleep(500);
+				tries++;
+				
+				if ( tries >= 20 ) {
+					General.println("Failed");
+					status.setType(StatusType.FAILED);
+					IS_DAX_WALKING = false;
+					return false;
+				}
 			}
-			General.sleep(250);
-			
-			General.println("Finished dax walk");
 			IS_DAX_WALKING = false;
+			General.println("Finished dax walk");
 		}
 		return true;
 	}
