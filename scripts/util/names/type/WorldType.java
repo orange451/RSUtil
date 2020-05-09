@@ -4,6 +4,9 @@ public enum WorldType {
 	FREE,
     MEMBER;
 	
+	/**
+	 * Returns the basic type of world for a given world id
+	 */
 	public static WorldType getWorldType(int world) {
 		for (int t : f2pWorld) {
 			if ( t == world )
