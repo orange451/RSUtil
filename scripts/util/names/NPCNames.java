@@ -76,7 +76,8 @@ public enum NPCNames {
 	GRAND_EXCHANGE_CLERK(false),
 	ROMEO(false, "Romeo"),
 	JULIET(false, "Juliet"),
-	APOTHECARY(false, "Apothecary");
+	APOTHECARY(false, "Apothecary"),
+	MINOTAUR(true, "Minotaur");
 
 	private boolean attackable;
 	private String name;
