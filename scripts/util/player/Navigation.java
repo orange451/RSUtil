@@ -26,7 +26,6 @@ import scripts.util.names.ObjectNames;
  * Use DaxWalker instead.
  * @author orange451
  */
-@SuppressWarnings("deprecation")
 @DoNotRename
 @Deprecated
 public class Navigation {
@@ -143,7 +142,7 @@ public class Navigation {
 		if ( up )
 			option = "Climb-up";
 
-		ArrayList<RSObject> stairs = GET_STAIRS();
+		ArrayList<RSObject> stairs = GET_STAIRS(up);
 		RSObject myStair = null;
 		for (int i = 0; i < stairs.size(); i++) {
 			final RSObject stair = stairs.get(i);
@@ -198,14 +197,21 @@ public class Navigation {
 		}
 	}
 
-	private static ArrayList<RSObject> GET_STAIRS() {
+	private static ArrayList<RSObject> GET_STAIRS(boolean up) {
+		String option = up ? "Climb-up" : "Climb-down";
+		
 		ArrayList<RSObject> ret = new ArrayList<RSObject>();
 		RSObject[] objects = Objects.getAll(100);
 
 		for (int i = 0; i < objects.length; i++) {
 			RSObject o = objects[i];
 			if ( ObjectUtil.isA( o, ObjectNames.STAIRCASE ) || ObjectUtil.isA( o, ObjectNames.LADDER ) ) {
-				ret.add(o);
+				for (String action : o.getDefinition().getActions()) {
+					if ( action.equalsIgnoreCase(option) ) {
+						ret.add(o);
+						break;
+					}
+				}
 			}
 		}
 
