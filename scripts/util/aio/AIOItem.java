@@ -9,12 +9,12 @@ import java.util.List;
 import org.tribot.api.General;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.GrandExchange;
+import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSItem;
 
 import scripts.util.ItemUtil;
 import scripts.util.NPCUtil;
-import scripts.util.NotedItem;
 import scripts.util.PlayerUtil;
 import scripts.util.ge.GEItem;
 import scripts.util.ge.GrandExchangeUtil;
@@ -50,7 +50,7 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem) {
-		return getItem(desiredItem, false);
+		return getItem(desiredItem, defaultNoteLogic(desiredItem, 1));
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem, int quantity) {
-		return getItem(desiredItem, quantity, false);
+		return getItem(desiredItem, quantity, defaultNoteLogic(desiredItem, quantity));
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class AIOItem {
 	 * @return
 	 */
 	public static RSItem getItem(ItemIds desiredItem, int quantity, int buyQuantity) {
-		return getItem(desiredItem, quantity, buyQuantity, false);
+		return getItem(desiredItem, quantity, buyQuantity, defaultNoteLogic(desiredItem, quantity));
 	}
 	
 	/**
@@ -173,6 +173,11 @@ public class AIOItem {
 		// Failed! :(
 		General.println("Could not get item...");
 		return null;
+	}
+	
+	private static boolean defaultNoteLogic(ItemIds item, int quantity) {
+		int freeSpace = 28 - Inventory.getAll().length;
+		return ItemUtil.isStackable(item) ? (false) : (quantity > freeSpace);
 	}
 	
 	/**
