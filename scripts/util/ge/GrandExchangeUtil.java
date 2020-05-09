@@ -66,6 +66,7 @@ public class GrandExchangeUtil {
 	 * @param id
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static GEItem getItemData(int id) {
 		updateGEPriceData();
 		

@@ -11,7 +11,6 @@ import org.tribot.api2007.types.RSNPC;
 import org.tribot.api2007.types.RSPlayer;
 
 import scripts.dax_api.walker.utils.AccurateMouse;
-import scripts.util.NPCDialogue;
 import scripts.util.NPCUtil;
 import scripts.util.PlayerUtil;
 import scripts.util.misc.AntiBan;
@@ -127,7 +126,6 @@ public class AIOAttack {
 		
 		// Wait until we're near it
 		while(Player.isMoving()) {
-			NPCDialogue.clickContinue();
 			if ( PlayerUtil.isInDanger() && CANCEL_IF_NEAR_DEATH ) {
 				status.setType(StatusType.EMERGENCY);
 				return null;
@@ -213,7 +211,6 @@ public class AIOAttack {
 		
 		AntiBan.sleep(700, 250);
 		while(Player.isMoving()) {
-			NPCDialogue.clickContinue();
 			General.sleep(500);
 		}
 		AntiBan.sleep(500, 250);
@@ -256,9 +253,6 @@ public class AIOAttack {
 		
 		while(true) {
 			status.setStatus("Fighting npc");
-			
-			// OH NO CLICK CONTINUE QUICK
-			NPCDialogue.clickContinue();
 			
 			// Ded
 			if (PlayerUtil.isDead() ) {
