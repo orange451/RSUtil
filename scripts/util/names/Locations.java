@@ -219,6 +219,10 @@ public enum Locations {
 	CATHERBY_FISHING_AREA(new RSTile(2835, 3432), new RSTile(2864, 3428), 0),
 	CATHERBY_RANGE(new RSTile(2818, 3439), new RSTile(2815, 3444), 0),
 	
+	CANIFIS(new RSTile(3506, 3480, 0), new RSTile(3482, 3497, 0)),
+	CANIFIS_AGILITY_START(new RSTile(3505, 3490, 0), new RSTile(3508, 3489, 0)),
+	CANIFIS_BANK(new RSTile(3509, 3483, 0), new RSTile(3512, 3474, 0)),
+	
 	SEERS_VILLAGE(new RSTile(2712, 3489), new RSTile(2739, 3483), 0),
 	SEERS_VILLAGE_MAPLE_TREES(new RSTile(2734, 3498), new RSTile(2719, 3504), 0),
 	
@@ -232,7 +236,7 @@ public enum Locations {
 	
 	TZ_HARR_CITY_FURNACE(new RSTile(2445, 5152, 0), new RSTile(2449, 5150, 0)),
 	
-	DORICS_HOUSE(new RSTile(2950, 3452, 0), new RSTile(2953, 3449, 0)),
+	DORICS_HOUSE(new RSTile(2950, 3452, 0), new RSTile(2953, 3449, 0)), 
 	;
 
 	public static int BASEMENT_OFFSET = 6400;
