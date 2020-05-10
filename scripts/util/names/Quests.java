@@ -7,28 +7,31 @@ import scripts.util.misc.NameFormatter;
 @DoNotRename
 public enum Quests {
 	// Finished
-	TUTORIAL_ISLAND(281, 680), 
-	COOKS_ASSISTANT(29, 2), 
-	ERNEST_THE_CHICKEN(32, 3), 
-	WITCHS_POTION(67, 3), 
-	SHEEP_SHEARER(179, 21), 
-	THE_RESTLESS_GHOST(107, 5), 
-	RUNE_MYSTERIES(63, 6), 
+	TUTORIAL_ISLAND(false, 281, 680), 
+	COOKS_ASSISTANT(false, 29, 2), 
+	ERNEST_THE_CHICKEN(false, 32, 3), 
+	WITCHS_POTION(false, 67, 3), 
+	SHEEP_SHEARER(false, 179, 21), 
+	THE_RESTLESS_GHOST(false, 107, 5), 
+	RUNE_MYSTERIES(false, 63, 6),
+	ROMEO_AND_JULIET(false, 144, 100),
+	DORICS_QUEST(false, 31, 100), 
+	PRIEST_IN_PERIL(302, 61), 
 	
-	// TODO
+	// TODO F2P
+	BLACK_KNIGHTS_FORTRESS(false, 130),
+	DEMON_SLAYER(false, 222), 
+	DRAGON_SLAYER(false, 176), 
+	GOBLIN_DIPLOMACY(false, 62), 
+	IMP_CATCHER(false, 160), 
+	THE_KNIGHTS_SWORD(false, 122), 
+	PIRATES_TREASURE(false, 160), 
+	PRINCE_ALI_RESCUE(false, 273), 
+	SHIELD_OF_ARRAV(false, 145), 
+	VAMPIRE_SLAYER(false, 178), 
+	
+	// TODO P2P
 	ABYSS_SUBQUEST(492), 
-	BLACK_KNIGHTS_FORTRESS(130),
-	DEMON_SLAYER(222), 
-	DORICS_QUEST(31, 100), 
-	DRAGON_SLAYER(176), 
-	GOBLIN_DIPLOMACY(62), 
-	IMP_CATCHER(160), 
-	THE_KNIGHTS_SWORD(122), 
-	PIRATES_TREASURE(160), 
-	PRINCE_ALI_RESCUE(273), 
-	ROMEO_AND_JULIET(144, 100), 
-	SHIELD_OF_ARRAV(145), 
-	VAMPIRE_SLAYER(178), 
 	ANIMAL_MAGNETISM(939), 
 	ANOTHER_SLICE_OF_HAM(997), 
 	BETWEEN_A_ROCK(433), 
@@ -101,7 +104,6 @@ public enum Quests {
 	OLAFS_QUEST(994), 
 	ONE_SMALL_FAVOUR(416), 
 	PLAGUE_CITY(165), 
-	PRIEST_IN_PERIL(302, 61), 
 	RAG_AND_BONE_MAN(714), 
 	RAT_CATCHERS(607), 
 	RECIPE_FOR_DISASTER(1333333337), 
@@ -141,14 +143,28 @@ public enum Quests {
 
 	private int interfaceId;
 	private int finish;
+	private boolean members;
 
 	private Quests(int id) {
-		this(id, 2);
+		this(true, id);
+	}
+
+	private Quests(boolean members, int id) {
+		this(members, id, 2);
 	}
 
 	private Quests(int id, int finish) {
+		this(true, id, finish);
+	}
+
+	private Quests(boolean members, int id, int finish) {
+		this.members = members;
 		this.interfaceId = id;
 		this.finish = finish;
+	}
+	
+	public boolean isMembers() {
+		return this.members;
 	}
 
 	public int getId() {
