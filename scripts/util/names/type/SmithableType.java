@@ -1,6 +1,7 @@
 package scripts.util.names.type;
 
 import scripts.util.misc.ItemWrapper;
+import scripts.util.misc.NameFormatter;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
@@ -123,6 +124,7 @@ public enum SmithableType implements ItemWrapper {
 		this.item = item;
 		this.requiredSmithingLevel = level;
 		this.requiredBarType = requiredBar;
+		this.requiredBarAmount = amountBars;
 	}
 	
 	public BarType getRequiredBarType() {
@@ -140,6 +142,10 @@ public enum SmithableType implements ItemWrapper {
 	@Override
 	public ItemIds getItem() {
 		return this.item;
+	}
+
+	public String getName() {
+		return NameFormatter.formatItemName(this.toString());
 	}
 
 }

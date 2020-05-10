@@ -92,6 +92,8 @@ public enum Locations {
 	VARROK_CADAVA(new RSTile(3266, 3369), new RSTile(3271, 3366), 0),
 	VARROK_MANSION_BALCONY(new RSTile(3157, 3426), new RSTile(3159, 3425), 1),
 	VARROK_APOTHECARY(new RSTile(3192, 3406, 0), new RSTile(3198, 3402, 0)),
+	VARROK_ANVIL_WEST(new RSTile(3185, 3427, 0), new RSTile(3190, 3423, 0)),
+	VARROK_ANVIL_EAST(new RSTile(3246, 3407, 0), new RSTile(3251, 3403, 0)),
 	
 	DRAYNOR(new RSTile(3083, 3279), new RSTile(3105, 3249), 0), 
 	DRAYNOR_BANK(new RSTile(3092, 3246), new RSTile(3095, 3241), 0), 
