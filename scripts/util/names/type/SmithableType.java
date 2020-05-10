@@ -124,6 +124,7 @@ public enum SmithableType implements ItemWrapper {
 		this.item = item;
 		this.requiredSmithingLevel = level;
 		this.requiredBarType = requiredBar;
+		this.requiredBarAmount = amountBars;
 	}
 	
 	public BarType getRequiredBarType() {
