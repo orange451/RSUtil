@@ -2,12 +2,20 @@ package scripts.util.names;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
+import org.tribot.api.General;
 import org.tribot.api.interfaces.Positionable;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSArea;
 import org.tribot.api2007.types.RSTile;
 
+import scripts.dax_api.api_lib.DaxWalker;
+import scripts.dax_api.api_lib.WebWalkerServerApi;
+import scripts.dax_api.api_lib.models.PlayerDetails;
+import scripts.dax_api.api_lib.models.Point3D;
 import scripts.util.misc.NameFormatter;
 
 public enum Locations {
@@ -43,7 +51,8 @@ public enum Locations {
 	LUMBRIDGE_MINE_WEST(new RSTile(3145, 3152, 0), new RSTile(3149, 3145, 0)),
 	LUMBRIDGE_WOODS_YEWS(new RSTile(3151, 3231), new RSTile(3186, 3219), 0),
 	LUMBRIDGE_FURNACE(new RSTile(3228, 3252), new RSTile(3223, 3257), 0),
-
+	LUMBRIDGE_SHOP_GENERAL(new RSTile(3209, 3250, 0), new RSTile(3213, 3243, 0)),
+	
 	ALKHARID(new RSTile(3278, 3246), new RSTile(3322, 3177), 0), 
 	ALKHARID_MINE(new RSTile(3296, 3289), new RSTile(3301, 3284), 0), 
 	ALKHARID_MINE_DEEP(new RSTile(3298, 3313), new RSTile(3302, 3305), 0), 
@@ -54,6 +63,7 @@ public enum Locations {
 	ALKHARID_RANGE(new RSTile(3271, 3183), new RSTile(3275, 3179), 0),
 	ALKHARID_FISHING_AREA(new RSTile(3266, 3149), new RSTile(3269, 3147), 0),
 	ALKHARID_AGILITY_START(new RSTile(3272, 3195), new RSTile(3274, 3196)),
+	ALKHARID_SHOP_GENERAL(new RSTile(3312, 3186, 0), new RSTile(3318, 3178, 0)),
 	
 	VARROK(new RSTile(3182, 3450), new RSTile(3257, 3400), 0),
 	VARROK_AGILITY_START(new RSTile(3221, 3418, 0), new RSTile(3222, 3411, 0)),
@@ -134,7 +144,8 @@ public enum Locations {
 	FALADOR_SQUARE(new RSTile(2961, 3386), new RSTile(2969, 3375), 0), 
 	FALADOR_BANK_EAST(new RSTile(3009, 3358), new RSTile(3018, 3355), 0), 
 	FALADOR_BANK_WEST(new RSTile(2943, 3371), new RSTile(2947, 3368), 0), 
-	FALADOR_SHOP_SHIELD(new RSTile(2972, 3384), new RSTile(2979, 3382), 0), 
+	FALADOR_SHOP_SHIELD(new RSTile(2972, 3384), new RSTile(2979, 3382), 0),
+	FALADOR_SHOP_GENERAL(new RSTile(2956, 3390, 0), new RSTile(2960, 3385, 0)),
 	FALADOR_FURNACE(new RSTile(2971, 3373), new RSTile(2975, 3368), 0), 
 	FALADOR_CASTLE(new RSTile(2961, 3349), new RSTile(2970, 3337), 0), 
 	FALADOR_CASTLE_EAST(new RSTile(2979, 3349), new RSTile(2982, 3342), 0), 
@@ -190,6 +201,7 @@ public enum Locations {
 	EDGEVILLE_HILL_GIANT_PIT(new RSTile(3098, 9828), new RSTile(3119, 9844), 0),
 	EDGEVILLE_KEY_AREA(new RSTile(3124, 9861), new RSTile(3132, 9863), 0),
 	EDGEVILLE_CHAOS_DRUIDS(new RSTile(3108, 9934), new RSTile(3114, 9930), 0),
+	EDGEVILLE_SHOP_GENERAL(new RSTile(3077, 3512, 0), new RSTile(3083, 3507, 0)),
 	EDGEVILLE_RANGE(new RSTile(3077, 3492), new RSTile(3081, 3496), 0),
 	
 	GRAND_EXCHANGE(new RSTile(3160, 3490, 0), new RSTile(3169, 3483, 0)),
@@ -521,5 +533,87 @@ public enum Locations {
 			return false;
 		
 		return true;
+	}
+	
+	/**
+	 * Returns the nearest locations out of a list of locations. Uses DAXWalker at MOST 3 times.
+	 * @param locations
+	 * @return
+	 */
+	public static Locations getNearest(Locations... locations) {
+		if ( locations == null || locations.length == 0 )
+			return null;
+		
+		List<Locations> tempLocations = Arrays.asList(locations);
+		Collections.sort(tempLocations, (Locations arg0, Locations arg1) -> {
+			int d1 = arg0.getCenter().distanceTo(Player.getPosition());
+			int d2 = arg1.getCenter().distanceTo(Player.getPosition());
+			
+			return d1-d2;
+		});
+		
+		// Get distance of first 4
+		Locations ret = null;
+		int dist = Integer.MAX_VALUE;
+		for (int i = 0; i < Math.min(3, tempLocations.size()); i++) {
+			Locations loc = tempLocations.get(i);
+
+			int tries = 0;
+			
+			// Get distance to bank
+			int pathDist = -1;
+			while(tries < 6) {
+				// Force initialize dax
+				DaxWalker.getGlobalWalkingCondition();
+				
+				RSTile center = loc.getRandomizedPosition();
+				ArrayList<RSTile> tiles = WebWalkerServerApi.getInstance().getPath(Point3D.fromPositionable(Player.getPosition()), Point3D.fromPositionable(center), PlayerDetails.generate()).toRSTilePath();
+				
+				int tempDist = tiles.size();
+				if ( tempDist > 0 ) {
+					pathDist = tempDist;
+					break;
+				}
+				
+				tries++;
+			}
+			
+			// Fallback if no valid bank tile was found
+			if ( pathDist == -1 )
+				pathDist = loc.getCenter().distanceTo(Player.getPosition());
+			
+			// Check if it's close
+			if (pathDist < dist) {
+				dist = pathDist;
+				ret = loc;
+			}
+		}
+		General.println("Closest Bank: " + ret.toString());
+
+		return ret;
+	}
+	
+	/**
+	 * Returns the nearest locations out of a list of locations. Uses DAXWalker at MOST 3 times.
+	 * @param locations
+	 * @return
+	 */
+	public static LocationCollection getNearest(LocationCollection... locations) {
+		if ( locations == null || locations.length == 0 )
+			return null;
+		
+		List<Locations> temp = new ArrayList<>();
+		for (LocationCollection location : locations)
+			temp.add(location.getLocation());
+		
+		Locations nearest = getNearest(temp.toArray(new Locations[temp.size()]));
+		if ( nearest == null )
+			return null;
+		
+		for (LocationCollection location : locations)
+			if ( location.getLocation().equals(nearest) )
+				return location;
+		
+		return null;
 	}
 }

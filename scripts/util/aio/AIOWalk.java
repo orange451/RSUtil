@@ -200,7 +200,7 @@ public class AIOWalk {
 		
 		status.setStatus("Walking to bank...");
 		
-		return walkTo(Banks.getNearestBank().getLocation());
+		return walkTo(Locations.getNearest(Banks.values()).getLocation());
 		
 		// Generate walk to bank task
 		/*BotTaskWalkToBank walkToBank = new BotTaskWalkToBank() {
