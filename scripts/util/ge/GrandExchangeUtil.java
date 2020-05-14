@@ -191,6 +191,12 @@ public class GrandExchangeUtil {
 			return false;
 		}
 		
+		if ( !item.click("offer") ) {
+			General.println("Could not click offer on item");
+			return false;
+		}
+		General.sleep(1000,2000);
+		
 		// Check if restricted
 		if ( GEInterfaces.RESTRICTED_INTERFACE.isVisible() && GEInterfaces.RESTRICTED_INTERFACE.get().getText().contains("restricted") ) {
 			GEInterfaces.BACK_BUTTON.click("");
@@ -198,12 +204,6 @@ public class GrandExchangeUtil {
 			General.println("Client is restricted from trading!");
 			return false;
 		}
-		
-		if ( !item.click("offer") ) {
-			General.println("Could not click offer on item");
-			return false;
-		}
-		General.sleep(1000,2000);
 		
 		// Set quantity
 		if ( item.getStack() > quantity ) {

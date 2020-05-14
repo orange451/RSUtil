@@ -129,7 +129,7 @@ public class BankingUtil {
 		if ( isNoted == note )
 			return true;
 		
-		RSInterfaceChild u = Interfaces.get(12, note?22:20);
+		RSInterfaceChild u = Interfaces.get(12, note?24:22);
 		if ( u != null ) {
 			return u.click("");
 		}

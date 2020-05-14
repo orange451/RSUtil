@@ -302,6 +302,7 @@ public class AIOItem {
 		
 		// Sell!
 		if ( !GrandExchangeUtil.offerSell(sellItem, sellPrice, quantity) ) {
+			GrandExchange.close();
 			General.println("COULD NOT SELL!");
 			return false;
 		}
