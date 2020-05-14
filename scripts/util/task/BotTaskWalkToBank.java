@@ -3,6 +3,7 @@ package scripts.util.task;
 import org.tribot.api2007.Combat;
 
 import scripts.util.names.Banks;
+import scripts.util.names.Locations;
 
 public abstract class BotTaskWalkToBank extends BotTaskWalk {
 	
@@ -14,6 +15,6 @@ public abstract class BotTaskWalkToBank extends BotTaskWalk {
 	}
 	
 	public BotTaskWalkToBank() {
-		this(Banks.getNearestBank());
+		this((Banks) Locations.getNearest(Banks.values()));
 	}
 }
