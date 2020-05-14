@@ -11,6 +11,7 @@ public enum Animations {
 	FISHING(new int[] { 621, 623, 622, 618, 619 }),
 	CHOPPING(879), 
 	PUMPING_WATER(832),
+	COOKING(896),
 	;
 
 	private int[] ids;

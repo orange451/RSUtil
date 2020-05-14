@@ -9,7 +9,13 @@ public enum CookableFoodType implements ItemWrapper {
 	SHRIMPS(ItemNames.RAW_SHRIMPS, 1),
 	ANCHOVIES(ItemNames.RAW_ANCHOVIES, 1),
 	SARDINE(ItemNames.RAW_SARDINE, 1),
-	
+	HERRING(ItemNames.RAW_HERRING, 1),
+	TROUT(ItemNames.RAW_TROUT, 15),
+	PIKE(ItemNames.RAW_PIKE, 20),
+	SALMON(ItemNames.RAW_SALMON, 25),
+	TUNA(ItemNames.RAW_TUNA, 30),
+	LOBSTER(ItemNames.RAW_LOBSTER, 40),
+	SWORDFISH(ItemNames.RAW_SWORDFISH, 45),
 	;
 
 	private ItemIds item;
