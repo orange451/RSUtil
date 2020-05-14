@@ -193,6 +193,8 @@ public class GrandExchangeUtil {
 		
 		// Check if restricted
 		if ( GEInterfaces.RESTRICTED_INTERFACE.isVisible() && GEInterfaces.RESTRICTED_INTERFACE.get().getText().contains("restricted") ) {
+			GEInterfaces.BACK_BUTTON.click("");
+			General.sleep(1000, 2000);
 			General.println("Client is restricted from trading!");
 			return false;
 		}

@@ -46,7 +46,7 @@ public class ItemUtil {
 		if ( item == null )
 			return -1;
 		
-		return item.getSellAverage();
+		return item.getOverallAverage();
 	}
 	
 	/**
