@@ -140,10 +140,7 @@ public class AIOEquipment {
 	private static boolean attemptEquip(ToolType tool, RSItem item) {
 		if ( SKILLS.ATTACK.getActualLevel() >= tool.getMaterial().getMinimumEquipLevel()) {
 			AntiBan.sleep(500, 250);
-			if ( tool.getType() == ToolClass.SHIELD )
-				item.click("wear");
-			else
-				item.click("wield");
+			item.click("wear", "wield");
 			AntiBan.sleep(1250, 500);
 			return true;
 		}
