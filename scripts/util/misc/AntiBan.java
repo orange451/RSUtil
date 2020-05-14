@@ -1,5 +1,7 @@
 package scripts.util.misc;
 
+import java.util.List;
+
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api.util.abc.ABCUtil;
@@ -363,5 +365,13 @@ public final class AntiBan {
 	 */
 	public static <T> T choose(@SuppressWarnings("unchecked") T... objects) {
 		return objects[AntiBan.random(objects.length)];
+	}
+
+	/**
+	 * Randomly pick an element from a list of elements.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T choose( List<T> objects ) {
+		return (T) choose(objects.toArray());
 	}
 }
