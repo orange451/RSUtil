@@ -62,7 +62,7 @@ public enum NPCNames {
 	SCORPION(true),
 	SHEEP(false),
 	SKELETON(true),
-	SHOP_KEEPER(false),
+	SHOP_KEEPER(false, "Shop keeper", 3, 2815, 2816),
 	SQUIRE(false),
 	SURVIVAL_EXPERT(false),
 	TEMPLE_GUARDIAN(true),

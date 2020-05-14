@@ -59,7 +59,10 @@ public class AIOBank {
 			Banking.openBank();
 			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 900);
 		}
-		AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1500), 1500);
+		while ( !Banking.isBankLoaded() )
+			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 900);
+		
+		AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1500), 700);
 		
 		return true;
 	}
