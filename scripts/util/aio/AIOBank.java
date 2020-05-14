@@ -54,16 +54,7 @@ public class AIOBank {
 		}
 		
 		// Open Bank
-		status.setStatus("Opening bank");
-		while ( !Banking.isBankScreenOpen() ) {
-			Banking.openBank();
-			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 900);
-		}
-		while ( !Banking.isBankLoaded() )
-			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 900);
-		
-		AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1500), 700);
-		
+		openBank(status);
 		return true;
 	}
 	
@@ -170,16 +161,10 @@ public class AIOBank {
 				return false;
 		
 		// Open Bank
-		status.setStatus("Opening bank");
-		if ( !Banking.isBankScreenOpen() ) {
-			while ( !Banking.isBankScreenOpen() ) {
-				Banking.openBank();
-				AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 500);
-			}
-			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1200);
-		}
+		openBank(status);
 		
 		// Deposit
+		General.println("Depositing");
 		status.setStatus("Depositing Items");
 		Banking.depositAllExcept(ItemNames.get(exclude));
 		AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1500);
@@ -201,6 +186,19 @@ public class AIOBank {
 	public static boolean walkToBankAndDeposit(Locations location, ItemIds...items) {
 		return walkToBankAndDeposit(new AIOStatus(), location, items);
 	}
+	
+	private static void openBank(AIOStatus status) {
+		status.setStatus("Opening bank");
+		General.println("Banking");
+		if ( !Banking.isBankScreenOpen() ) {
+			long TIMEOUT = System.currentTimeMillis() + 4000;
+			while ( !Banking.isBankScreenOpen() && System.currentTimeMillis() < TIMEOUT) {
+				Banking.openBank();
+				AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 500);
+			}
+			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1200);
+		}
+	}
 
 	/**
 	 * Walks the player to the specified bank. Opens the bank. Deposits all the items in the list.
@@ -211,14 +209,7 @@ public class AIOBank {
 				return false;
 		
 		// Open Bank
-		status.setStatus("Opening bank");
-		if ( !Banking.isBankScreenOpen() ) {
-			while ( !Banking.isBankScreenOpen() ) {
-				Banking.openBank();
-				AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 500);
-			}
-			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1200);
-		}
+		openBank(status);
 		
 		// Deposit
 		status.setStatus("Depositing Items");
