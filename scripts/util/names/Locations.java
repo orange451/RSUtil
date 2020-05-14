@@ -193,6 +193,7 @@ public enum Locations {
 	EDGEVILLE_RANGE(new RSTile(3077, 3492), new RSTile(3081, 3496), 0),
 	
 	GRAND_EXCHANGE(new RSTile(3160, 3490, 0), new RSTile(3169, 3483, 0)),
+	GRAND_EXCHANGE_ENTRANCE(new RSTile(3154, 3464, 0), new RSTile(3177, 3451, 0)),
 
 	TUTORIAL_ISLAND_START( new RSTile(3090, 3100), new RSTile(3098, 3112), 0 ),
 	TUTORIAL_ISLAND_SURVIVAL( new RSTile(3097, 3093), new RSTile(3106, 3100), 0 ),
@@ -227,6 +228,7 @@ public enum Locations {
 	
 	SEERS_VILLAGE(new RSTile(2712, 3489), new RSTile(2739, 3483), 0),
 	SEERS_VILLAGE_MAPLE_TREES(new RSTile(2734, 3498), new RSTile(2719, 3504), 0),
+	SEERS_PUB(new RSTile(2689, 3497, 0), new RSTile(2696, 3488, 0)),
 	
 	FISHING_GUILD_SOUTH_DOCK(new RSTile(2611, 3411), new RSTile(2602, 3416), 0),
 	FISHING_GUILD_NORTH_DOCK(new RSTile(2604, 3420), new RSTile(2595, 3425), 0),
