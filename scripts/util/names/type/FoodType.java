@@ -27,7 +27,8 @@ public enum FoodType implements ItemWrapper {
 	ANCHOVIES(ItemNames.ANCHOVIES, 1),
 	SHRIMPS(ItemNames.SHRIMPS, 3),
 	BREAD(ItemNames.BREAD, 5),
-	BEER(ItemNames.BEER, 1);
+	BEER(ItemNames.BEER, 1),
+	MEAT(ItemNames.COOKED_MEAT, 3);
 	
 	private ItemIds item;
 	private int health;
