@@ -48,7 +48,9 @@ public class GrandExchangeUtil {
 			bufferedReader.close();
 			
 			JSONParser parser = new JSONParser();
-			priceData = (JSONObject) parser.parse(jsonSource);
+			JSONObject tempData = (JSONObject) parser.parse(jsonSource);
+			if ( tempData != null && tempData.size() > 100 )
+				priceData = tempData;
 			
 			lastUpdateTime = System.currentTimeMillis();
 		} catch(Exception e ) {
