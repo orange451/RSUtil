@@ -2,7 +2,9 @@ package scripts.util.aio;
 
 import org.tribot.api.General;
 import org.tribot.api2007.Banking;
+import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.Inventory;
+import org.tribot.api2007.types.RSInterfaceChild;
 
 import scripts.util.BankingUtil;
 import scripts.util.PlayerUtil;
@@ -196,6 +198,12 @@ public class AIOBank {
 				Banking.openBank();
 				AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 500);
 			}
+			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1200);
+		}
+		
+		RSInterfaceChild maybeCloseButtonPerhapsNotSure = Interfaces.get(664, 28);
+		if ( maybeCloseButtonPerhapsNotSure != null ) {
+			maybeCloseButtonPerhapsNotSure.click("");
 			AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1200);
 		}
 	}

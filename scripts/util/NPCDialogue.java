@@ -1,5 +1,6 @@
 package scripts.util;
 
+import org.tribot.api.General;
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.NPCChat;
 import org.tribot.api2007.types.RSInterface;
@@ -17,11 +18,16 @@ public class NPCDialogue {
 	 * @return
 	 */
 	public static boolean isInConversation() {
+		/*General.println(hasClickToContinue()
+				+ " / " + (NPCChat.getName() != null)
+				+ " / " + (NPCChat.getMessage() != null)
+				+ " / " + (NPCChat.getOptions() != null)
+				+ " / " + (NPCChat.getClickContinueInterface() != null));*/
 		return hasClickToContinue()
 				|| NPCChat.getName() != null
-				|| NPCChat.getMessage() != null
+				/*|| NPCChat.getMessage() != null*/
 				|| NPCChat.getOptions() != null 
-				|| NPCChat.getClickContinueInterface() != null;
+				/*|| NPCChat.getClickContinueInterface() != null*/;
 	}
 
 	/**
