@@ -1,5 +1,9 @@
 package scripts.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.tribot.api.General;
 import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.NPCChat;
@@ -12,6 +16,14 @@ import scripts.util.misc.AntiBan;
 
 public class NPCDialogue {
 	private static String lastChoice;
+	
+	private static final int[] potentialClickContinueDialogs = new int[] {
+			162, 193, 217, 231
+	};
+	
+	private static final int[] potentialClickChoiceDialogs = new int[] {
+			219,
+	};
 
 	/**
 	 * Returns whether you are currently in a conversation with an NPC.
@@ -22,7 +34,9 @@ public class NPCDialogue {
 				+ " / " + (NPCChat.getName() != null)
 				+ " / " + (NPCChat.getMessage() != null)
 				+ " / " + (NPCChat.getOptions() != null)
-				+ " / " + (NPCChat.getClickContinueInterface() != null));*/
+				+ " / " + (NPCChat.getClickContinueInterface() != null)
+		);*/
+		
 		return hasClickToContinue()
 				|| NPCChat.getName() != null
 				/*|| NPCChat.getMessage() != null*/
@@ -35,7 +49,11 @@ public class NPCDialogue {
 	 * @return
 	 */
 	public static boolean hasClickToContinue() {
-		return getContinueButton(162) != null || getContinueButton(193) != null;
+		for (Integer id : potentialClickContinueDialogs) {
+			if ( getContinueButton(id) != null )
+				return true;
+		}
+		return false;
 	}
 	
 	private static RSInterface getContinueButton(int id) {
@@ -71,23 +89,78 @@ public class NPCDialogue {
 	 * @return
 	 */
 	public static boolean clickContinue() {
-		if ( hasClickToContinue() ) {
-			if ( getContinueButton(162) != null )
-				getContinueButton(162).click("");
+		if ( isInConversation() ) {
+			//General.println("CLICKING CONTINUE");
+			if ( hasClickToContinue() ) {
+				for (Integer id : potentialClickContinueDialogs) {
+					if ( getContinueButton(id) != null ) {
+						getContinueButton(id).click("");
+						break;
+					}
+				}
+				
+				AntiBan.sleep(800, 400);
+				return true;
+			}
 			
-			if ( getContinueButton(193) != null )
-				getContinueButton(193).click("");
-			
-			AntiBan.sleep(800, 400);
-			return true;
-		}
-		
-		if (NPCChat.getClickContinueInterface() != null) {
-			NPCChat.clickContinue(true);
-			AntiBan.sleep(800, 400);
-			return true;
+			if (NPCChat.getOptions().length == 0 && NPCChat.getClickContinueInterface() != null) {
+				NPCChat.clickContinue(true);
+				AntiBan.sleep(800, 400);
+				return true;
+			}
 		}
 		return false;
+	}
+	
+	public static String[] getOptions() {
+		List<String> options = new ArrayList<>();
+		String[] t = NPCChat.getOptions();
+		if ( t != null )
+			for (String option : t)
+				options.add(option);
+		
+		RSInterfaceComponent[] t2 = getOptionsInternal();
+		if ( t2 != null )
+			for (RSInterfaceComponent option : t2)
+				options.add(option.getText());
+		
+		return options.toArray(new String[options.size()]);
+	}
+	
+	private static RSInterfaceComponent[] getOptionsInternal() {
+		List<RSInterfaceComponent> options = new ArrayList<>();
+		
+		for (Integer interfaceId : potentialClickChoiceDialogs) {
+			RSInterfaceMaster interf = Interfaces.get(interfaceId);
+			if ( interf != null ) {
+				RSInterfaceChild[] children = interf.getChildren();
+				for (RSInterfaceChild child : children) {
+					RSInterfaceComponent[] ioptions = child.getChildren();
+					if ( ioptions != null ) {
+						for (RSInterfaceComponent ioption : ioptions) {
+							if ( ioption.getTextureID() > -1 || ioption.getText() == null || ioption.getText().length() == 0 )
+								continue;
+							options.add(ioption);
+						}
+					}
+				}
+			}
+		}
+		
+		return options.toArray(new RSInterfaceComponent[options.size()]);
+	}
+	
+	public static boolean selectOption(String choice, boolean wait) {
+		RSInterfaceComponent[] t2 = getOptionsInternal();
+		for (RSInterfaceComponent option : t2) {
+			if ( option.getText().startsWith(choice) ) {
+				option.click("");
+				General.sleep(50,150);
+				return true;
+			}
+		}
+		
+		return NPCDialogue.selectOption(choice, false);
 	}
 
 	/**
@@ -96,10 +169,9 @@ public class NPCDialogue {
 	 * @return
 	 */
 	public static boolean findChoice(String string) {
-		String[] o = NPCChat.getOptions();
-		if (o == null) {
+		String[] o = NPCDialogue.getOptions();
+		if (o == null)
 			return false;
-		}
 		for (int i = 0; i < o.length; i++) {
 			if (o[i].toLowerCase().contains(string.toLowerCase())) {
 				lastChoice = o[i];
