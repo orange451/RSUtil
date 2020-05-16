@@ -139,6 +139,10 @@ public class NPCDialogue {
 						for (RSInterfaceComponent ioption : ioptions) {
 							if ( ioption.getTextureID() > -1 || ioption.getText() == null || ioption.getText().length() == 0 )
 								continue;
+
+							if ( ioption.getText().toLowerCase().startsWith("select an option"))
+								continue;
+							
 							options.add(ioption);
 						}
 					}
@@ -152,7 +156,7 @@ public class NPCDialogue {
 	public static boolean selectOption(String choice, boolean wait) {
 		RSInterfaceComponent[] t2 = getOptionsInternal();
 		for (RSInterfaceComponent option : t2) {
-			if ( option.getText().startsWith(choice) ) {
+			if ( option.getText().toLowerCase().contains(choice.toLowerCase())) {
 				option.click("");
 				General.sleep(50,150);
 				return true;
