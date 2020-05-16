@@ -18,7 +18,7 @@ public class NPCDialogue {
 	private static String lastChoice;
 	
 	private static final int[] potentialClickContinueDialogs = new int[] {
-			162, 193, 217, 231
+			162, 193, 217, 229, 231
 	};
 	
 	private static final int[] potentialClickChoiceDialogs = new int[] {
