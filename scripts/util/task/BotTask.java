@@ -46,4 +46,9 @@ public abstract class BotTask {
 	public boolean initialized() {
 		return this.initialized;
 	}
+	
+	@Override
+	public String toString() {
+		return this.getTaskName();
+	}
 }

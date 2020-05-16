@@ -8,7 +8,7 @@ import scripts.util.misc.NameFormatter;
 public enum NPCNames {
 	ACCOUNT_GUIDE(false, "Account Guide", 3),
 	AUBURY(false),
-	AGGIE(false),
+	AGGIE(false, Locations.DRAYNOR_AGGIE),
 	ALKHARID_WARRIOR(true),
 	BARBARIAN(true),
 	BARTENDER(false),
@@ -71,7 +71,7 @@ public enum NPCNames {
 	VERONICA(false),
 	WIZARD(true),
 	WHITE_KNIGHT(true),
-	WYSON(false, "Wyson the gardener"),
+	WYSON(false, "Wyson the gardener", Locations.FALADOR_GARDEN_SHED),
 	ZOMBIE(true),
 	GRAND_EXCHANGE_CLERK(false),
 	ROMEO(false, "Romeo"),
@@ -83,16 +83,26 @@ public enum NPCNames {
 	private String name;
 	private int[] ids = new int[0];
 	private int combatLevel;
+	private Locations knownLocation;
 
-	private NPCNames(boolean attackable, String name, int combatLevel, int...ids) {
+	private NPCNames(boolean attackable, String name, int combatLevel, Locations knownLocation, int...ids) {
 		this.attackable = attackable;
 		this.ids = ids;
 		this.name = name;
 		this.combatLevel = combatLevel;
+		this.knownLocation = knownLocation;
+	}
+
+	private NPCNames(boolean attackable, String name, int combatLevel, int...ids) {
+		this(attackable, name, combatLevel, null, ids);
 	}
 	
 	private NPCNames(boolean attackable) {
 		this(attackable, 3);
+	}
+	
+	private NPCNames(boolean attackable, Locations location) {
+		this(attackable, 3, location);
 	}
 
 	private NPCNames(boolean attackable, int combatLevel) {
@@ -100,7 +110,13 @@ public enum NPCNames {
 	}
 	
 	private NPCNames(boolean attackable, int combatLevel, int...ids) {
-		this(attackable, null, combatLevel, ids);
+		this(attackable, null, combatLevel, null, ids);
+		
+		this.name = NameFormatter.formatName(toString());
+	}
+	
+	private NPCNames(boolean attackable, int combatLevel, Locations knownLocation, int...ids) {
+		this(attackable, null, combatLevel, knownLocation, ids);
 		
 		this.name = NameFormatter.formatName(toString());
 	}
@@ -111,6 +127,14 @@ public enum NPCNames {
 	
 	private NPCNames(boolean attackable, String name) {
 		this(attackable, name, 3);
+	}
+	
+	private NPCNames(boolean attackable, String name, Locations location) {
+		this(attackable, name, 3, location);
+	}
+	
+	public Locations getKnownLocation() {
+		return this.knownLocation;
 	}
 
 	public boolean isAttackable() {
