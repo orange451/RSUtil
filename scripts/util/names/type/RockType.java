@@ -5,8 +5,8 @@ import scripts.util.misc.ObjectWrapper;
 import scripts.util.names.ObjectNames;
 
 public enum RockType implements ObjectWrapper {
-	COPPER(ObjectNames.ORE_COPPER, 1, 2),
-	TIN(ObjectNames.ORE_TIN, 1, 2),
+	COPPER(ObjectNames.ORE_COPPER, 2, 1),
+	TIN(ObjectNames.ORE_TIN, 2, 1),
 	COAL(ObjectNames.ORE_COAL, 2, 30),
 	GOLD(ObjectNames.ORE_GOLD, 16, 40),
 	IRON(ObjectNames.ORE_IRON, 5, 15),
