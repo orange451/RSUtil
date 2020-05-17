@@ -30,6 +30,15 @@ public abstract class BotTask {
 		this.cancelled = true;
 		this.forceComplete = true;
 	}
+	
+	/**
+	 * Reset a bot task.
+	 */
+	public void reset() {
+		this.forceComplete = false;
+		this.cancelled = false;
+		this.initialized = false;
+	}
 
 	/**
 	 * Returns whether the task is cancelled.
