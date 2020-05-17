@@ -5,16 +5,18 @@ import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
 public enum DyeType implements ItemWrapper {
-	BLUE(ItemNames.BLUE_DYE, ItemNames.WOAD_LEAF),
-	YELLOW(ItemNames.YELLOW_DYE, ItemNames.ONION),
-	RED(ItemNames.RED_DYE, ItemNames.REDBERRIES);
+	BLUE(ItemNames.BLUE_DYE, ItemNames.WOAD_LEAF, 2),
+	YELLOW(ItemNames.YELLOW_DYE, ItemNames.ONION, 2),
+	RED(ItemNames.RED_DYE, ItemNames.REDBERRIES, 3);
 	
 	private ItemIds item;
 	private ItemIds requiredItem;
+	private int amtRequiredItem;
 	
-	DyeType(ItemIds item, ItemIds requiredItem) {
+	DyeType(ItemIds item, ItemIds requiredItem, int amtRequiredItem) {
 		this.item = item;
 		this.requiredItem = requiredItem;
+		this.amtRequiredItem = amtRequiredItem;
 	}
 	
 	public ItemIds getItem() {
@@ -23,5 +25,9 @@ public enum DyeType implements ItemWrapper {
 	
 	public ItemIds getRequiredItem() {
 		return this.requiredItem;
+	}
+	
+	public int getRequiredItemAmount() {
+		return this.amtRequiredItem;
 	}
 }

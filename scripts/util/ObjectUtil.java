@@ -304,6 +304,9 @@ public class ObjectUtil {
 				break;
 		}
 		
+		// Wait to pick up
+		General.sleep(1000L);
+		
 		// Sucessfully clicked 
 		return true;
 	}
