@@ -12,6 +12,7 @@ import org.tribot.api2007.Banking;
 import org.tribot.api2007.Camera;
 import org.tribot.api2007.Game;
 import org.tribot.api2007.GroundItems;
+import org.tribot.api2007.NPCChat;
 import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Projection;
@@ -241,16 +242,25 @@ public class AIOWalk {
 	 * Walk to location for a specific NPC. Will click the npc.
 	 */
 	public static boolean walkToLocationForNPC(Locations location, NPCNames name, String interact) {
+		return walkToLocationForNPC(location, name, interact, new String[] {});
+	}
+	
+	/**
+	 * Walk to location for a specific NPC. Will click the npc.
+	 */
+	public static boolean walkToLocationForNPC(Locations location, NPCNames name, String interact, String... answers) {
 		if (Player.isMoving()) {
 			return false;
 		}
 
+
 		// Walk to general location
-		if(location != null)
+		RSNPC npc = name == null ? null : NPCUtil.getFirstNPC(name);
+		if(location != null && (npc == null || !PathFinding.canReach(npc.getPosition(), false) || npc.getPosition().distanceTo(Player.getPosition()) > 5))
 			walkTo(location);
 
 		// Find NPC
-		RSNPC npc = name == null ? null : NPCUtil.getFirstNPC(name);
+		npc = name == null ? null : NPCUtil.getFirstNPC(name);
 		if (npc == null) {
 			return false;
 		}
@@ -302,7 +312,53 @@ public class AIOWalk {
 		if (!npc.click(new String[] { interact }))
 			return false;
 		
+		// Wait to be in conversation
+		if ( answers != null && answers.length > 0 ) {
+			AntiBan.sleep(3000, 1000);
+			while (Player.isMoving()) {
+				General.sleep(1000L);
+			}
+			
+			// See if we can talk
+			talkLogic(answers);
+		}
 		return true;
+	}
+	
+	private static void talkLogic(String[] choices) {
+		
+		// AFK a little bit
+		AntiBan.afk(AntiBan.generateAFKTime(4000.0F));
+
+		// Quit out
+		if ( !NPCDialogue.isInConversation() )
+			return;
+
+		// Click continue if simple prompt.
+		while (NPCDialogue.clickContinue()) {
+			AntiBan.sleep(20, 10);
+		}
+
+		// Try to click the right choice.
+		if (choices != null) {
+			// Try to click the desired choice
+			for (int i = 0; i < choices.length; i++) {
+				if (NPCDialogue.findChoice(choices[i])) {
+					NPCDialogue.selectOption(choices[i], false);
+					AntiBan.sleep(800, 350);
+					break;
+				}
+			}
+		}
+		
+		// Click first choice
+		if ( NPCDialogue.findChoice("") ) {
+			NPCChat.selectOption("", false);
+			AntiBan.sleep(800, 350);
+		}
+		
+		// Talk Logic
+		talkLogic(choices);
 	}
 	
 	/**
