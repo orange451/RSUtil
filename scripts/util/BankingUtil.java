@@ -104,11 +104,11 @@ public class BankingUtil {
 				General.println("Not enough space");
 				return false;
 			} else {
-				if ( quantity > freeSpace ) {
-					BankingUtil.setNote(!item.equals(ItemNames.COINS));
-				} else {
+				//if ( quantity > freeSpace ) {
+					//BankingUtil.setNote(!item.equals(ItemNames.COINS));
+				//} else {
 					BankingUtil.setNote(noted);
-				}
+				//}
 			}
 			
 			if ( Banking.withdraw(quantity, t[0].getID()) ) {
