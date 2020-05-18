@@ -194,7 +194,7 @@ public final class AntiBan {
 		if ( System.currentTimeMillis() + 1000L < timeToWait ) {
 			General.println("AFK for " + afkTime + " ms");
 			afk = true;
-			while (System.currentTimeMillis() + 1000L < timeToWait) {
+			while (System.currentTimeMillis() < timeToWait) {
 				General.sleep(100L);
 				if (PlayerUtil.isDead() || PlayerUtil.isInDanger()) {
 					afk = false;

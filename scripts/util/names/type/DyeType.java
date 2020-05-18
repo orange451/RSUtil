@@ -1,6 +1,7 @@
 package scripts.util.names.type;
 
 import scripts.util.misc.ItemWrapper;
+import scripts.util.misc.NameFormatter;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
@@ -29,5 +30,9 @@ public enum DyeType implements ItemWrapper {
 	
 	public int getRequiredItemAmount() {
 		return this.amtRequiredItem;
+	}
+
+	public String getName() {
+		return NameFormatter.formatName(getItem());
 	}
 }
