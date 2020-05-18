@@ -123,8 +123,16 @@ public class ObjectUtil {
 		for (int i = 0; i < objects.size(); i++) {
 			RSObject o = (RSObject)objects.get(i);
 
-			if ( ignoreNonPathfindable && !PathFinding.canReach(Player.getPosition(), o.getPosition(), true) )
-				continue;
+			if ( ignoreNonPathfindable ) {
+				boolean canReach = true;
+				for (RSTile tile : o.getAllTiles()) {
+					if ( !PathFinding.canReach(Player.getPosition(), tile, true) )
+						canReach = false;
+				}
+				
+				if ( !canReach )
+					continue;
+			}
 
 			int tdist = o.getPosition().distanceTo(position);
 			boolean hasAdjacent = adjacentPlayersAddDistance && hasAdjacentPlayers(o, false);
