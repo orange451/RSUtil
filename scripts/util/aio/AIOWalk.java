@@ -469,7 +469,7 @@ public class AIOWalk {
 
 		if ( location != null )
 			walkTo(location);
-
+		
 		return ObjectUtil.interactWithObject(object, action);
 	}
 	

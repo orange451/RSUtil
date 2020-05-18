@@ -87,7 +87,7 @@ public class AIOEquipment {
 				bestTool = toolObject;
 
 			// Attempt to get and equip item
-			RSItem item = AIOItem.getItem(toolObject.getItem());
+			RSItem item = AIOItem.getItem(toolObject.getItem(), false);
 			if ( item != null ) {
 				General.sleep(800);
 				if ( attemptEquip(toolObject, item) ) {
@@ -113,7 +113,7 @@ public class AIOEquipment {
 					continue;
 				
 				// Attempt to get and equip item
-				RSItem item = AIOItem.getItem(toolObject.getItem());
+				RSItem item = AIOItem.getItem(toolObject.getItem(), false);
 				if ( item != null ) {
 					if ( attemptEquip(toolObject, item) ) {
 						RSItem equipped = getToolAndEquipIfPossible(tool, minimumMaterial);

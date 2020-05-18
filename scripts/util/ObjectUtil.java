@@ -279,7 +279,8 @@ public class ObjectUtil {
 	 * @return
 	 */
 	public static boolean interactWithObject(ObjectNames object, String click) {
-		RSObject obj = scripts.util.ObjectUtil.get(object, 10);
+		// Find object nearby
+		RSObject obj = scripts.util.ObjectUtil.get(object, 20);
 		if (obj == null)
 			return false;
 
