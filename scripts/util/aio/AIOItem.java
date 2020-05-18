@@ -34,13 +34,13 @@ public class AIOItem {
 	 * The GP multiplier the AIO will markup the item when attempting to buy it.
 	 * A higher number will result in more GP spent, but a higher likelyhood of getting the item.
 	 */
-	public static double GE_BUY_MARKUP_MULTIPLIER = 1.25;
+	public static double GE_BUY_MARKUP_MULTIPLIER = 1.33;
 	
 	/**
 	 * The GP multiplier the AIO will markdown the item when attempting to sell it.
 	 * A lower number will result in less GP earned, but a higher likelyhood of getting the item.
 	 */
-	public static double GE_BUY_MARKDOWN_MULTIPLIER = 0.8;
+	public static double GE_BUY_MARKDOWN_MULTIPLIER = 0.75;
 	
 	/**
 	 * Attempts to find a specific item in the players inventory.
