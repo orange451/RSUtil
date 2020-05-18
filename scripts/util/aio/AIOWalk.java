@@ -394,18 +394,23 @@ public class AIOWalk {
 	
 			// Find item on ground
 			bs = GroundItems.findNearest(item.getIds());
-			if ((bs == null) || (bs.length == 0)) {
-				General.println("Could not find item: " + item);
-				return false;
-			}
+		}
+		
+		if (bs == null || bs.length == 0) {
+			General.println("Could not find item: " + item);
+			return false;
 		}
 
 		// Turn to item
-		AIOWalk.walkTo(bs[0].getPosition());
-		if ( Player.getPosition().distanceTo(bs[0]) > 4 && PathFinding.canReach(Player.getPosition(), bs[0], true) ) {
-			AccurateMouse.clickMinimap(bs[0]);
-			General.sleep(500,2000);
+		if ( PathFinding.canReach(Player.getPosition(), bs[0], true) ) {
+			if ( Player.getPosition().distanceTo(bs[0]) > 8 || !bs[0].isOnScreen() ) {
+				AccurateMouse.clickMinimap(bs[0]);
+				General.sleep(500,2000);
+			}
+		} else {
+			AIOWalk.walkTo(bs[0].getPosition());
 		}
+		
 		if ( !bs[0].isOnScreen() )
 			Camera.turnToTile(bs[0]);
 
