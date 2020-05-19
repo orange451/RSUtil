@@ -50,10 +50,12 @@ public class AIOBank {
 				return true;
 		
 		// Walk to nearest bank
-		if ( !walkToNearestBank(status) && !Banking.isInBank() ) {
-			status.setType(StatusType.FAILED);
-			return false;
-		}
+		if ( !Banking.isInBank() ) {
+			if ( !walkToNearestBank(status) ) {
+				status.setType(StatusType.FAILED);
+				return false;
+			}
+		} 
 		
 		// Open Bank
 		openBank(status);

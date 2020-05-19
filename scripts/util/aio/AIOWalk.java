@@ -199,35 +199,11 @@ public class AIOWalk {
 		if ( Banking.isBankScreenOpen() )
 			return true;
 		
+		if ( Banking.isInBank() )
+			return true;
+		
 		status.setStatus("Walking to bank...");
-		
 		return walkTo(Locations.getNearest(Banks.values()).getLocation());
-		
-		// Generate walk to bank task
-		/*BotTaskWalkToBank walkToBank = new BotTaskWalkToBank() {
-			@Override
-			public BotTask getNextTask() {
-				return null;
-			}
-
-			@Override
-			public void init() {
-				//
-			}
-		};
-		
-		// Complete the task
-		int tries = 0;
-		while( !walkToBank.isTaskComplete() ) { // Forces task to run
-			General.sleep(500);
-			tries++;
-			if ( tries > 20 ) {
-				status.setType(StatusType.FAILED);
-				return false;
-			}
-		}
-		
-		return true;*/
 	}
 
 	
