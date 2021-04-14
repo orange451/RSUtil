@@ -8,6 +8,7 @@ public abstract class TaskScript extends Script {
 	private boolean running;
 	private BotTask currentTask;
 	private boolean scriptStarted;
+	private long refreshRate = 25L;
 	
 	private static TaskScript script;
 
@@ -27,7 +28,7 @@ public abstract class TaskScript extends Script {
 		
 		// logic loop
 		while (this.running) {
-			sleep(25L);
+			sleep(refreshRate);
 
 			onStep();
 			
@@ -103,6 +104,14 @@ public abstract class TaskScript extends Script {
 		
 		script.currentTask = task;
 		script.scriptStarted = true;
+	}
+	
+	/**
+	 * Sets the refresh rate at which tasks are polled.
+	 * @param millis
+	 */
+	public void setRefreshRate(long millis) {
+		this.refreshRate = millis;
 	}
 	
 	/**

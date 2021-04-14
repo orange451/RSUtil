@@ -15,13 +15,15 @@ public abstract class BotTask {
 
 	public boolean wasForceCompleted() { return this.forceComplete; }
 
-	public abstract void init();
-
 	public abstract String getTaskName();
 
 	public abstract BotTask getNextTask();
 
 	public abstract boolean isTaskComplete();
+	
+	public void init() {
+		//
+	}
 	
 	/**
 	 * Mark this task as cancelled. If finished, it will not go on to the next task.
