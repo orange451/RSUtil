@@ -170,7 +170,12 @@ public class AIOBank {
 		// Deposit
 		General.println("Depositing");
 		status.setStatus("Depositing Items");
-		Banking.depositAllExcept(ItemNames.get(exclude));
+		int amountExcept = PlayerUtil.getAmountItemsInInventory(exclude);
+		if ( amountExcept > 0 ) {
+			Banking.depositAllExcept(ItemNames.get(exclude));
+		} else {
+			Banking.depositAll();
+		}
 		AntiBan.sleep(500 + (int)(AntiBan.getAccountOffset(OFFSET_BANK)*1200), 1500);
 		
 		// Close bank
