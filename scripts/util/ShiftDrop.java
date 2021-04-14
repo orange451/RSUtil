@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 import org.tribot.api.General;
 import org.tribot.api.input.Keyboard;
-import org.tribot.api2007.Game;
-import org.tribot.api2007.GameTab;
-import org.tribot.api2007.Interfaces;
 import org.tribot.api2007.Inventory;
-import org.tribot.api2007.GameTab.TABS;
 import org.tribot.api2007.Inventory.DROPPING_PATTERN;
-import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSItem;
 
+import scripts.util.misc.GameOptions;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
@@ -29,25 +25,7 @@ public class ShiftDrop {
 	 * @param enabled
 	 */
 	public static void setShiftDropEnabled(boolean enabled) {
-		if ( isShiftDropEnabled() == enabled )
-			return;
-		
-		// Option options
-		GameTab.open(TABS.OPTIONS);
-		General.sleep(400,800);
-		
-		// Click joystick
-		RSInterface joystick = Interfaces.get(261, 1, 6);
-		if ( joystick == null )
-			return;
-		joystick.click("");
-		General.sleep(400,800);
-		
-		// Click shift button
-		RSInterface shiftButton = Interfaces.get(261, 79);
-		if ( shiftButton == null )
-			return;
-		shiftButton.click("");
+		GameOptions.setShiftDropEnabled(enabled);
 	}
 	
 	/**
@@ -55,7 +33,7 @@ public class ShiftDrop {
 	 * @return
 	 */
 	public static boolean isShiftDropEnabled() {
-		return Game.getSetting(1055) == -2147343104;
+		return GameOptions.isShiftDropEnabled();
 	}
 	
 	/**

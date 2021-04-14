@@ -38,6 +38,19 @@ public class PlayerUtil {
 	private static boolean ignoreNPC = false;
 	private static boolean ignorePlayers = false;
 
+	private static final int INTERFACE_ACCOUNT = 109;
+	private static final int INTERFACE_ACCOUNT_DAYS_LEFT = 25;
+	private static final int INTERFACE_COMBAT = 593;
+	private static final int INTERFACE_COMBAT_AUTO_RETALIATE = 34;
+	private static final int INTERFACE_COMBAT_ATTACK = 4;
+	private static final int INTERFACE_COMBAT_STRENGTH = 8;
+	private static final int INTERFACE_COMBAT_STRENGTH_2 = 12;
+	private static final int INTERFACE_COMBAT_DEFENSE = 16;
+	private static final int INTERFACE_MINIMAP = 160;
+	private static final int INTERFACE_MINIMAP_RUN_ENERGY = 22;
+	private static final int INTERFACE_WILDERNESS = 90;
+	private static final int INTERFACE_WILDERNESS_LEVEL = 53;
+
 	/**
 	 * Returns whether the players inventory is empty.
 	 * @return
@@ -247,7 +260,7 @@ public class PlayerUtil {
 		}
 
 
-		RSInterfaceChild retaliateInterface = Interfaces.get(593, 34);
+		RSInterfaceChild retaliateInterface = Interfaces.get(INTERFACE_COMBAT, INTERFACE_COMBAT_AUTO_RETALIATE);
 		if (retaliateInterface == null) {
 			return;
 		}
@@ -283,10 +296,10 @@ public class PlayerUtil {
 		}
 		
 		RSInterfaceChild[] trainInterface = {
-				Interfaces.get(593, 4), // Attack
-				Interfaces.get(593, 8), // Str
-				Interfaces.get(593, 12), // Str
-				Interfaces.get(593, 16), // Def
+				Interfaces.get(INTERFACE_COMBAT, INTERFACE_COMBAT_ATTACK), // Attack
+				Interfaces.get(INTERFACE_COMBAT, INTERFACE_COMBAT_STRENGTH), // Str
+				Interfaces.get(INTERFACE_COMBAT, INTERFACE_COMBAT_STRENGTH_2), // Str
+				Interfaces.get(INTERFACE_COMBAT, INTERFACE_COMBAT_DEFENSE), // Def
 		};
 		
 		int lastIndex = 0;
@@ -320,7 +333,7 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static int getRunEnergy() {
-		RSInterfaceChild runText = Interfaces.get(160, 23);
+		RSInterfaceChild runText = Interfaces.get(INTERFACE_MINIMAP, INTERFACE_MINIMAP_RUN_ENERGY);
 		if (runText == null) {
 			return 0;
 		}
@@ -621,7 +634,7 @@ public class PlayerUtil {
 	 * @return
 	 */
 	public static int getWildernessLevelBackup() {
-		RSInterfaceChild node = Interfaces.get(90, 43);
+		RSInterfaceChild node = Interfaces.get(INTERFACE_WILDERNESS, INTERFACE_WILDERNESS_LEVEL);
 
 
 		if (node == null) {
@@ -705,11 +718,11 @@ public class PlayerUtil {
 	 * @return Whether the player is a p2p member or not.
 	 */
 	public static boolean isP2P() {
-		RSInterfaceMaster root = Interfaces.get(109);
+		RSInterfaceMaster root = Interfaces.get(INTERFACE_ACCOUNT);
 		if ( root == null )
 			return false;
 		
-		RSInterfaceChild child = root.getChild(25);
+		RSInterfaceChild child = root.getChild(INTERFACE_ACCOUNT_DAYS_LEFT);
 		if ( child == null )
 			return false;
 		
