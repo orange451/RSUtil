@@ -1,6 +1,6 @@
 package scripts.util.aio;
 
-import static scripts.util.names.internal.ItemNamesData.get;
+import static scripts.util.names.internal.ItemNamesBase.get;
 
 import java.util.ArrayList;
 import java.util.Arrays;
