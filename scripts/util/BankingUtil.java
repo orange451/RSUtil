@@ -11,7 +11,7 @@ import org.tribot.api2007.types.RSItem;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
-import scripts.util.names.internal.ItemNamesBase;
+import scripts.util.names.internal.ItemData;
 import scripts.util.names.type.FoodType;
 
 public class BankingUtil {
@@ -43,9 +43,9 @@ public class BankingUtil {
 		if (!Banking.isBankScreenOpen())
 			return false;
 		
-		ItemIds[] names = ItemNamesBase.get(foodType);
+		ItemIds[] names = ItemData.get(foodType);
 		if ( names.length == 0 )
-			names = ItemNamesBase.get(FoodType.values());
+			names = ItemData.get(FoodType.values());
 		
 		for (int i = 0; i < names.length; i++) {
 			if ( amount <= 0 )

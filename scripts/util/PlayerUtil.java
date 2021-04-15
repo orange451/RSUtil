@@ -28,7 +28,7 @@ import org.tribot.api2007.types.RSPlayer;
 import scripts.util.misc.AntiBan;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
-import scripts.util.names.internal.ItemNamesBase;
+import scripts.util.names.internal.ItemData;
 import scripts.util.names.type.TrainMethod;
 
 public class PlayerUtil {
@@ -75,7 +75,7 @@ public class PlayerUtil {
 	 * @param items
 	 */
 	public static void loot( Positionable location, ItemIds... items) {
-		loot(location, ItemNamesBase.get(items));
+		loot(location, ItemData.get(items));
 	}
 	
 	/**

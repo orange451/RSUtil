@@ -13,18 +13,18 @@ import scripts.util.misc.NameFormatter;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
-public class ItemNamesBase extends ItemIds {
+public class ItemData extends ItemIds {
 	protected int[] id;
 
-	private static ArrayList<ItemNamesBase> items;
+	private static ArrayList<ItemData> items;
 
-	protected ItemNamesBase(int... id) {
+	protected ItemData(int... id) {
 		this.id = id;
 		
-		if ( ItemNamesBase.items == null ) {
-			ItemNamesBase.items = new ArrayList<ItemNamesBase>();
+		if ( ItemData.items == null ) {
+			ItemData.items = new ArrayList<ItemData>();
 		}
-		ItemNamesBase.items.add(this);
+		ItemData.items.add(this);
 	}
 
 	@Override
@@ -115,9 +115,9 @@ public class ItemNamesBase extends ItemIds {
 	 * @param id
 	 * @return
 	 */
-	public static ItemNamesBase get(int id) {
+	public static ItemData get(int id) {
 		for (int i = 0; i < items.size(); i++) {
-			ItemNamesBase data = items.get(i);
+			ItemData data = items.get(i);
 			if ( data.hasId(id) )
 				return data;
 		}
@@ -183,7 +183,7 @@ public class ItemNamesBase extends ItemIds {
 		return (ItemIds[]) list.toArray(new ItemIds[list.size()]);
 	}
 
-	public static ItemNamesBase[] values() {
-		return items.toArray(new ItemNamesBase[items.size()]);
+	public static ItemData[] values() {
+		return items.toArray(new ItemData[items.size()]);
 	}
 }

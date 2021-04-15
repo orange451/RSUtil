@@ -5,7 +5,7 @@ import org.tribot.api2007.types.RSItem;
 import scripts.util.ge.GEItem;
 import scripts.util.ge.GrandExchangeUtil;
 import scripts.util.names.ItemIds;
-import scripts.util.names.internal.ItemNamesBase;
+import scripts.util.names.internal.ItemData;
 import scripts.util.names.type.FoodType;
 
 public class ItemUtil {
@@ -16,7 +16,7 @@ public class ItemUtil {
 	 * @return
 	 */
 	public static boolean isFood(RSItem item) {
-		return ItemNamesBase.is(item, ItemNamesBase.get(FoodType.values()));
+		return ItemData.is(item, ItemData.get(FoodType.values()));
 	}
 	
 	/**

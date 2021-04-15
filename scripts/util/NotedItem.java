@@ -3,7 +3,7 @@ package scripts.util;
 import org.tribot.api2007.types.RSItem;
 
 import scripts.util.names.ItemIds;
-import scripts.util.names.internal.ItemNamesBase;
+import scripts.util.names.internal.ItemData;
 
 public class NotedItem extends ItemIds {
 	private int[] ids;
@@ -16,7 +16,7 @@ public class NotedItem extends ItemIds {
 		this.ids = new int[] {item.getID()};
 	}
 	
-	public boolean is(ItemNamesBase item) {
+	public boolean is(ItemData item) {
 		for (int id2 : item.getIds())
 			for (int id1 : ids )
 				if ( id2 == id1 )
@@ -34,6 +34,6 @@ public class NotedItem extends ItemIds {
 	}
 	
 	public boolean isValid() {
-		return ItemNamesBase.get(getIds()[0]) == null;
+		return ItemData.get(getIds()[0]) == null;
 	}
 }
