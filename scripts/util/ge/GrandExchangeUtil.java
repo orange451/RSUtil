@@ -1,10 +1,5 @@
 package scripts.util.ge;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +12,9 @@ import org.tribot.api2007.types.RSInterfaceComponent;
 import org.tribot.api2007.types.RSItem;
 
 import scripts.dax_api.shared.jsonSimple.JSONObject;
-import scripts.dax_api.shared.jsonSimple.parser.JSONParser;
+import scripts.jrest.HttpMethod;
+import scripts.jrest.RequestEntity;
+import scripts.jrest.ResponseEntity;
 import scripts.util.NPCUtil;
 import scripts.util.names.ItemIds;
 import scripts.util.names.NPCNames;
@@ -31,26 +28,19 @@ public class GrandExchangeUtil {
 	private static long lastUpdateTime;
 	
 	/** Rate at which we refresh internally stored GE data */
-	public static long REFRESH_GE_TIME = 1000 * 60;
+	public static long REFRESH_GE_TIME = 1000 * 60 * 60;
 	
 	/**
 	 * Force fetches all the price data for GE Items.
 	 */
 	public static void forceUpdateGEPriceData() {
 		try {
-			String address = "https://rsbuddy.com/exchange/summary.json";
-			URL url = new URL(address);
-			URLConnection connection = url.openConnection();
-			InputStream inputStream = connection.getInputStream();
-			InputStreamReader reader = new InputStreamReader(inputStream);
-			BufferedReader bufferedReader = new BufferedReader(reader);
-			String jsonSource = bufferedReader.readLine();
-			bufferedReader.close();
+			String address = "https://prices.runescape.wiki/api/v1/osrs/latest";
+			RequestEntity<JSONObject> request = new RequestEntity<>(HttpMethod.GET);
+			ResponseEntity<JSONObject> response = request.exchange(address, JSONObject.class);
 			
-			JSONParser parser = new JSONParser();
-			JSONObject tempData = (JSONObject) parser.parse(jsonSource);
-			if ( tempData != null && tempData.size() > 100 )
-				priceData = tempData;
+			if ( response.getBody() != null && response.getBody().size() > 100 )
+				priceData = (JSONObject) response.getBody().get("data");
 			
 			lastUpdateTime = System.currentTimeMillis();
 		} catch(Exception e ) {
