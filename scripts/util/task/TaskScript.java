@@ -49,8 +49,12 @@ public abstract class TaskScript extends Script {
 			}
 			
 			if (!this.currentTask.isCancelled() && this.currentTask.isTaskComplete()) {
-				if ( this.currentTask != null && !this.isOnBreak() )
-					setCurrentTask(this.currentTask.getNextTask());
+				if ( this.currentTask != null && !this.isOnBreak() ) {
+					BotTask nextTask = this.currentTask.getNextTask();
+					//if ( this.currentTask.isCancelled() )
+						//nextTask = null;
+					setCurrentTask(nextTask);
+				}
 			}
 		}
 		
@@ -118,7 +122,7 @@ public abstract class TaskScript extends Script {
 	 * Returns the current running script instance
 	 * @return
 	 */
-	public static Script getScript() {
+	public static TaskScript getScript() {
 		return script;
 	}
 	
