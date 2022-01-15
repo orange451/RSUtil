@@ -59,6 +59,7 @@ public class NameGenerator {
 		names.addAll(generateStrings(Locations.values()));
 		names.addAll(generateStrings(NPCNames.values()));
 		names.addAll(generateStrings(ObjectNames.values()));
+		names.addAll(generateStrings(Quests.values()));
 	}
 
 	private static List<String> generateStrings(Object[] values) {
