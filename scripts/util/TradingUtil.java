@@ -18,6 +18,15 @@ public class TradingUtil {
 	 * @return
 	 */
 	public static boolean tradePlayer(RSPlayer player) {
+		return tradePlayer(player, 15000);
+	}
+	
+	/**
+	 * Clicks the trade with option on a player. Returns true if the trade window successfully opens up.
+	 * @param player
+	 * @return
+	 */
+	public static boolean tradePlayer(RSPlayer player, long timeout) {
 		player.click("trade with " + player.getName());
 		
 		// Wait for accept
@@ -27,7 +36,7 @@ public class TradingUtil {
 			AntiBan.sleep(1000, 250);
 			
 			// Waiting too long for trade
-			if ( System.currentTimeMillis()-start > 15000 ) {
+			if ( System.currentTimeMillis()-start > timeout ) {
 				return false;
 			}
 		}
@@ -88,10 +97,11 @@ public class TradingUtil {
 		// Offer the items
 		for (int i = 0; i < items.length; i++) {
 			RSItem item = PlayerUtil.getFirstItemInInventory(items[i]);
-			if ( item != null ) {
-				item.click("-all");
-				AntiBan.sleep(500, 200);
-			}
+			if ( item == null )
+				break;
+			
+			item.click("-all");
+			AntiBan.sleep(500, 200);
 		}
 
 		// Click accept
