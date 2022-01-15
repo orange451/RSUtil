@@ -53,6 +53,14 @@ public abstract class BotTaskWalk extends BotTask {
 		}
 		return "Walk: " + (nearestLoc != null ? nearestLoc : this.walkTo.toString());
 	}
+	
+	/**
+	 * If this is true, the walk task will quit.
+	 * @return
+	 */
+	protected boolean stopCondition() {
+		return false;
+	}
 
 	public abstract BotTask getNextTask();
 
@@ -95,12 +103,16 @@ public abstract class BotTaskWalk extends BotTask {
 						// Force quit
 						if (forceComplete)
 							return true;
+						
+						// Stop task
+						if ( stopCondition() )
+							return true;
 
 						// Idle while walking.
 						AntiBan.idle(Game.isRunOn() ? (100+AntiBan.generateResponseTime(400)):(100+AntiBan.generateResponseTime(1000)), new Condition() {
 							@Override
 							public boolean active() {
-								return (forceComplete) || (finalTile.distanceTo(Player.getRSPlayer()) <= BotTaskWalk.radius);
+								return (forceComplete) || (finalTile.distanceTo(Player.getRSPlayer()) <= BotTaskWalk.radius) || stopCondition();
 							}
 						});
 						
