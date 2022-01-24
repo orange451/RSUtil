@@ -39,11 +39,13 @@ public class GrandExchangeUtil {
 			RequestEntity<JSONObject> request = new RequestEntity<>(HttpMethod.GET);
 			ResponseEntity<JSONObject> response = request.exchange(address, JSONObject.class);
 			
-			if ( response.getBody() != null && response.getBody().size() > 100 )
+			if ( response.getBody() != null )
 				priceData = (JSONObject) response.getBody().get("data");
 			
 			lastUpdateTime = System.currentTimeMillis();
 		} catch(Exception e ) {
+			General.println("Error fetching GE data.");
+			General.println(e);
 			e.printStackTrace();
 		}
 	}
@@ -66,7 +68,7 @@ public class GrandExchangeUtil {
 		if ( data == null )
 			return null;
 		
-		return new GEItem(data);
+		return new GEItem(id, data);
 	}
 	
 	/**

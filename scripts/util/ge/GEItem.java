@@ -7,48 +7,58 @@ import scripts.util.misc.ItemWrapper;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
+@Deprecated
 public class GEItem implements ItemWrapper {
 	
 	/** ID of the item */
 	private int id;
 	
 	/** Display name of the item */
+	@Deprecated
 	private String name;
 	
 	/** Is item Members only */
+	@Deprecated
 	private boolean members;
 	
 	/** Average price bought */
 	private int buyAverage;
 	
 	/** Average quantity bought */
+	@Deprecated
 	private int buyQuantity;
 	
 	/** Average price sold */
 	private int sellAverage;
 	
 	/** Average quantity sold */
+	@Deprecated
 	private int sellQuantity;
 	
 	/** Overall average price */ 
 	private int overallAverage;
 	
 	/** Overall average quantity */
+	@Deprecated
 	private int overallQuantity;
 	
 	/** sp */
 	private int sp;
 	
-	public GEItem(Map<String,Object> data) {
-		this.id = toIntegerSafe(data.get("id"));
+	public GEItem(int id, Map<String,Object> data) {
+		this.id = id;
 		this.name = toStringSafe(data.get("name"));
 		this.members = toBooleanSafe(data.get("members"));
-		this.buyAverage = toIntegerSafe(data.get("buy_average"));
+		
+		this.buyAverage = toIntegerSafe(data.get("high"));
 		this.buyQuantity = toIntegerSafe(data.get("buy_quantity"));
-		this.sellAverage = toIntegerSafe(data.get("sell_average"));
+		
+		this.sellAverage = toIntegerSafe(data.get("low"));
 		this.sellQuantity = toIntegerSafe(data.get("sell_quantity"));
-		this.overallAverage = toIntegerSafe(data.get("overall_average"));
+		
+		this.overallAverage = (int) ((double)(buyAverage + buyQuantity)/2d);
 		this.overallQuantity = toIntegerSafe(data.get("overall_quantity"));
+		
 		this.sp = toIntegerSafe(data.get("sp"));
 	}
 	
@@ -64,19 +74,23 @@ public class GEItem implements ItemWrapper {
 	public int getId() {
 		return this.id;
 	}
-	
+
+	@Deprecated
 	public String getName() {
 		return this.name;
 	}
-	
+
+	@Deprecated
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	@Deprecated
 	public boolean isMembers() {
 		return this.members;
 	}
-	
+
+	@Deprecated
 	public void setMembers(boolean members) {
 		this.members = members;
 	}
@@ -88,11 +102,13 @@ public class GEItem implements ItemWrapper {
 	public void setBuyAverage(int average) {
 		this.buyAverage = average;
 	}
-	
+
+	@Deprecated
 	public int getBuyQuantity() {
 		return this.buyQuantity;
 	}
-	
+
+	@Deprecated
 	public void setBuyQuantity(int buyQuantity) {
 		this.buyQuantity = buyQuantity;
 	}
@@ -104,11 +120,13 @@ public class GEItem implements ItemWrapper {
 	public void setSellAverage(int average) {
 		this.sellAverage = average;
 	}
-	
+
+	@Deprecated
 	public int getSellQuantity() {
 		return this.sellQuantity;
 	}
-	
+
+	@Deprecated
 	public void setSellQuantity(int quantity) {
 		this.sellQuantity = quantity;
 	}
@@ -120,15 +138,18 @@ public class GEItem implements ItemWrapper {
 	public void setOverallAverage(int average) {
 		this.overallAverage = average;
 	}
-	
+
+	@Deprecated
 	public int getOverallQuantity() {
 		return this.overallQuantity;
 	}
-	
+
+	@Deprecated
 	public void setOverallQuantity(int quantity) {
 		this.overallQuantity = quantity;
 	}
 	
+	@Deprecated
 	public int getSP() {
 		return this.sp;
 	}
@@ -172,9 +193,9 @@ public class GEItem implements ItemWrapper {
 		json.put("name", this.getName());
 		json.put("members", this.isMembers());
 		json.put("sp", this.getSP());
-		json.put("buy_average", this.getBuyAverage());
+		json.put("high", this.getBuyAverage());
 		json.put("buy_quantity", this.getBuyQuantity());
-		json.put("sell_average", this.getSellAverage());
+		json.put("low", this.getSellAverage());
 		json.put("sell_quantity", this.getSellQuantity());
 		json.put("overall_average", this.getOverallAverage());
 		json.put("overall_quantity", this.getOverallQuantity());
