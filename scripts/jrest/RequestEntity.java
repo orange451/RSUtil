@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.net.ssl.SSLSocketFactory;
+
+@SuppressWarnings({ "deprecation", "restriction" })
 public class RequestEntity<T> extends HttpEntity<T> {
 
 	private HttpMethod method;
@@ -38,24 +41,44 @@ public class RequestEntity<T> extends HttpEntity<T> {
 		this.cookies = new ArrayList<HttpCookie>(JRest.cookieManager.getCookieStore().getCookies());
 	}
 	
+	/**
+	 * HTTP Method used to invoke a HTTP Request
+	 */
 	public HttpMethod getMethod() {
 		return this.method;
 	}
 	
+	/**
+	 * Queries a specified endpoint asynchronously.
+	 * @throws MalformedURLException
+	 */
 	@SuppressWarnings("unchecked")
 	public <P, Q> void exchangeAsync(String url, AsyncResponse<Q> response) throws MalformedURLException {
 		this.exchangeAsync(url, (Class<Q>)Object.class, response);
 	}
+
 	
+	/**
+	 * Queries a specified endpoint asynchronously.
+	 * @throws MalformedURLException
+	 */
 	public <P, Q> void exchangeAsync(String url, Class<Q> responseType, AsyncResponse<Q> response) throws MalformedURLException {
 		this.exchangeAsync(new URL(url), responseType, response);
 	}
+
 	
+	/**
+	 * Queries a specified endpoint asynchronously.
+	 */
 	@SuppressWarnings("unchecked")
 	public <P, Q> void exchangeAsync(URL url, AsyncResponse<Q> response) {
 		this.exchangeAsync(url, (Class<Q>)Object.class, response);
 	}
+
 	
+	/**
+	 * Queries a specified endpoint asynchronously.
+	 */
 	public <P, Q> void exchangeAsync(URL url, Class<Q> responseType, AsyncResponse<Q> response) {
 		new Thread(()->{
 			try {
@@ -66,10 +89,19 @@ public class RequestEntity<T> extends HttpEntity<T> {
 		}).start();
 	}
 	
+	/**
+	 * Queries a specified endpoint. Returns a response entity object describing the result.
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public <Q> ResponseEntity<Q> exchange(String url, Class<Q> responseType) throws MalformedURLException,IOException {
 		return this.exchange(new URL(url), responseType);
 	}
-	
+
+	/**
+	 * Queries a specified endpoint. Returns a response entity object describing the result.
+	 * @throws IOException
+	 */
 	public <P, Q> ResponseEntity<Q> exchange(URL url, Class<Q> responseType) throws IOException {
 		// Connect to endpoint
 		try {
@@ -93,9 +125,14 @@ public class RequestEntity<T> extends HttpEntity<T> {
 			con.setRequestMethod(this.getMethod().toString());
 
 			// Hidden headers
-			if ( this.getHeaders().get("Host") == null ) {
+			if ( this.getHeaders().get(HttpHeaders.HOST) == null ) {
 				String port = url.getPort() == -1 ? "" : (":" + url.getPort());
-				this.getHeaders().put("Host", url.getHost() + port);
+				this.getHeaders().put(HttpHeaders.HOST, url.getHost() + port);
+			}
+			
+			// User agent???
+			if ( this.getHeaders().get(HttpHeaders.USER_AGENT) == null ) {
+				con.setRequestProperty(HttpHeaders.USER_AGENT, "Mozilla/5.0 (" + System.getProperty("os.name") + ") Java/" + System.getProperty("java.version"));
 			}
 			
 			// Cookies!
@@ -103,6 +140,7 @@ public class RequestEntity<T> extends HttpEntity<T> {
 				List<HttpCookie> cookiesList = getCookies();
 				List<String> cookies = new ArrayList<>();
 				for (HttpCookie cookie : cookiesList) {
+					cookie.setVersion(0); // Sending cookies use simple version!
 					cookies.add(cookie.toString());
 				}
 				con.setRequestProperty("Cookie", String.join(";", cookies));
@@ -115,10 +153,11 @@ public class RequestEntity<T> extends HttpEntity<T> {
             
             // Get usable body
         	String body = null;
-        	if ( getBody() != null && !bodyInUrl )
-        		body = RestUtil.convertSoString(getBody());
-        	else
+        	if ( getBody() != null && !bodyInUrl ) {
+        		body = RestUtil.convertToString(getBody());
+        	} else {
         		body = new String();
+        	}
         	
         	if ( bodyInUrl )
         		body = urlParameters;
@@ -126,13 +165,13 @@ public class RequestEntity<T> extends HttpEntity<T> {
         	// Write body
 			if ( !this.getMethod().equals(HttpMethod.GET) ) {
 	        	BufferedOutputStream b = new BufferedOutputStream(con.getOutputStream());
-	        	b.write(body.getBytes("UTF-8"));
+	        	b.write(StringUtil.utf8(body));
 	        	b.flush();
 			}
 
         	// Get response
         	@SuppressWarnings("unchecked")
-			HttpResponse<Q> response = (HttpResponse<Q>) JRest.readResponse(con, responseType);
+			HttpResponse<Q> response = (HttpResponse<Q>) RestUtil.readResponse(con, responseType);
         	con.getInputStream().close();
         	con.disconnect();
         	if ( response == null ) {
