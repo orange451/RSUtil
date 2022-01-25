@@ -70,7 +70,7 @@ public enum NPCNames {
 	THURGO(false),
 	VERONICA(false),
 	WIZARD(true),
-	WHITE_KNIGHT(true),
+	WHITE_KNIGHT(true, Locations.FALADOR_CASTLE),
 	WYSON(false, "Wyson the gardener", Locations.FALADOR_GARDEN_SHED),
 	ZOMBIE(true),
 	GRAND_EXCHANGE_CLERK(false),
