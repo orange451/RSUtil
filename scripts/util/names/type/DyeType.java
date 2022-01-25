@@ -33,6 +33,6 @@ public enum DyeType implements ItemWrapper {
 	}
 
 	public String getName() {
-		return NameFormatter.formatName(getItem());
+		return NameFormatter.formatName(getItem()).split(" ")[0];
 	}
 }
