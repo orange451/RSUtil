@@ -2,6 +2,7 @@ package scripts.util.ge;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.tribot.api.General;
 import org.tribot.api.input.Keyboard;
@@ -10,6 +11,8 @@ import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSInterfaceComponent;
 import org.tribot.api2007.types.RSItem;
+
+import com.google.gson.JsonObject;
 
 import scripts.dax_api.shared.jsonSimple.JSONObject;
 import scripts.jrest.HttpMethod;
@@ -22,7 +25,7 @@ import scripts.util.names.NPCNames;
 public class GrandExchangeUtil {
 	
 	/** Internal GE data */
-	private static JSONObject priceData;
+	private static JsonObject priceData;
 	
 	/** Last timestamp GE data was downloaded */
 	private static long lastUpdateTime;
@@ -33,14 +36,15 @@ public class GrandExchangeUtil {
 	/**
 	 * Force fetches all the price data for GE Items.
 	 */
+	@SuppressWarnings("unchecked")
 	public static void forceUpdateGEPriceData() {
 		try {
 			String address = "https://prices.runescape.wiki/api/v1/osrs/latest";
-			RequestEntity<JSONObject> request = new RequestEntity<>(HttpMethod.GET);
-			ResponseEntity<JSONObject> response = request.exchange(address, JSONObject.class);
+			RequestEntity<JsonObject> request = new RequestEntity<>(HttpMethod.GET);
+			ResponseEntity<JsonObject> response = request.exchange(address, JsonObject.class);
 			
 			if ( response.getBody() != null )
-				priceData = (JSONObject) response.getBody().get("data");
+				priceData = (JsonObject) response.getBody().get("data");
 			
 			lastUpdateTime = System.currentTimeMillis();
 		} catch(Exception e ) {
@@ -64,7 +68,7 @@ public class GrandExchangeUtil {
 	public static GEItem getItemData(int id) {
 		updateGEPriceData();
 		
-		JSONObject data = (JSONObject) priceData.get(Integer.toString(id));
+		JsonObject data = (JsonObject) priceData.get(Integer.toString(id));
 		if ( data == null )
 			return null;
 		
@@ -252,6 +256,7 @@ public class GrandExchangeUtil {
 	
 	private static void userInputText(String text) {
 		// Type name of item
+		General.println("Attempting to type string: " + text);
 		Keyboard.typeString(text);
 		General.sleep(1000, 2000);
 		

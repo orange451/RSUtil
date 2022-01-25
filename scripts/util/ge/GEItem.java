@@ -2,6 +2,9 @@ package scripts.util.ge;
 
 import java.util.Map;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import scripts.dax_api.shared.jsonSimple.JSONObject;
 import scripts.util.misc.ItemWrapper;
 import scripts.util.names.ItemIds;
@@ -45,7 +48,7 @@ public class GEItem implements ItemWrapper {
 	/** sp */
 	private int sp;
 	
-	public GEItem(int id, Map<String,Object> data) {
+	public GEItem(int id, JsonObject data) {
 		this.id = id;
 		this.name = toStringSafe(data.get("name"));
 		this.members = toBooleanSafe(data.get("members"));
@@ -155,6 +158,10 @@ public class GEItem implements ItemWrapper {
 	}
 
 	private int toIntegerSafe(Object object) {
+		if ( object instanceof JsonElement ) {
+			return ((JsonElement)object).getAsInt();
+		}
+		
 		if ( object instanceof String ) {
 			try {
 				return (int)Double.parseDouble(object.toString());
@@ -177,6 +184,10 @@ public class GEItem implements ItemWrapper {
 	}
 	
 	private boolean toBooleanSafe(Object object) {
+		if ( object instanceof JsonElement ) {
+			return ((JsonElement)object).getAsBoolean();
+		}
+		
 		if ( object == null )
 			return false;
 		
