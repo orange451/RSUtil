@@ -4,6 +4,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import org.tribot.api.General;
+
 public class MarshallerGson extends Marshaller {
 
 	private com.google.gson.Gson gson;
@@ -13,6 +15,9 @@ public class MarshallerGson extends Marshaller {
 	public <T> T parse(String body, T type) {
 		if ( gson == null )
 			gson = new com.google.gson.GsonBuilder().serializeNulls().setLenient().create();
+		
+		if ( type == null || body == null )
+			return null;
 		
 		// Kinda ugly PLS FIX
 		if ( body.length() > 1024 ) {
