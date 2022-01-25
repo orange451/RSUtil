@@ -1,5 +1,8 @@
 package scripts.util.names.type;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 public enum EquipmentMaterial {
 	ALL(Integer.MIN_VALUE, 0),
 	WOODEN(0, 1),
@@ -26,5 +29,29 @@ public enum EquipmentMaterial {
 	EquipmentMaterial(int quality, int minimumEquipLevel) {
 		this.quality = quality;
 		this.minimumEquipLevel = minimumEquipLevel;
+	}
+	
+	public static EquipmentMaterial getBest(int equipLevel) {
+		// Get all materials in order of quality
+		EquipmentMaterial[] materials = EquipmentMaterial.values();
+		Arrays.sort(materials, new Comparator<EquipmentMaterial>() {
+			@Override
+			public int compare(EquipmentMaterial a, EquipmentMaterial b) {
+				return a.getQuality() - b.getQuality();
+			}
+		});
+		
+		// Get highest material based on equip level
+		EquipmentMaterial bestMaterial = materials[0];
+		for (EquipmentMaterial material : materials) {
+			if ( material == ALL )
+				continue;
+			if ( material.getMinimumEquipLevel() <= equipLevel ) {
+				bestMaterial = material;
+			}
+		}
+		
+		// Return
+		return bestMaterial;
 	}
 }

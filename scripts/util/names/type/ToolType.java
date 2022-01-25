@@ -5,11 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import scripts.util.misc.ItemWrapper;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
-public enum ToolType implements ItemWrapper {
+public enum ToolType implements EquippableItem {
 	BRONZE_SWORD(EquipmentMaterial.BRONZE, ToolClass.SWORD, ItemNames.BRONZE_SWORD),
 	IRON_SWORD(EquipmentMaterial.IRON, ToolClass.SWORD, ItemNames.IRON_SWORD),
 	STEEL_SWORD(EquipmentMaterial.STEEL, ToolClass.SWORD, ItemNames.STEEL_SWORD),

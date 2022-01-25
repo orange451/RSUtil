@@ -1,8 +1,20 @@
 package scripts.util.names.type;
 
-public enum ArmorClass {
+import org.tribot.api2007.Skills.SKILLS;
+
+public enum ArmorClass implements EquipmentClass {
 	PLATEBODY,
 	LEGGINGS,
 	HELMET,
-	BOOTS
+	BOOTS;
+
+	@Override
+	public SKILLS getPrimarySkill() {
+		return SKILLS.DEFENCE;
+	}
+
+	@Override
+	public int getSkillOffset() {
+		return 0;
+	}
 }

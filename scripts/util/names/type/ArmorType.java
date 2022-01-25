@@ -5,11 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import scripts.util.misc.ItemWrapper;
 import scripts.util.names.ItemIds;
 import scripts.util.names.ItemNames;
 
-public enum ArmorType implements ItemWrapper {
+public enum ArmorType implements EquippableItem {
 	BRONZE_PLATEBODY(EquipmentMaterial.BRONZE, ArmorClass.PLATEBODY, ItemNames.BRONZE_PLATEBODY),
 	BRONZE_CHAINBODY(EquipmentMaterial.BRONZE, ArmorClass.PLATEBODY, ItemNames.BRONZE_CHAINBODY),
 	IRON_PLATEBODY(EquipmentMaterial.IRON, ArmorClass.PLATEBODY, ItemNames.IRON_PLATEBODY),
@@ -45,7 +44,7 @@ public enum ArmorType implements ItemWrapper {
 		return this.item;
 	}
 	
-	public static ArmorType[] getArmorClassifications(ArmorClass type, EquipmentMaterial minimumMaterial) {
+	public static ArmorType[] getArmorTypes(ArmorClass type, EquipmentMaterial minimumMaterial) {
 		ArmorType[] armorArray = ArmorType.values();
 		
 		// Get armors that match this type

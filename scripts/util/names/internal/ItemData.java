@@ -38,7 +38,7 @@ public class ItemData extends ItemIds {
 	 * @return
 	 */
 	public String getName() {
-		return NameFormatter.formatItemName(toString());
+		return NameFormatter.formatItemName(super.getName());
 	}
 
 	/**

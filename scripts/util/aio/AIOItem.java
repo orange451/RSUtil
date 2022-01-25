@@ -236,11 +236,11 @@ public class AIOItem {
 		while(Player.isMoving())
 			General.sleep(1000);
 		General.sleep(250);
-		General.println("Attempting to buy " + quantity + " " + ge.getName() + " for " + buyPrice + " gp");
+		General.println("Attempting to buy " + quantity + " " + desiredItem.getName() + " for " + buyPrice + " gp");
 		
 		// If the item isn't available to collect, make an offer!
-		if ( GrandExchangeUtil.getCollectItems(ge.getId()).length == 0 ) {
-			boolean bought = GrandExchangeUtil.offerBuy(ge.getName(), buyPrice, quantity);
+		if ( GrandExchangeUtil.getCollectItems(desiredItem.getIds()[0]).length == 0 ) {
+			boolean bought = GrandExchangeUtil.offerBuy(desiredItem.getName(), buyPrice, quantity);
 			if ( !bought )
 				return false;
 		}

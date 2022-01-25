@@ -2,7 +2,7 @@ package scripts.util.names.type;
 
 import org.tribot.api2007.Skills.SKILLS;
 
-public enum ToolClass {
+public enum ToolClass implements EquipmentClass {
 	PICKAXE(SKILLS.MINING, 1),
 	SWORD(SKILLS.ATTACK, 0),
 	AXE(SKILLS.WOODCUTTING, 1),
