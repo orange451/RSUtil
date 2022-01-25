@@ -217,11 +217,19 @@ public class AIOItem {
 			General.sleep(800,1400);
 		}
 		
+		// If we dont have enough space, put stuff back?
+		if ( Inventory.isFull() )
+			Banking.depositAllExcept(ItemNames.COINS.getIds());
+		
 		// Make sure we have money
 		if ( PlayerUtil.getAmountItemsInInventory(ItemNames.COINS) == 0 ) {
 			General.println("We don't have money...");
 			return false;
 		}
+		
+		// If we dont have enough space, put stuff back?
+		if ( Inventory.isFull() )
+			Banking.depositAllExcept(ItemNames.COINS.getIds());
 		
 		// Close bank
 		while ( Banking.isBankScreenOpen() ) {
