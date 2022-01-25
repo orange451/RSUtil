@@ -168,12 +168,12 @@ public class AIOEquipment {
 		if ( count > 0 ) {
 			for (RSItem item : Equipment.getItems()) {
 				for (int id : desiredItemIds) {
-					ToolType toolType = ToolType.match(ItemNames.get(id));
+					/*ToolType toolType = ToolType.match(ItemNames.get(id));
 					if ( toolType == null )
 						continue;
 					
 					if ( !canUseEquippableItem(toolType) )
-						continue;
+						continue;*/
 					
 					if ( id == item.getID() )
 						return item;
