@@ -8,4 +8,8 @@ public abstract class ItemIds {
 	public String getName() {
 		return RSItemHelper.getItemName(getIds()[0]);
 	}
+	
+	public String toString() {
+		return getName();
+	}
 }
