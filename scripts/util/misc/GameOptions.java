@@ -38,9 +38,9 @@ public class GameOptions {
 		// Option options
 		open();
 		
-		RSInterface moreInfo = GameOptionsInterfaces.MORE_INFORMATION.get();
+		/*RSInterface moreInfo = GameOptionsInterfaces.MORE_INFORMATION.get();
 		if ( !moreInfo.getText().contains("more ") )
-			moreInfo.click("");
+			moreInfo.click("");*/
 		
 		GameOptionsInterfaces.CONTROLS.click("");
 		General.sleep(400,800);
