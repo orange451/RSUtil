@@ -134,7 +134,7 @@ public class ObjectUtil {
 					continue;
 			}
 
-			int tdist = o.getPosition().distanceTo(position);
+			double tdist = o.getPosition().distanceTo(position);
 			boolean hasAdjacent = adjacentPlayersAddDistance && hasAdjacentPlayers(o, false);
 			
 			if ( hasAdjacent ) 
@@ -142,9 +142,9 @@ public class ObjectUtil {
 
 			// Farther away the object is, the more uncertain we are of exact distance
 			for (int j = 0; j < (int)(tdist / 3); j++)
-				tdist += General.random(-1, 1);
+				tdist += General.randomDouble(-1, 1);
 			
-			distance.put(o, (double) tdist);
+			distance.put(o, tdist);
 			temp.add(o);
 		}
 		
@@ -280,7 +280,7 @@ public class ObjectUtil {
 	 */
 	public static boolean interactWithObject(ObjectNames object, String click) {
 		// Find object nearby
-		RSObject obj = scripts.util.ObjectUtil.get(object, 20);
+		RSObject obj = ObjectUtil.get(object, 20);
 		if (obj == null)
 			return false;
 
