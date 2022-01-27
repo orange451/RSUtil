@@ -15,7 +15,7 @@ public class GameOptions {
 		General.sleep(400,800);
 		
 		// Click joystick
-		RSInterface joystick = Interfaces.get(116, 29, 9);
+		RSInterface joystick = Interfaces.get(116, 75, 9);
 		if ( joystick == null )
 			return;
 		joystick.click("");

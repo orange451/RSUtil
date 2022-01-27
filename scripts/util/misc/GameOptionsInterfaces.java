@@ -5,9 +5,9 @@ import org.tribot.api2007.types.RSInterface;
 
 public enum GameOptionsInterfaces {
 	OPTIONS_WINDOW(134),
-	MORE_INFORMATION(OPTIONS_WINDOW.parent, 6, 9),
-	CONTROLS(OPTIONS_WINDOW.parent, 22, 3),
-	SHIFT_DROP_CHECKBOX(OPTIONS_WINDOW.parent, 17, 26),
+	MORE_INFORMATION(OPTIONS_WINDOW.parent, 75, 9),
+	CONTROLS(OPTIONS_WINDOW.parent, 24, 38),
+	SHIFT_DROP_CHECKBOX(OPTIONS_WINDOW.parent, 18, 34),
 	CLOSE(OPTIONS_WINDOW.parent, 4),
 	;
 	
